@@ -1,0 +1,201 @@
+<template>
+	<view class="login">
+		<view class="main" :style="{ height: screenHeight + 'px' }">
+			<view class="contain">
+				<view class="form">
+					<view class="line">
+						<input type="text" v-model="params.uname" placeholder-style="color:#c7c7c7" placeholder="请输入手机号码"/>
+					</view>
+					<view class="line">
+						<input type="password" v-model="params.pwd" placeholder-style="color:#c7c7c7" placeholder="请输入密码">
+					</view>
+					<view class="btn" @click="login">登录</view>
+					<view class="control">
+						<navigator hover-class="none" url="/pages/resetPwd/index">忘记密码</navigator>
+						<navigator v-if="isRegister" hover-class="none" url="/pages/Register/index">立即注册</navigator>
+					</view>
+				</view>
+				<view class="third">
+					<view class="cut">
+						<text>其他方式登录</text>
+					</view>
+					<view class="other">
+						<view class="weixin" @click="$store.dispatch('WeiXinLogin')"></view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+	</view>
+</template>
+
+<script>
+	import { mapState } from 'vuex'
+	export default {
+		name: 'Login',
+		data() {
+			return {
+				Login: true,
+				time: 0,
+				screenHeight: 0,
+				params: {
+					uname: '',
+					pwd: ''
+				}
+				
+			};
+		},
+		onLoad () {
+			this.screenHeight = uni.getSystemInfoSync().windowHeight
+			//console.log(uni.getSystemInfoSync().windowHeight)
+		},
+		methods: {
+			login () {
+				this.pwd = false
+				this.isPhone(this.params, res => {
+					this.$store.dispatch('userLogin', res).then(res => {
+						if (res) {
+							uni.redirectTo({
+								url: '/pages/index/index'
+							})
+						} else {
+							uni.showModal({
+								title: '',
+								content: '用户名或密码错误',
+								showCancel: false
+							})
+						}
+					})
+				})
+			},
+			isPhone (data, callback) {
+				const reg = /^[1][3,4,5,7,8][0-9]{9}$/
+				if (reg.test(this.params.uname)) {
+					callback(data)
+				} else {
+					uni.showModal({
+						title:'',
+						content: '请输入正确的手机号码',
+						showCancel: false
+					})
+				}
+			}
+		},
+		computed: {
+			...mapState([
+				'isRegister',
+				'userInfo'
+			])
+		}
+	}
+</script>
+
+<style lang="less">
+uni-page-body, page, .login { min-height: 100%;overflow: hidden;height: 100%;}	
+.login {
+	//background:url("https://admin.sinlu.net/weixinpl/shopping-temp/images/login_bg.jpg") no-repeat center center/cover;
+	background-color:white;
+	.main {
+		height: 100%;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		.contain {
+			width: 80%;
+			.form {
+				& > .line {
+					position: relative;
+					color: #333;
+					background-repeat: no-repeat;
+					background-size: 40upx 40upx;
+					background-position: left center;
+					padding: 15upx 0 15upx 60upx;
+					margin-bottom: 20upx;
+					&::after {
+						content: '';
+						position: absolute;
+						left: 0;
+						bottom: 0;
+						border-top: 1px solid #dcdcdc;
+						width: 100%;
+					}
+					&:first-of-type {
+						background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/login_user.png");
+					}
+					&:nth-of-type(2) {
+						background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/login_pwd.png");
+					}
+				}
+				& > .btn {
+					background-color:#ed5851;
+					color:white;
+					border-radius: 40upx;
+					text-align: center;
+					font-size: 30upx;
+					padding: 25upx 0;
+					margin: 60upx 0 0 0;
+					&.act {
+						background-color:rgba(237,88,81,.5);
+					}
+				}
+				& > .control {
+					display: flex;
+					color:#c7c7c7;
+					font-size: 22upx;
+					justify-content: space-between;
+					& > navigator {
+						padding: 15upx 25upx;
+						margin: 20upx 0;
+						&:nth-of-type(1) {
+							text-decoration: underline;
+							color:#0066cb;
+						}
+						&:nth-of-type(2) {
+							background:rgba(89,78,89, .6);
+							border-radius: 30upx;
+						}
+					}
+				}
+			}
+				.third {
+				margin-top: 200upx;
+					.cut {
+						color:#a4a4a4;
+						text-align: center;
+						position: relative;
+						& > text { font-size: 22upx; }
+						&::before { left: 0 }
+						&::after { right: 0 }
+						&::before,&::after {
+							position: absolute;
+							width: 30%;
+							height: 1px;
+							background: #dfdfdf;
+							content: '';
+							top: 50%;
+							margin-top: 2px;
+						}
+					}
+					.other {
+						display: flex;
+						justify-content: center;
+						margin-top: 20upx;
+						& > view {
+							width: 120upx;
+							height: 120upx;
+							border-radius: 100%;
+							background-repeat: no-repeat;
+							background-position: center center;
+							&.weixin {
+								background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/login_weixin.png");
+								background-size: 120upx 120upx;
+							}
+						}
+					}
+				}			
+		}
+	}
+}
+</style>

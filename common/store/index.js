@@ -1,0 +1,146 @@
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+import { getSaveSelect } from '../api'
+import { GetAppId, Login, WeixinLogin } from '../api/login'
+
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+	state: {
+		dianpuleibie: 0,
+		userInfo: {},
+		isRegister: 1,
+
+	},
+	mutations: {
+		SET_SHOPLIST: (state, dianpuleibie) => {
+			state.dianpuleibie = dianpuleibie
+		},
+		SET_REGISTER: (state, isRegister) => {
+			state.isRegister = isRegister
+		},
+		SET_USERINFO: (state, userInfo) => {
+			state.userInfo = Object.assign({}, state.userInfo, userInfo) 
+		}
+	},
+	actions: {
+		getShopId ({ commit }, appid) {
+			return new Promise((resolve, reject) => {
+				getSaveSelect({ appid }).then(res => {
+					if (res.statusCode === 200) {
+						commit('SET_SHOPLIST', res.data.message)
+						resolve(res)
+					}
+				}).catch(err => reject(err))
+			})
+		},
+		getAppid ({ commit }, appid) {
+			return new Promise((resolve, reject) => {
+				GetAppId({ appid }).then(res => {
+					if (!res.data.code) {
+						const data = res.data.data
+						let userInfo = {}
+						userInfo.customer_id = data.customer_id
+						commit('SET_USERINFO', userInfo)
+						commit('SET_REGISTER', data.is_app_register)
+						resolve(true)
+					}
+				})
+			})
+		},
+		userLogin ({ commit }, info) {
+			return new Promise((resolve, reject) => {
+				Login(info).then(res => {
+					if (res.data.status) {
+						const data = res.data.data
+						let userInfo = {}
+						userInfo.nickName = data.information.name
+						userInfo.phone = data.information.phone
+						userInfo.avatarUrl = data.information.weixin_headimgurl
+						userInfo.id = data.information.user_id
+						userInfo.ticket = data.ticket
+						userInfo.uname = data.uname
+						commit('SET_USERINFO', userInfo)
+						uni.setStorageSync('userInfo', userInfo)
+						resolve(res.data.status)
+					} else {
+						resolve(false)
+					}
+				}).catch(err => { reject(err) })
+			})
+		},
+		WeiXinLogin ({ commit, state }) {
+			const customer_id = state.userInfo.customer_id
+			uni.getProvider({
+				service: 'oauth',
+				success: res => {
+					if (~res.provider.indexOf('weixin')) {
+						uni.login({
+							provider: 'weixin',
+							success: rst => {
+								uni.getUserInfo({
+									provider: 'weixin',
+									success: info => {
+										let params = {
+											...info.userInfo,
+											customer_id
+										}
+										WeixinLogin(params).then(result => {
+											if (result.data.status) {
+												const data = result.data.data
+												let userInfo = {
+													...info.userInfo
+												}
+												console.log(JSON.stringify(info))
+												userInfo.nickName = data.information.weixin_name
+												userInfo.phone = data.information.phone
+												userInfo.avatarUrl = data.information.weixin_headimgurl
+												userInfo.id = data.information.user_id
+												userInfo.ticket = data.ticket
+												userInfo.uname = data.uname
+												userInfo.openid = info.userInfo.openId
+												commit('SET_USERINFO', userInfo)
+												uni.setStorageSync('userInfo', userInfo)
+												uni.redirectTo({
+													url: '/pages/index/index'
+												})
+											} else {
+												uni.showModal({
+													title: '',
+													content: res.data.message,
+													showCancel: false
+												})
+											}
+										})
+									}
+								})
+							}
+						})
+					}
+				}
+			})
+		},
+		logout ({ state }) {
+			uni.showModal({
+				title: '',
+				content: '确认退出登录吗?',
+				success: res => {
+					if (res.confirm) {
+						uni.setStorageSync('userInfo', {})
+						state.userInfo.avatarUrl = ''
+						state.userInfo.id = ''
+						state.userInfo.nickName = ''
+						state.userInfo.ticket = ''
+						state.userInfo.uname = ''
+						uni.navigateTo({
+							url: '/pages/index/index'
+						})
+					}
+				}
+			})
+		}
+	}
+})
+
+export default store

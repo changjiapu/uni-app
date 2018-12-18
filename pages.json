@@ -1,0 +1,280 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "微酒柜"
+				// "enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/login/getUserInfo",
+			"style": {
+				"navigationBarTitleText": "授权登录"
+
+			}
+		},
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "用户登录",
+				//"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": {
+						//	"type": "transparent"
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/resetPwd/index",
+			"style": {
+				"navigationBarTitleText": "密码重置"
+			}
+		},
+		{
+			"path": "pages/distributionView/index",
+			"style": {
+				"navigationBarTitleText": "累积收益"
+			}
+		},
+		{
+			"path": "pages/Register/index",
+			"style": {
+				"navigationBarTitleText": "用户注册"
+			}
+		},
+		{
+			"path": "pages/product_detail/product_detail",
+			"style": {
+				"navigationBarTitleText": "商品详情"
+			}
+		},
+		{
+			"path": "pages/create-order/create-order",
+			"style": {
+				"navigationBarTitleText": "结算中心"
+			}
+		},
+		{
+			"path": "pages/pay-order/pay-order",
+			"style": {
+				"navigationBarTitleText": "支付订单"
+			}
+		},
+		{
+			"path": "pages/integral/index",
+			"style": {
+				"navigationBarTitleText": "积分"
+			}
+		},
+		{
+			"path": "pages/tour_diy/index",
+			"style": {
+				"navigationBarTitleText": "拼团"
+			}
+		},
+		{
+			"path": "pages/myOrder/index",
+			"style": {
+				"navigationBarTitleText": "我的订单"
+			}
+		},
+		{
+			"path": "pages/myfoot/index",
+			"style": {
+				"navigationBarTitleText": "我的足迹"
+			}
+		},
+		{
+			"path": "pages/myCollect/index",
+			"style": {
+				"navigationBarTitleText": "我的收藏"
+			}
+		},
+		{
+			"path": "pages/address/index",
+			"style": {
+				"navigationBarTitleText": "收货地址"
+			}
+		},
+		{
+			"path": "pages/addAddress/index",
+			"style": {
+				"navigationBarTitleText": "新增地址"
+			}
+		},
+		{
+			"path": "pages/editAddr/index",
+			"style": {
+				"navigationBarTitleText": "编辑地址"
+			}
+		},
+		{
+			"path": "pages/myAssets/index",
+			"style": {
+				"navigationBarTitleText": "我的资产"
+			}
+		},
+		{
+			"path": "pages/setPassword/setPassword",
+			"style": {
+				"navigationBarTitleText": "设置密码"
+			}
+		},
+		{
+			"path": "pages/bindPhone/index",
+			"style": {
+				"navigationBarTitleText": "绑定手机"
+			}
+		},
+		{
+			"path": "pages/Distribution/index",
+			"style": {
+				"navigationBarTitleText": "分销中心"
+			}
+
+		},
+		{
+			"path": "pages/my-member/my-member",
+			"style": {
+				"navigationBarTitleText": "会员卡"
+			}
+		},
+		{
+			"path": "pages/currency-history/currency-history",
+			"style": {
+				"navigationBarTitleText": "购物币"
+			}
+		},
+		{
+			"path": "pages/distribution-group/distribution-group",
+			"style": {
+				"navigationBarTitleText": "我的团队"
+
+			}
+		},
+		{
+			"path": "pages/productList/index",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		},
+		{
+			"path": "pages/orderDetail/index",
+			"style": {
+				"navigationBarTitleText": "订单详情"
+			}
+		}		
+	],
+	"subPackages": [{
+			"root": "packageA",
+			"pages": [{
+					"path": "pages/bigBag/index",
+					"style": {
+						"navigationBarTitleText": "大礼包"
+					}
+				},
+				{
+					"path": "pages/myPrivilege/index",
+					"style": {
+						"navigationBarTitleText": "我的特权"
+					}
+				},
+				{
+					"path": "pages/distributor/index",
+					"style": {
+						"navigationBarTitleText": ""
+					}
+				},
+				{
+					"path": "pages/createOrder/createOrder",
+					"style": {
+						"navigationBarTitleText": "大礼包结算"
+					}
+				},
+				{
+					"path": "pages/packagelist/index",
+					"style": {
+						"navigationBarTitleText": "大礼包"
+					}
+				},
+				{
+					"path": "pages/packageDetails/index",
+					"style": {
+						"navigationBarTitleText": "礼包详情"
+					}
+				},
+				{
+					"path": "pages/apply/index",
+					"style": {
+						"navigationBarTitleText": "申请入驻"
+					}
+				}
+			]
+		},
+		{
+			"root": "packageB",
+			"pages": [{
+					"path": "pages/articleDetail/index",
+					"style": {
+						"navigationBarTitleText": "文章详情"
+					}
+				},
+				{
+					"path": "pages/articleList/index",
+					"style": {
+						"navigationBarTitleText": "文章列表"
+					}
+				},
+				{
+					"path": "pages/articlePay/index",
+					"style": {
+						"navigationBarTitleText": "支付方式"
+					}
+				},
+				{
+					"path": "pages/videoList/index",
+					"style": {
+						"navigationBarTitleText": "视频专区"
+					}
+				},
+				{
+					"path": "pages/videoComment/index",
+					"style": {
+						"navigationBarTitleText": "视频详情"
+					}
+				},
+				{
+					"path": "pages/Record/index",
+					"style": {
+						"navigationBarTitleText": "消费记录"
+					}
+				},
+				{
+					"path": "pages/dataEdition/index",
+					"style": {
+						"navigationBarTitleText": "个人信息"
+					}
+				},
+				{
+					"path": "pages/refund/index",
+					"style": {
+						"navigationBarTitleText": "申请售后"
+					}
+				},{
+					"path":"pages/Team_detail/Team_detail",
+					"style":{
+						"navigationBarTitleText":"队员信息"
+					}
+				}
+			]
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "Sinlu国际购",
+		"navigationBarBackgroundColor": "#0099ff",
+		"backgroundColor": "#FFFFFF"
+	}
+}
