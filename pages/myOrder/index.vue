@@ -58,7 +58,7 @@
 							<navigator hover-class="none" :url="'/packageB/pages/refund/index?batchcode=' + data.batchcode" v-if="data.status === 0 && data.sendstatus === 2 || data.status === 1 && data.sendstatus === 2">申请售后</navigator>
 							<navigator hover-class="none" :url="'/packageB/pages/refund/index?batchcode=' + data.batchcode" v-if="(data.status === 0 && data.sendstatus === 0 || data.status === 0 && data.sendstatus=== 1) && data.paystatus !== 0">申请退款</navigator>
 							<view @click="shopRemind(data.batchcode)" v-if="data.status=== 0 && data.paystatus === 1 && data.sendstatus === 0">提醒发货</view>
-							<view v-if="data.status=== 0 && data.paystatus === 1 && data.sendstatus === 1">确认收货</view>
+							<view v-if="data.status=== 0 && data.paystatus === 1 && data.sendstatus === 1" @tap="conOrder(data.batchcode)">确认收货</view>
 							<navigator hover-class="none" url='/pages/comment?batchcode=data.batchcode' v-if="data.status === 0 && data.sendstatus === 2 && data.is_discuss === 0 || data.status === 1 && data.sendstatus === 2 && data.is_discuss === 0">评价晒单</navigator>
 						</block>						
 					</view>
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-	import { myOrder, CancelOrder, orderRemind } from '@/common/api'
+	import { myOrder, CancelOrder, orderRemind, confirmOrder } from '@/common/api'
 	import { mapState } from 'vuex'
 	export default {
 		name: 'orders',
@@ -118,9 +118,45 @@
 				this.list = []
 				this.getList()
 			},
+			conOrder (batchcode) {
+				uni.showModal({
+					title: '',
+					content: '你确认收货吗？',
+					success: res => {
+						if (res.confirm) {
+							const params = {
+								ticket: this.userInfo.ticket,
+								uname: this.userInfo.uname,
+								user_id: this.userInfo.id,
+								batchcode
+							}
+							uni.showLoading()
+							confirmOrder(params).then(res => {
+								uni.hideLoading()
+								console.log(res)
+								if (res.code === 400000) {
+									uni.showModal({
+										title: '',
+										content: res.data.message,
+										showCancel: false
+									})
+								} else {
+									uni.showModal({
+										title: '',
+										content: res.data.message,
+										showCancel: false
+									})
+								}
+							})
+						}
+					}
+				})
+			},
 			getList () {
 				this.load = false
+				uni.showLoading()
 				myOrder(this.params).then(res => {
+					uni.hideLoading()
 					if (res.data.length) {
 						const data = res.data
 						for (var i = 0; i < data.length; i++) {

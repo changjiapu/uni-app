@@ -49,3 +49,7 @@ export function EditUserInfo (data) {
 export function TeamPerson(data){
 	return request(data,'/smallroutine/Reward/team_person').then(res=>res)
 }
+// 物流信息
+export function expressData(data){
+	return request(data,'/smallroutine/program/expressData').then(res=>res)
+}

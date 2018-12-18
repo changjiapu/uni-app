@@ -44,7 +44,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="orderMoney">
+		<view class="xx">
 			<view>
 				<text>订单金额</text>
 				<text>&yen;{{ Info.totalprice }}</text>
@@ -64,11 +64,11 @@
 			<view v-if="Info.totleMoney>0">
 				<text>总优惠</text>
 				<text>&yen;{{ totleMoney }}</text>
-			</view>		
-			<view>
+			</view>	
+            <view>
 				<text>实付金额</text>
 				<text>&yen;{{ Info.pay_money - Info.deductible_money }}</text>
-			</view>
+			</view>			
 		</view>
 		<view class="orderInfo">
 			<view>
@@ -89,12 +89,12 @@
 		</view>
 		<view class="cotnrol" v-if="Info.status >= 0 && Info.sendstatus < 3">
 				<button size="mini" v-if="Info.status >= 0 && Info.sendstatus < 3 "></button>
-				<button size="mini" v-if="Info.status === 0 && Info.paystatus === 0" @tap='cOrder'>取消订单</button>
+				<button size="mini" v-if="Info.status === 0 && Info.paystatus === 0" @tap='cOrder(Info.batchcode)'>取消订单</button>
 				<button size="mini" type="warn" v-if="Info.status === 0 && Info.paystatus===0" @tap="showPay = true">立即支付</button>
-				<button size="mini" url='/packageB/pages/refund?batchcode=data.batchcode' v-if="Info.status === 0 && Info.sendstatus === 2 || Info.status === 1 && Info.sendstatus === 2">申请售后</button>
+				<button size="mini" :url="'/packageB/pages/refund/index?batchcode='+Info.batchcode" v-if="Info.status === 0 && Info.sendstatus === 2 || Info.status === 1 && Info.sendstatus === 2">申请售后</button>
 				<button size="mini" type="warn" v-if="Info.status === 0 && Info.paystatus === 1 && Info.sendstatus === 0" @tap='shopRemind(Info.batchcode)'>提醒发货</button>
-				<button size="mini" type="warn" v-if="Info.status === 0 && Info.paystatus === 1 && Info.sendstatus === 1" bindtap='confirmOrder'>确认收货</button>
-				<button size="mini" type="primary" bindtap='waybillDetail'>查看物流</button>
+				<button size="mini" @tap="cOrder()" type="warn" v-if="Info.status === 0 && Info.paystatus === 1 && Info.sendstatus === 1" bindtap='confirmOrder'>确认收货</button>
+				<button size="mini" type="primary" @click='waybillDetail'>查看物流</button>
 				<button size="mini" type="warn" url='/pages/comment?batchcode=Info.batchcode' v-if="Info.status === 0 && Info.sendstatus === 2 && Info.is_discuss === 0 || Info.status === 1 && Info.sendstatus === 2 && Info.is_discuss === 0">评价晒单</button>
 		</view>
 		<pay-list :detail="Info" v-if="showPay" @on-close="showPay = false"></pay-list>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-	import { orderDetail, CancelOrder, orderRemind } from '@/common/api'
+	import { orderDetail, CancelOrder, orderRemind, confirmOrder } from '@/common/api'
 	import PayList from '@/components/payList'
  	import { mapState } from 'vuex'
 	export default {
@@ -171,6 +171,7 @@
 				})
 			},
 			cOrder(batchcode) { // 取消订单
+			console.log(batchcode)
 			    const params = Object.assign({}, this.same, { batchcode })
 				uni.showModal({
 					title: '',
@@ -190,7 +191,46 @@
 						}
 					}
 				})
-			}
+			},
+			conOrder () {
+				uni.showModal({
+					title: '',
+					content: '你确认收货吗？',
+					success: res => {
+						if (res.confirm) {
+							const params = {
+								ticket: this.userInfo.ticket,
+								uname: this.userInfo.uname,
+								batchcode
+							}
+							uni.showLoading()
+							confirmOrder(Object.assign({}, this.params, this.same)).then(res => {
+								uni.hideLoading()
+								console.log(res)
+								if (res.code === 400000) {
+									uni.showModal({
+										title: '',
+										content: res.data.message,
+										showCancel: false
+									})
+								} else {
+									uni.showModal({
+										title: '',
+										content: res.data.message,
+										showCancel: false
+									})
+								}
+							})
+						}
+					}
+				})
+			},
+			//查看物流信息
+			waybillDetail() {
+				uni.navigateTo({
+					url: '/packageB/pages/waybill/waybill?send_express_name=' + this.Info.send_express_name  + '&expressnum=' + this.Info.expressnum,
+				})
+			},
 		},
 		computed: {
 			...mapState([
@@ -278,8 +318,9 @@
 			}
 		}
 	}
-	.orderMoney {
+	.xx {
 		margin: 10px 0;
+		overflow: hidden;
 		& > view {
 			padding: 25upx 15px;
 			font-size: 26upx;

@@ -16,8 +16,10 @@
     </view>
     <block v-if="data.style.active === 'style-1'">
         <view v-for="(item, index) in list" :key="index" class='style-1' @click="GoTo(item)">
-            <image :src='item.url' class="img"></image>
-            <view :style="{color: item.color}">{{item.name}}</view>
+					<view>
+						<image :src='item.url' class="img"></image>
+						<view :style="{color: item.color}">{{item.name}}</view>
+					</view>
             <image class='right' src='https://admin.sinlu.net/weixinpl/shopping-temp/images/arrows-right.png'></image>
         </view>
     </block>
@@ -218,17 +220,20 @@
 		font-size: 28upx;
 		color: #888;
 		height: 90upx;
-		padding-left: 25upx;
+		padding:0 15px;
 		border-bottom: 1px solid #e4e7ed;
-		.img {
-			width: 60upx;
-			height: 60upx;
-			margin-right: 5px;
-			border-radius: 100upx;
+		justify-content: space-between;
+		& > view {
+			display: flex;
+			align-items: center;
+			.img {
+				width: 60upx;
+				height: 60upx;
+				margin-right: 5px;
+				border-radius: 100upx;
+			}
 		}
 		.right {
-			position: absolute;
-			right: 10upx;
 			width: 30upx;
 			height: 30upx;
 		}

@@ -49,6 +49,8 @@
 								item.link = '/packageA/pages/distributor/index'
 							} else if (+item.ptype === 3) {
 								item.link = '/packageA/pages/apply/index'
+							} else if (+item.ptype === 5) {
+								item.link = '/packageA/pages/myShop/index'
 							}
 						})
 						this.list = res.data.data

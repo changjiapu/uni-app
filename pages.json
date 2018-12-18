@@ -165,7 +165,13 @@
 			"style": {
 				"navigationBarTitleText": "订单详情"
 			}
-		}		
+		},
+		{
+			"path": "pages/cash/index",
+			"style": {
+				"navigationBarTitleText": "提现"
+			}
+		}				
 	],
 	"subPackages": [{
 			"root": "packageA",
@@ -210,7 +216,13 @@
 					"style": {
 						"navigationBarTitleText": "申请入驻"
 					}
-				}
+				},
+				{
+					"path": "pages/myShop/index",
+					"style": {
+						"navigationBarTitleText": "店铺升级"
+					}
+				}				
 			]
 		},
 		{
@@ -266,6 +278,12 @@
 					"path":"pages/Team_detail/Team_detail",
 					"style":{
 						"navigationBarTitleText":"队员信息"
+					}
+				},
+				{
+					"path":"pages/waybill/waybill",
+					"style":{
+						"navigationBarTitleText":"物流信息"
 					}
 				}
 			]

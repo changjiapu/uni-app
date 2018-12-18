@@ -4,7 +4,7 @@
 			<view class='head'></view>
 			<view class='middle'>
 				<image :src='show_card.imgurl'></image>
-				<view>{{show_card.name}}{{show_card.card_type}}</view>
+				<view>{{show_card.name}}</view>
 				<view>{{show_card.card_type}}编号</view>
 				<view>{{card_members.id}}</view>
 			</view>
@@ -27,6 +27,9 @@
 						<text>{{member_consumes.remain_consume}}元</text>
 					</view>
 				</view>
+				<view class='footer-footer' @click='gotoJifen'>
+					<view style="color: #DC143C"> {{todayStatus}}</view>
+				</view>
 				<view class='footer-footer' @click='shopStore'>
 					<view>门店列表</view>
 				</view>
@@ -47,9 +50,12 @@
 <script>
 	import {
 		vipCard,
-		showCard
+		showCard,
+		scoreSign
 	} from '@/common/api'
-	import { mapState } from 'vuex'
+	import {
+		mapState
+	} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -60,15 +66,17 @@
 				member_consumes: '', //消费总额
 				remain_score: '',
 				erp_score: '',
+				todayStatus: '',
 			};
 		},
 		created() {
 			vipCard({
-				user_id:this.userInfo.id,
+				user_id: this.userInfo.id,
 				type: 1
 			}).then(res => {
 				this.vipCard = res.data
 			})
+
 		},
 		computed: {
 			...mapState([
@@ -83,7 +91,7 @@
 					this.card_id = card_id
 
 				showCard({
-					user_id:this.userInfo.id,
+					user_id: this.userInfo.id,
 					card_id: card_id
 				}).then(res => {
 					if (!res.data.code) {
@@ -100,7 +108,15 @@
 						})
 					}
 				})
-
+				scoreSign({
+					user_id: this.userInfo.id,
+					card_id: this.card_id
+				}).then(res => {
+					if (!res.data.code) {
+						this.score = res.data.data.dayData,
+							this.todayStatus = res.data.data.todayStatus
+					}
+				})
 			},
 			gotoXiaofei() {
 				uni.navigateTo({
@@ -122,8 +138,8 @@
 					url: '/packageB/pages/my_shop_store?card_id=' + this.card_id,
 				})
 			},
-		}
-	,	computed: {
+		},
+		computed: {
 			...mapState([
 				'dianpuleibie',
 				'userInfo'

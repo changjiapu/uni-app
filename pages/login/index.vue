@@ -47,7 +47,6 @@
 		},
 		onLoad () {
 			this.screenHeight = uni.getSystemInfoSync().windowHeight
-			//console.log(uni.getSystemInfoSync().windowHeight)
 		},
 		methods: {
 			login () {
@@ -153,7 +152,8 @@ uni-page-body, page, .login { min-height: 100%;overflow: hidden;height: 100%;}
 							color:#0066cb;
 						}
 						&:nth-of-type(2) {
-							background:rgba(89,78,89, .6);
+							background:#0099ff;
+							color:white;
 							border-radius: 30upx;
 						}
 					}

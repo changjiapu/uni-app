@@ -10,7 +10,8 @@ const store = new Vuex.Store({
 	state: {
 		dianpuleibie: 0,
 		userInfo: {},
-		isRegister: 1,
+		isRegister: 1, // 1：能注册，0：不能注册
+		isParentRegister: 1 // 1：必须要推荐人ID，0：可以有推荐人ID 
 
 	},
 	mutations: {
@@ -19,6 +20,9 @@ const store = new Vuex.Store({
 		},
 		SET_REGISTER: (state, isRegister) => {
 			state.isRegister = isRegister
+		},
+		SET_REGISTERID: (state, isParentRegister) => {
+			state.isParentRegister = isParentRegister
 		},
 		SET_USERINFO: (state, userInfo) => {
 			state.userInfo = Object.assign({}, state.userInfo, userInfo) 
@@ -30,7 +34,6 @@ const store = new Vuex.Store({
 				getSaveSelect({ appid }).then(res => {
 					if (res.statusCode === 200) {
 						commit('SET_SHOPLIST', res.data.message)
-						resolve(res)
 					}
 				}).catch(err => reject(err))
 			})
@@ -44,6 +47,7 @@ const store = new Vuex.Store({
 						userInfo.customer_id = data.customer_id
 						commit('SET_USERINFO', userInfo)
 						commit('SET_REGISTER', data.is_app_register)
+						commit('SET_REGISTERID', data.is_parent_register)
 						resolve(true)
 					}
 				})
@@ -87,12 +91,12 @@ const store = new Vuex.Store({
 											customer_id
 										}
 										WeixinLogin(params).then(result => {
+											console.log(JSON.stringify(result))
 											if (result.data.status) {
 												const data = result.data.data
 												let userInfo = {
 													...info.userInfo
 												}
-												console.log(JSON.stringify(info))
 												userInfo.nickName = data.information.weixin_name
 												userInfo.phone = data.information.phone
 												userInfo.avatarUrl = data.information.weixin_headimgurl

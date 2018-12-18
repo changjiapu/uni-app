@@ -20,6 +20,7 @@
 </template>
 
 <script>
+	'use strict'
 import { PackageList } from '@/common/api/packageA'
 import { mapState } from 'vuex'
 export default { 

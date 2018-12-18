@@ -126,11 +126,13 @@
 				this.payParams.batchcode = this.detail.batchcode
 				this.payParams.total_price = this.detail.pay_money - this.detail.deductible_money
 				this.payParams.password = this.originalPwd
+				this.payParams.openid = this.userInfo.openid
 				uni.showLoading({
 					mask: true,
 					title: '支付中'
 				})
 					personalPay({...this.params, ...this.payParams, ...o}).then(res => {
+						console.log(res)
 						if (this.payParams.pay_id === 3) {
 							uni.hideLoading()
 							if (res.data.status) {
@@ -155,25 +157,23 @@
 								})
 							}
 						} else if (this.payParams.pay_id === 4) {
-							console.log(JSON.stringify(res))
+							//console.log(JSON.stringify(res))
 							 if (res.data.data.state !== 0) {
 								 uni.requestPayment({
-								 	'timeStamp': res.data.data.timeStamp,
-								 	'nonceStr': res.data.data.nonceStr,
-								 	'package': res.data.data.package,
-								 	'signType': res.data.data.signType,
-								 	'paySign': res.data.data.paySign,
+									 provider: 'wxpay',
+									 orderInfo: res.data.data,
 								 	success: (res) => {
 								 		uni.redirectTo({
 								 			url: '/pages/myOrder/index',
 								 		})
 								 	},
 								 	fail: err => {
-								 		uni.showModal({
-								 			title: '提示',
-								 			content: err,
-								 			showCancel: false
-								 		})
+										console.log(JSON.stringify(err))
+// 								 		uni.showModal({
+// 								 			title: '提示',
+// 								 			content: JSON.stringify(err),
+// 								 			showCancel: false
+// 								 		})
 								 	}
 								 })
 							 } else {

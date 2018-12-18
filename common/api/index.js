@@ -211,3 +211,11 @@ export function Refund (data) {
 export function MyProfit (data) { // 累积收益
 	return request(data, "/smallroutine/Reward/my_profit").then(res => res)
 }
+
+export function confirmOrder (data) {
+	return request(data, "/api/order/confirm_order").then(res => res)
+}
+
+export function MoneyCash (data) {
+	return request(data, "/smallroutine/Reward/money_tocash").then(res => res)
+}

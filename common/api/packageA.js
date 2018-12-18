@@ -31,3 +31,11 @@ export function savePackages(data){
 export function packagePay(data){
 	return request(data,'/smallroutine/reward/pay').then(res=>res)
 }
+
+export function StoreRewar (data) {
+	return request(data, "/smallroutine/Reward/store_reward").then(res => res)
+}
+
+export function sHugrade (data) {
+	return request(data, "/weixinpl/mshop/shareholder_upgrade.php").then(res => res)
+}

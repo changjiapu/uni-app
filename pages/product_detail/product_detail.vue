@@ -394,7 +394,7 @@
 			this.product_id = options.pid
 			//产品详情
 			getProductInfo({
-				user_id:this.userInfo.id,
+				user_id: this.userInfo.id,
 				product_id: options.pid
 			}).then(res => {
 				this.current_product.need_score = res.data.data.need_score; //所需积分
@@ -413,13 +413,13 @@
 				this.pros_data = res.data.pros_data //属性结构
 				this.remain_score = res.data.remain_score,
 					this.isloading = false
-				this.detail.nodes1 = res.data.data.description.replace(/\<img/gi, '<img style="max-width:100%;height:auto"')  //富文本详情
-				this.detail.nodes2 = res.data.data.specifications.replace(/\<img/gi, '<img style="max-width:100%;height:auto"')  //富文本规格
-				this.detail.nodes3 = res.data.data.customer_service.replace(/\<img/gi, '<img style="max-width:100%;height:auto"')  //富文本参数
+				this.detail.nodes1 = res.data.data.description.replace(/\<img/gi, '<img style="max-width:100%;height:auto"') //富文本详情
+				this.detail.nodes2 = res.data.data.specifications.replace(/\<img/gi, '<img style="max-width:100%;height:auto"') //富文本规格
+				this.detail.nodes3 = res.data.data.customer_service.replace(/\<img/gi, '<img style="max-width:100%;height:auto"') //富文本参数
 			})
 			//活动
 			getProductOpenLabel({
-				user_id:this.userInfo.id,
+				user_id: this.userInfo.id,
 				pid: options.pid,
 			}).then(res => {
 				if (res.data.code == 0) {
@@ -450,7 +450,7 @@
 			})
 			//满送活动
 			fullpresent({
-				user_id:this.userInfo.id,
+				user_id: this.userInfo.id,
 				product_id: options.pid
 			}).then(res => {
 				if (res.data.code == 0) {
@@ -460,7 +460,7 @@
 			})
 			//满减活动
 			fullCut({
-				user_id:this.userInfo.id,
+				user_id: this.userInfo.id,
 				product_id: options.pid
 			}).then(res => {
 				if (res.data.code == 0) {
@@ -470,7 +470,7 @@
 			})
 			//优惠券
 			coupon({
-				user_id:this.userInfo.id,
+				user_id: this.userInfo.id,
 				product_id: options.pid
 			}).then(res => {
 				if (res.data.code == 0) {
@@ -496,7 +496,7 @@
 			})
 			// 产品评论
 			product_evaluations({
-				user_id:this.userInfo.id,
+				user_id: this.userInfo.id,
 				product_id: options.pid,
 				num: 1,
 				pagea: 1
@@ -607,19 +607,16 @@
 			},
 			//选择商品属性
 			ProsChange(item, idx, index) {
-				console.log(item, idx)
-				item.parent_pros.forEach(item => {
-					item.act = false
-				})
 				item.parent_pros[idx].act = !item.parent_pros[idx].act
+				console.log(item.parent_pros[idx].act)
 				if (this.dianpuleibie == 5) {
 					for (let a of item.parent_pros) {
-						if (a.act == true) {
+						if (a.act == true&!this.pros_arry.includes(a.name)) {
 							this.pros_arry.push(a.name)
 						}
 					}
 				}
-				var str = this.pros_arry.join("-")
+				var str = this.pros_arry.join('-')
 				console.log(str)
 				this.str = str
 				var _current_product = {}
@@ -657,7 +654,7 @@
 					this.product.data.collect = 1
 				}
 				check_collect({
-					user_id:this.userInfo.id,
+					user_id: this.userInfo.id,
 					product_id: this.product.data.id,
 					is_collet: this.product.data.collect
 				}).then(res => {
@@ -844,7 +841,7 @@
 							}
 						}
 					}
-	
+
 					//没有属性的产品
 					if (this.current_product.need_score && this.pros_data.length == 0) { //是否需要积分
 						need_score_p = this.current_product.need_score * this.buy_count //需要的积分
@@ -963,7 +960,8 @@
 						this.$gotoLogin().then(res => {
 							if (res) {
 								uni.navigateTo({
-									url: '/pages/create-order/create-order?cart=' + JSON.stringify(cart) + '&couponKeyid=' + '0' + '&couponMoney=' +
+									url: '/pages/create-order/create-order?cart=' + JSON.stringify(cart) + '&couponKeyid=' + '0' +
+										'&couponMoney=' +
 										'0' +
 										'&couponNeedMoney=' + '0' + '&pay_type=' + _this.pay_type + '&renew_id=' + _this.renew_id,
 								})
@@ -984,10 +982,10 @@
 
 <style scoped>
 	/* 加载动画 */
-	.xianshi{
-		max-width:10% !important;
+	.xianshi {
+		max-width: 10% !important;
 	}
-	
+
 	.loading-content {
 		display: flex;
 		align-items: center;
@@ -1317,6 +1315,7 @@
 		background-color: #fff;
 		clear: both;
 	}
+
 	.bottom-btn,
 	.bottom-btn2 {
 		position: fixed;
@@ -1764,12 +1763,14 @@
 		background-color: #FFF;
 
 	}
+
 	.Detailactive2 {
 		padding: 10upx 20upx;
 		position: relative;
 		z-index: 9;
-		color:#333;
+		color: #333;
 	}
+
 	.Detailactive2::after {
 		position: absolute;
 		content: '';
@@ -1782,13 +1783,16 @@
 		transform: scaleX(0);
 		transition: all .2s linear;
 	}
+
 	.Detailactive {
-		color:white;
+		color: white;
 	}
+
 	.Detailactive::after {
 		transform: scaleX(1);
 	}
-	.empty{
+
+	.empty {
 		width: 100%;
 		height: 150upx;
 	}

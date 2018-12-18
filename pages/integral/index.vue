@@ -3,7 +3,7 @@
 		<view class="head">
 			<image src="https://admin.sinlu.net/weixinpl/images/jifen.jpg" mode="widthFix"></image>
 		</view>
-		<button class="receive" v-if="listtype==3" @click='singOnclik'>{{todayStatus}}</button>
+		<button class="receive" @click='singOnclik'>{{todayStatus||'点击签到'}}</button>
 		<view class='middle'>
 			<view @click='tabData(1)'>
 				<text>总积分</text>
@@ -56,7 +56,9 @@
 </template>
 
 <script>
-	import{mapState}from'vuex'
+	import {
+		mapState
+	} from 'vuex'
 	import {
 		ScoreRecord,
 		scoreSign,
@@ -80,7 +82,7 @@
 			/*签到积分*/
 			score_sign() {
 				scoreSign({
-					user_id:this.userInfo.id,
+					user_id: this.userInfo.id,
 					card_id: this.card_id
 				}).then(res => {
 					if (!res.data.code) {
@@ -92,7 +94,7 @@
 			/* 总积分和剩余积分*/
 			score_record() {
 				ScoreRecord({
-					user_id:this.userInfo.id,
+					user_id: this.userInfo.id,
 					card_id: this.card_id
 				}).then(res => {
 					if (!res.data.code) {
@@ -110,10 +112,10 @@
 			//切换
 			tabData: function(e) {
 				this.listtype = e
-				this.score=[]
-					if (e == 1 || e == 2) {
-						this.score_record()
-					}
+				this.score = []
+				if (e == 1 || e == 2) {
+					this.score_record()
+				}
 				if (e == 3) {
 					this.score_sign()
 				}
@@ -128,22 +130,25 @@
 			 *领取今日积分 
 			 */
 			singOnclik: function() {
-				singOnclik().then(res=>{
-					if(!res.data.code){
+				singOnclik({
+					user_id: this.userInfo.id,
+					card_id: this.card_id
+				}).then(res => {
+					if (!res.data.code) {
 						uni.showModal({
-							title:'提示',
-							content:res.data.data,
-							showCancel:false
+							title: '提示',
+							content: res.data.data,
+							showCancel: false
 						})
-					}else{
+					} else {
 						uni.showModal({
-							title:'提示',
-							content:res.data.message,
-							showCancel:false
+							title: '提示',
+							content: res.data.message,
+							showCancel: false
 						})
 					}
 				})
-	
+
 			},
 		},
 		computed: {

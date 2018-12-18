@@ -1,51 +1,57 @@
 <template>
 	<view class="userInfo">
 		<view class="list">
-			<view class="line">
-				<view>
+			<form @submit="ReGister" @reset="formReset">
+				<view class="line">
 					<view>
-						<text>上级ID</text>
-						<input type="text" v-model="id.referrer" placeholder="上级用户ID(没有不填)"/>
-					</view>
-					<view>
-						<text>手机号码</text>
-						<input type="text" v-model="params.phone" placeholder="请输入手机号码"/>
-					</view>
-					<view>
-						<text>验证码</text>
 						<view>
-							<input class="code" type="text" placeholder="手机验证码" v-model="params.verifycode"/>
-							<button @click="GetCodes" class="getcode" :disabled="getCode" type="primary" hover-class="none" size="mini">
-								{{ time !== 0 ? time + 's' : '获取验证码' }}
-							</button>
+							<text>推荐人ID</text>
+							<input type="text" name="referrer" v-model="id.referrer" placeholder="上级用户ID"/>
 						</view>
-					</view>
-					<view>
-						<text>性别</text>
 						<view>
-							<view class="sex">
-								<view @click="params.sex = 1" :class="{act: params.sex}"><text>男</text></view>
-								<view @click="params.sex = 0" :class="{act: !params.sex}"><text>女</text></view>
+							<text>手机号码</text>
+							<input type="text" name="phone" v-model="params.phone" placeholder="请输入手机号码"/>
+						</view>
+						<view>
+							<text>验证码</text>
+							<view>
+								<input class="code" name="verifycode" type="text" placeholder="手机验证码" v-model="params.verifycode"/>
+								<button @click="GetCodes" class="getcode" :disabled="getCode" type="primary" hover-class="none" size="mini">
+									{{ time !== 0 ? time + 's' : '获取验证码' }}
+								</button>
 							</view>
 						</view>
-					</view>
-					<view>
-						<text>用户名</text>
-						<input type="text" v-model="params.name" placeholder="请输入用户名"/>
-					</view>
-					<view>
-						<text>密码</text>
-						<input type="password" v-model="params.password" placeholder="请输入密码"/>
-					</view>
-					<view>
-						<text>确认密码</text>
-						<input type="password" v-model="params.repwd" placeholder="请确认密码"/>
+						<view>
+							<text>性别</text>
+							<view>
+								<view class="sex">
+									<radio-group class="uni-flex" name="gender" @change="changeSex">
+										<label>
+											<radio value="1" checked/>男</label>
+										<label>
+											<radio value="0" />女</label>
+									</radio-group>
+								</view>
+							</view>
+						</view>
+						<view>
+							<text>用户名</text>
+							<input type="text" name="userName" v-model="params.name" placeholder="请输入用户名"/>
+						</view>
+						<view>
+							<text>密码</text>
+							<input type="password" name="password" v-model="params.password" placeholder="请输入密码"/>
+						</view>
+						<view>
+							<text>确认密码</text>
+							<input type="password" name="repwd" v-model="params.repwd" placeholder="请确认密码"/>
+						</view>
 					</view>
 				</view>
-			</view>
-		</view>
-		<view class="btn">
-			<button type="warn" :disabled="disabled" @click="ReGister">提交</button>
+				<view class="btn">
+					<button type="warn" :loading="loading" formType="submit">提交</button>
+				</view>
+			</form>
 		</view>
 	</view>
 </template>
@@ -53,13 +59,14 @@
 <script>
 	import { Register } from '@/common/api/login'
 	import { sendPhoneMsg } from '@/common/api'
-
+	import graceChecker from '@/common/utils/graceChecker'
+	import { mapState } from 'vuex'
 	export default {
 		name: 'register',
 		data() {
 			return {
 				time: 0,
-				disabled: true,
+				loading: false,
 				getCode: false,
 				code: '',
 				id: {
@@ -75,20 +82,24 @@
 				}
 			}
 		},
-		watch: {
-			params: {
-				handler (newValue, oldValue) {
-					let rst = Object.values(newValue).filter(item => item === '')
-					if (!rst.length) {
-						this.disabled = false
-					} else {
-						this.disabled = true
-					}
-				},
-				deep: true
-			}
+		computed: {
+			...mapState([
+				'isParentRegister'
+			])
 		},
 		methods: {
+			isPhone (data, callback) {
+				const reg = /^[1][3,4,5,7,8][0-9]{9}$/
+				if (reg.test(this.params.phone)) {
+					callback(data)
+				} else {
+					uni.showToast({ title: "请输入正确的手机号", icon: "none" })
+				}
+			},
+			changeSex (e) {
+				console.log(e)
+				this.params.sex = +e.detail.value
+			},
 			GetCodes () {
 				this.isPhone({ phone: this.params.phone, action: 1 }, res => {
 					sendPhoneMsg(res).then(res => {
@@ -112,61 +123,46 @@
 					})
 				})
 			},
-			isPhone (data, callback) {
-				const reg = /^[1][3,4,5,7,8][0-9]{9}$/
-				if (reg.test(this.params.phone)) {
-					callback(data)
-				} else {
-					uni.showModal({
-						title:'',
-						content: '请输入正确的手机号码',
-						showCancel: false
-					})
-				}
-			},
-			ReGister () {
-				this.isPhone(this.params, res => {
-					if (res.verifycode === this.code) {
-						if (res.password === res.repwd) {
-							this.disabled = true
-							Register({...this.params, ...this.id}).then(res => {
-								if (res.data.code === 'ok') {
-									uni.showModal({
-										title:"",
-										content: res.data.msg,
-										showCancel: false,
-										success(res) {
-											if (res.confirm) {
-												uni.redirectTo({
-													url: '/pages/login/index'
-												})
-											}
-										}
-									})
-								} else {
-									this.disabled = false
-									uni.showModal({
-										title: '',
-										content: res.data.msg,
-										showCancel: false
-									})
+			ReGister (e) {
+				const normal = [
+					{name:"phone", checkType : "phoneno", errorMsg:"请输入正确的手机号"},
+					{name:"verifycode", checkType : "same", checkRule:this.params.verifycode, errorMsg:"请输入验证码"},
+					{name:"userName", checkType : "notnull", errorMsg:"请输入用户名"},
+					{name:"gender", checkType : "in", checkRule:"0,1",  errorMsg:"请选择性别"},
+					{name:"password", checkType : "string", checkRule:"6,6",  errorMsg:"密码最小6位"},
+					{name:"repwd", checkType : "same", checkRule:this.params.password,  errorMsg:"确认密码不正确"}
+				]
+				const isparentId = [
+					{name:"referrer", checkType : "notnull", errorMsg:"请输入推荐人ID"}
+				]
+				let rule = []
+				this.isParentRegister ? rule = isparentId.concat(normal) : rule = normal
+				const formData = e.detail.value
+				const checkRes = graceChecker.check(formData, rule)
+				if(checkRes){
+					this.loading = true
+					Register({...this.params, ...this.id}).then(res => {
+						this.loading = false
+						if (res.data.code === 'ok') {
+							uni.showModal({
+								title:"",
+								content: res.data.msg,
+								showCancel: false,
+								success(res) {
+									if (res.confirm) {
+										uni.redirectTo({
+											url: '/pages/login/index'
+										})
+									}
 								}
 							})
 						} else {
-							uni.showModal({
-								title: '',
-								content: '两次输入密码不一致',
-								showCancel:false
-							})
+							uni.showToast({ title: res.data.msg, icon: "none" });
 						}
-					} else {
-						uni.showModal({
-							title: '',
-							content: '请输入正确的验证码',
-							showCancel: false 
-						})
-					}
-				})
+					})
+				}else{
+					uni.showToast({ title: graceChecker.error, icon: "none" })
+				}
 			}
 		}
 	}

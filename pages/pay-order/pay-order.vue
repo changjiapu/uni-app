@@ -188,7 +188,6 @@
 				if (pay_id == 4) { // 微信支付
 					sendData.openid = this.userInfo.openid;
 					this.sendData = sendData
-					console.log(JSON.stringify(sendData))
 					if (!this.isPackage) {
 						this.createOrder(sendData);
 					} else {
@@ -293,6 +292,21 @@
 								})
 								return
 							}
+							// #ifdef APP-PLUS
+							uni.requestPayment({
+								provider: 'wxpay',
+								orderInfo: res.data, //订单数据
+								success: (res) => {
+									uni.redirectTo({
+										url: '/pages/myOrder/index?tab=0',
+									})
+								},
+								fail: function(err) {
+									console.log('fail:' + JSON.stringify(err));
+								}
+							});
+							// #endif
+							// #ifdef MP-WEIXIN
 							uni.requestPayment({
 								'timeStamp': res.data.data.timeStamp,
 								'nonceStr': res.data.data.nonceStr,
@@ -304,14 +318,10 @@
 										url: '/pages/myOrder/index?tab=0',
 									})
 								},
-								fail: (res) => {
-									uni.showModal({
-										title: '提示',
-										content: state,
-										showCancel: false
-									})
-								}
+								fail: (res) => {}
 							})
+							// #endif
+
 						} else { //内部支付
 							uni.showToast({
 								title: '支付成功',
@@ -319,8 +329,7 @@
 							})
 							let sendData = {
 								batchcode: this.batchcode,
-								user_id:this.userInfo.id
-								// customer_id: app.globalData.userInfo.customer_id,
+								user_id: this.userInfo.id
 							}
 							productVirtual(sendData).then(res => {})
 							if (this.grouptype) {
@@ -369,6 +378,21 @@
 								})
 								return
 							}
+							// #ifdef APP-PLUS
+							uni.requestPayment({
+								provider: 'wxpay',
+								orderInfo: res.data, //订单数据
+								success: (res) => {
+									uni.redirectTo({
+										url: '/pages/myOrder/index?tab=0',
+									})
+								},
+								fail: function(err) {
+									console.log('fail:' + JSON.stringify(err));
+								}
+							});
+							// #endif
+							// #ifdef MP-WEIXIN
 							uni.requestPayment({
 								'timeStamp': res.data.data.timeStamp,
 								'nonceStr': res.data.data.nonceStr,
@@ -380,10 +404,10 @@
 										url: '/pages/myOrder/index?tab=0',
 									})
 								},
-								fail: (res) => {
-
-								}
+								fail: (res) => {}
 							})
+							// #endif
+
 						} else { //内部支付
 							uni.showToast({
 								title: '支付成功',

@@ -8,7 +8,7 @@
 				<view class="cash">零钱</view>
 				<view><text>￥</text>{{ Info.coin }}</view>
 			</view>
-			<navigator :url="'/pages/money-txWay?money='">提现</navigator>
+			<navigator :url="'/pages/cash/index'">提现</navigator>
 		</view>
     </view>	
 	<view class="contain">
