@@ -141,9 +141,7 @@ export function productVirtual(data){
 export function sendPhoneMsg (data) { // 发送验证码
 	return request(data, "/smallroutine/reward/send_phone_msg").then(res => res)
 }
-export function myCurrencyList (data){
-	return request(data,'/api/consume/my_currency_list').then(res=>res)
-} 
+
 export function vipCard(data){//获取会员卡
 	return request(data,'/weixinpl/mshop/vip_card.class.php').then(res=>res)
 }
@@ -178,6 +176,12 @@ export function UserCoupon (data) {
 }
 export function VipCard (data) {
 	return request(data, "/weixinpl/mshop/vip_card.class.php").then(res => res)
+}
+export function myCurrencyList (data){//购物币
+	return request(data,'/api/consume/my_currency_list').then(res=>res)
+} 
+export function shopping_mone(data){//购物币
+	return request(data,'/smallroutine/Reward/shopping_money').then(res=>res)
 }
 
 //搜索
@@ -219,3 +223,7 @@ export function confirmOrder (data) {
 export function MoneyCash (data) {
 	return request(data, "/smallroutine/Reward/money_tocash").then(res => res)
 }
+
+export function SavePayAccount (data) {
+	return request(data, "/smallroutine/Reward/save_pay_account").then(res => res)
+} 

@@ -49,7 +49,7 @@
 					</view>
 				</view>
 			</view>
-			<view class='activity' v-if="totalscore>0">
+			<view class='activity' v-if='totalscore>0'>
 				<view class='activity-item'>
 					<text>当前需要积分<text style="color:red;" decode>&nbsp;{{totalscore}}</text></text>
 				</view>
@@ -213,7 +213,9 @@
 				this.Ddata = options,
 				this.pay_type = options.pay_type ? options.pay_type : ''
 
-			scoreSelect().then(res => {
+			scoreSelect({
+				user_id:this.userInfo.id
+			}).then(res => {
 				this.remain_score = res.data.data //用户的可以用的积分
 			})
 			if (options.grouptype && options.productid) {
@@ -289,6 +291,7 @@
 					var totalscore = 0; //一共需要多少积分
 					cart.forEach((item, index) => {
 						totalprice = totalprice + item.totalprice
+						totalscore=totalscore+item.need_score
 						rcount = rcount + item.rcount
 						if (index == 0) { //把每个产品的id组合成一个字符串
 							this.pidArr = item.pid
@@ -322,6 +325,7 @@
 					user_id:this.userInfo.id,
 					product_info: this.Ddata.cart
 				}).then(rew => {
+					console.log(rew)
 					this.pickup = rew.data.data.pickup,
 						this.offsetprice = rew.data.offsetprice, //购物币抵扣
 					this.requiredata = rew.data.require,

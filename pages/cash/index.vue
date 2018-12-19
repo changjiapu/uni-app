@@ -1,9 +1,25 @@
 <template>
 	<view class="cashList">
-		<view class="list">
+		<view class="card" v-if="card.length">
+			<radio-group @change="radioChange">
+				<label class="item" v-for="(item, index) in card" :key="index">
+					<view>
+						<view :style="{backgroundImage: 'url('+ item.images +')'}"></view>
+						<view>
+							<text>{{ item.name }}</text>
+							<text>{{ item.phone }}</text>
+						</view>
+					</view>
+					<view>
+							<radio :value="item.name" />
+					</view>
+				</label>
+			</radio-group>
+		</view>
+		<view class="list" v-if="payList.length">
 			<view class="title">其他提现方式</view>
 			<view class="pay">
-				<view @tap="toPay(item.id)" :class="['item', {vip: item.type === 4, weixin: item.id === 1}]" v-for="(item, index) in payList" :key="index">
+				<view @tap="toBind(item.type)" :class="['item', {vip: item.type === 4, weixin: item.id === 1}]" v-for="(item, index) in payList" :key="index">
 					<view>{{ item.name }}</view>
 					<view>{{ item.bind }}</view>
 				</view>
@@ -25,6 +41,7 @@
 		data() {
 			return {
 				payList: [],
+				card: [],
 				user_id: ''
 			}
 		},
@@ -40,8 +57,29 @@
 					uni.hideLoading()
 					if (!res.data.code) {
 						this.payList = res.data.data.bind
+						const card = res.data.data.data
+						console.log(card)
+						if (!res.data.data.data.length) {
+							uni.showModal({
+								title: '',
+								content: '您还没有任何提现方式，请先绑定提现方式才能提现！',
+								showCancel:false
+							})
+						}
 					}
 				})
+			},
+			toBind (type) {
+				switch (type) {
+					case 4:
+					uni.navigateTo({
+						url: "/pages/addDeposit/index"
+					})
+					break;
+				} 
+			},
+			radioChange(e) {
+				console.log(e)
 			}
 		},
 		computed:{
@@ -54,6 +92,48 @@
 
 <style lang="less">
 .cashList {
+	.card {
+		padding: 0 15px;
+		background-color:white;
+		.item {
+			padding: 15upx 0;
+			display: flex;
+			justify-content: space-between;
+			background: white;
+			font-size: 22upx;
+			border-bottom: 1px dashed #f1f1f1;
+			box-sizing: border-box;
+			&:last-of-type {
+				border-bottom: none;
+			}
+			& > view {
+				&:nth-of-type(1) {
+					display: flex;
+					align-items: center;
+					& > view {
+						&:nth-of-type(1) {
+							width: 45upx;
+							height: 45upx;
+							margin-right: 20upx;
+							background-repeat: no-repeat;
+							background-size: contain;
+							background-position: center center;
+						}
+						&:nth-of-type(2) {
+							display: flex;
+							flex-direction: column;
+							flex-flow: column;
+							& > text {
+								&:last-of-type {
+									color:#666
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 	.list {
 		z-index: 3;
 		bottom: 0;

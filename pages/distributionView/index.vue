@@ -3,7 +3,7 @@
 		<block v-if="Info.usermoney">
 			<view class="top">
 				<view>
-					<view class="total">&yen;{{ Info.usermoney.total_profiy + Info.usermoney.total_money }}</view>
+					<view class="total">&yen;{{ totoalMoney }}</view>
 					<view class="control">
 					<view @tap="rightDrawerVisible = true">全部</view> 
 					 <!-- <view>查看报表</view> -->
@@ -186,6 +186,9 @@
 			},
 			endDate() {
 				return this.getDate('end');
+			},
+			totoalMoney () {
+				return (this.Info.usermoney.total_profiy + this.Info.usermoney.total_money).toFixed(2)
 			}
 		},
 	}

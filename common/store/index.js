@@ -74,7 +74,7 @@ const store = new Vuex.Store({
 				}).catch(err => { reject(err) })
 			})
 		},
-		WeiXinLogin ({ commit, state }) {
+		WeiXinLogin ({ commit, state }, db) {
 			const customer_id = state.userInfo.customer_id
 			uni.getProvider({
 				service: 'oauth',
@@ -88,7 +88,8 @@ const store = new Vuex.Store({
 									success: info => {
 										let params = {
 											...info.userInfo,
-											customer_id
+											customer_id,
+											referrer: db.referrer
 										}
 										WeixinLogin(params).then(result => {
 											console.log(JSON.stringify(result))
@@ -112,8 +113,13 @@ const store = new Vuex.Store({
 											} else {
 												uni.showModal({
 													title: '',
-													content: res.data.message,
-													showCancel: false
+													content: result.data.msg,
+													showCancel: false,
+													success: res => {
+														if (res.confirm) {
+															db.callback(true)
+														}
+													}
 												})
 											}
 										})
@@ -137,7 +143,7 @@ const store = new Vuex.Store({
 						state.userInfo.nickName = ''
 						state.userInfo.ticket = ''
 						state.userInfo.uname = ''
-						uni.navigateTo({
+						uni.reLaunch({
 							url: '/pages/index/index'
 						})
 					}

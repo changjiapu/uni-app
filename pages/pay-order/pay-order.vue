@@ -280,11 +280,12 @@
 				var _this = this;
 				var sendData = this.sendData;
 				personalPay(sendData).then(res => {
+					console.log(JSON.stringify(res))
 					uni.hideLoading();
 					if (res.data.code == 400000) {
 						if (sendData.pay_id == 4) { //微信支付
-							var state = res.data.data.return_msg;
-							if (res.data.data.state == 0) {
+							var state = res.data.msg;
+							if (!res.data.status) {
 								uni.showModal({
 									title: '提示',
 									content: state,
@@ -295,7 +296,7 @@
 							// #ifdef APP-PLUS
 							uni.requestPayment({
 								provider: 'wxpay',
-								orderInfo: res.data, //订单数据
+								orderInfo: res.data.data, //订单数据
 								success: (res) => {
 									uni.redirectTo({
 										url: '/pages/myOrder/index?tab=0',
@@ -366,11 +367,12 @@
 				var _this = this;
 				var sendData = this.sendData;
 				packagePay(sendData).then(res => {
+					console.log(Json.stringify(res))
 					uni.hideLoading();
 					if (res.data.code == 0) {
 						if (sendData.pay_id == 4) { //微信支付
-							var state = res.data.data.return_msg;
-							if (res.data.data.state == 0) {
+							var state = res.data.msg;
+							if (!res.data.data.status) {
 								uni.showModal({
 									title: '提示',
 									content: state,
@@ -381,7 +383,7 @@
 							// #ifdef APP-PLUS
 							uni.requestPayment({
 								provider: 'wxpay',
-								orderInfo: res.data, //订单数据
+								orderInfo: res.data.data, //订单数据
 								success: (res) => {
 									uni.redirectTo({
 										url: '/pages/myOrder/index?tab=0',

@@ -7,7 +7,7 @@
 			</view>
 			<view class='head_middle'>
 				<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/shopping.png'></image>
-				<text>￥</text>
+				<text>￥{{data.currency}}</text>
 			</view>
 			<view class='head_footer'>
 				<text @click='gotoZhuanzeng'>转增</text>
@@ -17,28 +17,36 @@
 		<view class='tabs'>
 			<view v-for='(item,index) in tabs' :key='index' :class="{active:active_tab==index}" @click='currentTabChange(index,item.type)'>{{item.name}}</view>
 		</view>
-		<scroll-view scroll-y :style="{height:content_height+'px'}">
-			<view class='content' v-for="(item,index) in list" :key='index'>
-				<navigator class='list'>
-					<view class='spend'>{{item.remark}}</view>
-					<view class='time'>{{item.createtime}}</view>
-					<view class='money'>
-						<text>{{item.type==0?'-':'+'}}</text>{{item.cost_currency}}</view>
-				</navigator>
-			</view>
-		</scroll-view>
+		<view class="main">
+			<scroll-view scroll-y :style="{height:content_height+'px'}" v-if='this.list.length'>
+				<view class='content' v-for="(item,index) in list" :key='index'>
+					<navigator class='list'>
+						<view class='spend'>{{item.remark}}</view>
+						<view class='time'>{{item.createtime}}</view>
+						<view class='money'>
+							<text>{{item.type==0?'-':'+'}}</text>{{item.cost_currency}}</view>
+					</navigator>
+				</view>
+			</scroll-view>
+			<empty-data>你还没有相关订单</empty-data>
+		</view>
 	</view>
 </template>
 
 <script>
-	import { myCurrencyList } from '@/common/api'
-	import { mapState } from 'vuex'
+	import {
+		myCurrencyList,
+		shopping_mone
+	} from '@/common/api'
+	import {
+		mapState
+	} from 'vuex'
 	export default {
 		data() {
 			return {
 				tabs: [{
 					name: '全部',
-					type: 3
+					type: 2
 				}, {
 					name: '收入',
 					type: 1
@@ -46,29 +54,43 @@
 					name: '支出',
 					type: 0
 				}],
+				data: {
+					currency: ''
+				},
 				active_tab: 0,
 				content_height: '',
 				list: [],
 				params: {
-					type: 3,
+					type: 2,
 					page: 1
 				},
-				userInfo: {
-					uname: this.userInfo.uname,
-					ticket: this.userInfo.ticket,
-					id: this.userInfo.id,
+				userInfo2: {
+					uname: '',
+					ticket: '',
+					user_id: '',
 				}
 			};
 		},
 		onLoad() {
-			wx.getSystemInfo({
+			uni.getSystemInfo({
 				success: (res) => {
 					let windowHeight = parseInt(res.windowHeight)
 					let windowWidth = parseInt(res.windowWidth)
 					this.content_height = windowHeight - windowWidth * (90 / 750);
 				}
 			});
+			this.userInfo2.uname = this.userInfo.uname
+			this.userInfo2.ticket = this.userInfo.ticket
+			this.userInfo2.user_id = this.userInfo.id
 			this.getData()
+			shopping_mone({
+				user_id: this.userInfo.id
+			}).then(res => {
+				if (!res.data.code) {
+					this.data.currency = res.data.data.currency
+				}
+
+			})
 
 		},
 		computed: {
@@ -86,7 +108,7 @@
 			},
 			getData() {
 				var sendData = {
-					...this.userInfo,
+					...this.userInfo2,
 					type: this.params.type,
 					paginate: this.params.page
 				}
@@ -110,7 +132,15 @@
 </script>
 
 <style lang="less">
+	uni-page-body,
+	page {
+		height: 100%;
+	}
+
 	.currency_history {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
 		.head {
 			background-color: rgb(0, 153, 255);
 
@@ -170,6 +200,7 @@
 			background-color: #fff;
 			display: flex;
 			justify-content: space-around;
+
 			view {
 				width: 250upx;
 				height: 80upx;
@@ -200,36 +231,41 @@
 			}
 		}
 
-		.list {
+		.main {
+			flex: 1;
 			position: relative;
-			padding: 15upx 15upx;
-			border-bottom: 1px solid #ddd;
 
-			.spend {
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
+			.list {
+				position: relative;
+				padding: 15upx 15upx;
+				border-bottom: 1px solid #ddd;
 
-			.time {
-				font-size: 24upx;
-				color: #888;
-				margin-top: 4px;
-			}
+				.spend {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
 
-			.money {
-				position: absolute;
-				right: 15upx;
-				bottom: 15upx;
-				color: #c30;
+				.time {
+					font-size: 24upx;
+					color: #888;
+					margin-top: 4px;
+				}
 
-				text {
-					font-size: 22upx;
+				.money {
+					position: absolute;
+					right: 15upx;
+					bottom: 15upx;
+					color: #c30;
+
+					text {
+						font-size: 22upx;
+					}
+
 				}
 
 			}
-
 		}
+
 	}
 </style>
-

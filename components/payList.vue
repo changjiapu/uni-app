@@ -89,6 +89,7 @@
 						uni.showModal({
 							title: '',
 							content: '你还没有设置支付密码',
+							confirmText: '去设置',
 							success: res => {
 								if (res.confirm) {
 									uni.navigateTo({

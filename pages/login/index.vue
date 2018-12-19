@@ -20,8 +20,18 @@
 						<text>其他方式登录</text>
 					</view>
 					<view class="other">
-						<view class="weixin" @click="$store.dispatch('WeiXinLogin')"></view>
+						<view class="weixin" @click="$store.dispatch('WeiXinLogin', { callback: callback, referrer: referrer })"></view>
 					</view>
+				</view>
+			</view>
+			<view class="alert" v-if="show">
+				<view class="statusbar"></view>
+				<view class="input">
+					<view class="title">请输入推荐人ID</view>
+					<view class="id">
+						<input type="text" v-model="referrer" placeholder="请输入推荐人ID">
+					</view>
+					<view class="control"><button type="default" size="mini" @tap="show = false">取消</button><button @tap="wxLogin" type="primary" size="mini">确认</button></view>
 				</view>
 			</view>
 		</view>
@@ -37,6 +47,8 @@
 			return {
 				Login: true,
 				time: 0,
+				show: false,
+				referrer: '',
 				screenHeight: 0,
 				params: {
 					uname: '',
@@ -66,6 +78,17 @@
 						}
 					})
 				})
+			},
+			wxLogin () {
+				this.show = false
+				this.$store.dispatch('WeiXinLogin', { callback: this.callback, referrer: this.referrer })
+			},
+			callback (tag) {
+				if (tag) {
+					this.show = tag
+				} else {
+					return this.referrer
+				}
 			},
 			isPhone (data, callback) {
 				const reg = /^[1][3,4,5,7,8][0-9]{9}$/
@@ -195,6 +218,51 @@ uni-page-body, page, .login { min-height: 100%;overflow: hidden;height: 100%;}
 						}
 					}
 				}			
+		}
+		.alert {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 33;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			.statusbar {
+				z-index: 44;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0,0,0,.6);
+			}
+			.input {
+				z-index: 55;
+				background-color:white;
+				padding: 30upx;
+				border-radius: 15upx;
+				box-sizing: border-box;
+				width: 70%;
+				.title {
+					text-align: center;
+					font-size: 28upx;
+					box-sizing: border-box;
+				}
+				.id {
+					padding: 10upx 15upx;
+					margin: 30upx 0;
+					border:1px solid #f1f1f1;
+					border-radius: 20upx;
+					font-size: 22upx;
+					
+				}
+				.control {
+					display: flex;
+					justify-content: space-between;
+				}
+			}
 		}
 	}
 }

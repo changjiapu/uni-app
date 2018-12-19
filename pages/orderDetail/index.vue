@@ -93,7 +93,7 @@
 				<button size="mini" type="warn" v-if="Info.status === 0 && Info.paystatus===0" @tap="showPay = true">立即支付</button>
 				<button size="mini" :url="'/packageB/pages/refund/index?batchcode='+Info.batchcode" v-if="Info.status === 0 && Info.sendstatus === 2 || Info.status === 1 && Info.sendstatus === 2">申请售后</button>
 				<button size="mini" type="warn" v-if="Info.status === 0 && Info.paystatus === 1 && Info.sendstatus === 0" @tap='shopRemind(Info.batchcode)'>提醒发货</button>
-				<button size="mini" @tap="cOrder()" type="warn" v-if="Info.status === 0 && Info.paystatus === 1 && Info.sendstatus === 1" bindtap='confirmOrder'>确认收货</button>
+				<button size="mini" @tap="conOrder" type="warn" v-if="Info.status === 0 && Info.paystatus === 1 && Info.sendstatus === 1">确认收货</button>
 				<button size="mini" type="primary" @click='waybillDetail'>查看物流</button>
 				<button size="mini" type="warn" url='/pages/comment?batchcode=Info.batchcode' v-if="Info.status === 0 && Info.sendstatus === 2 && Info.is_discuss === 0 || Info.status === 1 && Info.sendstatus === 2 && Info.is_discuss === 0">评价晒单</button>
 		</view>
@@ -206,12 +206,17 @@
 							uni.showLoading()
 							confirmOrder(Object.assign({}, this.params, this.same)).then(res => {
 								uni.hideLoading()
-								console.log(res)
+								//console.log(res)
 								if (res.code === 400000) {
 									uni.showModal({
 										title: '',
 										content: res.data.message,
-										showCancel: false
+										showCancel: false,
+										success: res => {
+											if (res.confirm) {
+												uni.navigateBack()
+											}
+										}
 									})
 								} else {
 									uni.showModal({

@@ -21,6 +21,7 @@
 
 <script>
 	import { packageList } from '@/common/api/packageA'
+	import { mapState } from 'vuex'
     export default {
 		name: 'pckageList',
         data() {
@@ -30,7 +31,13 @@
         },
 		onLoad (opt) {
 			let { level, ptype } = opt
-			this.getList({ level, ptype })
+			const user_id = this.userInfo.id
+			this.getList({ level, ptype, user_id })
+		},
+		computed: {
+			...mapState([
+				'userInfo'
+			])
 		},
 		methods: {
 			getList(opt) {

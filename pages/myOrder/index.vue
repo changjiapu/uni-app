@@ -133,7 +133,7 @@
 							uni.showLoading()
 							confirmOrder(params).then(res => {
 								uni.hideLoading()
-								console.log(res)
+								//console.log(res)
 								if (res.code === 400000) {
 									uni.showModal({
 										title: '',
