@@ -10,7 +10,7 @@
 		<view v-for="(item, index) in list" :key="index">
 			<view class="item">
 				<view class="cover">
-					<view :class="{ordianry: item.type === 1, spike: item.type === 3, luck: item.type === 2, super: item.type === 4}" :style="{backgroundImage: 'url(https://admin.sinlu.net'+item.default_imgurl+')' }"></view>
+					<view :class="{ordianry: item.type === 1, spike: item.type === 3, luck: item.type === 2, super: item.type === 4}" :style="{backgroundImage: 'url('+ baseURL +item.default_imgurl+')' }"></view>
 				</view>
 				<view class="dsc">
 					<view class="title">
@@ -44,10 +44,12 @@
 
 <script>
 import { collageProduct } from '@/common/api'
+import { baseURL } from '@/common/utils/config'
 export default {
 	name: 'tourdiy',
 	data() {
 		return {
+			baseURL: baseURL,
 			currentTab: 0,
 			product: [],
 			tabs: ['全部', '普通团', '抽奖团', '秒杀团', '超级团'],
@@ -82,6 +84,7 @@ export default {
 </script>
 
 <style lang="less">
+@import '../../common/css/variables.less'; 	
 .tourDiy {
 	.search{
 		left: 0;
@@ -158,22 +161,22 @@ export default {
 						}
 						&.ordianry {
 							&::after {
-								background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/icon17.png");
+								background-image: url("@{URL}/weixinpl/shopping-temp/images/icon17.png");
 							}
 						}
 						&.spike {
 							&::after {
-								background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/icon14.png");
+								background-image: url("@{URL}/weixinpl/shopping-temp/images/icon14.png");
 							}
 						}
 						&.luck {
 							&::after {
-								background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/icon15.png");
+								background-image: url("@{URL}/weixinpl/shopping-temp/images/icon15.png");
 							}
 						}
 						&.super {
 							&::after {
-								background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/icon16.png");
+								background-image: url("@{URL}/weixinpl/shopping-temp/images/icon16.png");
 							}
 						}
 					}

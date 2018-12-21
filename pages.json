@@ -51,6 +51,12 @@
 			}
 		},
 		{
+			"path":"pages/evaluate/evaluate",
+			"style":{
+				"navigationBarTitleText":"商品评论"
+			}
+		},
+		{
 			"path": "pages/create-order/create-order",
 			"style": {
 				"navigationBarTitleText": "结算中心"
@@ -177,6 +183,12 @@
 			"style": {
 				"navigationBarTitleText": "账号绑定"
 			}
+		},
+		{
+			"path": "pages/comment/index",
+			"style": {
+				"navigationBarTitleText": "发表评论"
+			}
 		}						
 	],
 	"subPackages": [{
@@ -228,7 +240,25 @@
 					"style": {
 						"navigationBarTitleText": "店铺升级"
 					}
-				}				
+				},
+				{
+					"path": "pages/cashWay/index",
+					"style": {
+						"navigationBarTitleText": "提现"
+					}
+				},
+				{
+					"path": "pages/bindAccount/index",
+					"style": {
+						"navigationBarTitleText": "账号管理"
+					}
+				},
+				{
+					"path": "pages/cashLog/index",
+					"style": {
+						"navigationBarTitleText": "提现记录"
+					}
+				}																
 			]
 		},
 		{

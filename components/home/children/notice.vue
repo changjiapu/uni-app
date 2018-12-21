@@ -1,7 +1,7 @@
 <template>
 <view class="notice">
 	<view class="message">
-		<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/notice.png' class="img"></image>
+		<image :src="baseURL+'/weixinpl/shopping-temp/images/notice.png'" class="img"></image>
 		<text>公告:</text>
 	</view>
     <view class="marquee_box">
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-
+import { baseURL } from '@/common/utils/config'
 export default {
 	name: 'notice',
 	props: {
@@ -23,7 +23,8 @@ export default {
 		}
 	},
 	data () {
-		return {	
+		return {
+			baseURL: baseURL,
 			scx: false
 		}
 	},

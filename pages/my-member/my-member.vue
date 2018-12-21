@@ -10,7 +10,7 @@
 			</view>
 			<view class='footer'>
 				<view class='footer-head'>
-					<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/payPacket.png'></image>
+					<image :src="baseURL+'/weixinpl/shopping-temp/images/payPacket.png'"></image>
 					<text>使用时请出示此卡</text>
 				</view>
 				<view class='footer-middle'>
@@ -56,9 +56,12 @@
 	import {
 		mapState
 	} from 'vuex'
+	import { baseURL } from '@/common/utils/config'
+
 	export default {
 		data() {
 			return {
+				baseURL: baseURL,
 				vipCard: '',
 				card_id: '',
 				show_card: '',

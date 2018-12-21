@@ -27,7 +27,7 @@
 	}
 </script>
 
-<style>
+<style lang="less">
 	@import './common/css/uni.css';
 	uni-page-body, page {
 		background-color: #f6f6f6;

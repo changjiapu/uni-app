@@ -36,6 +36,7 @@
 </script>
 
 <style lang="less">
+@import '../../../common/css/variables.less'; 	
 uni-page-body, page { height: 100%;}	
 .artdetail {
 	height: 100%;
@@ -53,7 +54,7 @@ uni-page-body, page { height: 100%;}
 			font-size: 36upx;
 			font-weight: bold;
 			color: #607D8B;
-			background: url(https://admin.sinlu.net/weixinpl/shopping-temp/images/share_t.png) no-repeat left center / 19px 19px;
+			background: url("@{URL}/weixinpl/shopping-temp/images/share_t.png") no-repeat left center / 19px 19px;
 			padding-left: 58upx;
 		}
 		.control {
@@ -71,7 +72,7 @@ uni-page-body, page { height: 100%;}
 					height: 40upx;
 					border-radius: 50%;
 					border: 1px solid #EA6F5A;
-					background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/step.png") no-repeat;
+					background: url("@{URL}/weixinpl/shopping-temp/images/step.png") no-repeat;
 					background-position: left;
 					background-size: auto 100%;
 					margin-right: 10upx;
@@ -84,7 +85,7 @@ uni-page-body, page { height: 100%;}
 				.comment {
 					width: 55upx;
 					height: 55upx;
-					background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/review.png") no-repeat center center/contain;
+					background: url("@{URL}/weixinpl/shopping-temp/images/review.png") no-repeat center center/contain;
 				}
 			}
 		}		

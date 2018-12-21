@@ -226,4 +226,28 @@ export function MoneyCash (data) {
 
 export function SavePayAccount (data) {
 	return request(data, "/smallroutine/Reward/save_pay_account").then(res => res)
-} 
+}
+
+export function MyAlipay (data) {
+	return request(data, "/smallroutine/Reward/my_alipay").then(res => res)
+}
+
+export function BagOrderList (data) {
+	return request(data, "/smallroutine/reward/pake_order_list").then(res => res)
+}
+
+export function BagOrderDetail (data) {
+	return request(data, "/smallroutine/reward/pake_order_detail").then(res => res)
+}
+
+export function Comment (data) {
+	return request(data, "/smallroutine/program/evel").then(res => res)
+}
+
+export function BagConfirm (data) {
+	return request(data, "/weixinpl/mshop/save_order_confirm.php").then(res => res)
+}
+
+export function BagConcel (data) {
+	return request(data, "/weixinpl/mshop/save_package_order_cancel.php").then(res => res)
+}

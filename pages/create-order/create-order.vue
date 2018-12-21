@@ -24,10 +24,10 @@
 					<view>收货人： 某xx xxxxxx</view>
 					<view>收货地址： xx省xx市xxxxx</view>
 				</view>
-				<image class='arrows-right' src='https://admin.sinlu.net/weixinpl/shopping-temp/images/arrows-right.png'></image>
+				<image class='arrows-right' :src="baseURL+'/weixinpl/shopping-temp/images/arrows-right.png'"></image>
 			</view>
 			<view class='title'>
-				<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/shop.png'></image>
+				<image :src="baseURL+'/weixinpl/shopping-temp/images/shop.png'"></image>
 				<text>共有{{rcount}}件商品</text>
 			</view>
 			<view class="product" v-if="!cart_show">
@@ -66,7 +66,7 @@
 					<text>优惠劵</text>
 				</view>
 				<view class="arrows-right" v-if="!couponMoney || couponMoney=='0'">
-					<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/arrows-right.png' style='width:100%;height:100%'></image>
+					<image :src="baseURL+'/weixinpl/shopping-temp/images/arrows-right.png'" style='width:100%;height:100%'></image>
 				</view>
 				<view style="color:red;" v-else> 满{{couponNeedMoney}}优惠{{couponMoney}}</view>
 			</view>
@@ -86,13 +86,13 @@
 					<view>选择门店自提</view>
 				</view>
 				<text v-if="storeName">{{storeName}}</text>
-				<image class='arrows-right' v-else src='https://admin.sinlu.net/weixinpl/shopping-temp/images/arrows-right.png'></image>
+				<image class='arrows-right' v-else :src="baseURL+'/weixinpl/shopping-temp/images/arrows-right.png'"></image>
 			</view>
 			<view class='list' @click='requiredValue' v-if="requiredata.status">
 				<view class='detail'>
 					<view>必填信息：</view>
 				</view>
-				<image class='arrows-right' src='https://admin.sinlu.net/weixinpl/shopping-temp/images/arrows-right.png'></image>
+				<image class='arrows-right' :src="baseURL+'/weixinpl/shopping-temp/images/arrows-right.png'"></image>
 			</view>
 			<view class='list remark'>
 				<text>买家留言:</text>
@@ -100,7 +100,7 @@
 			</view>
 			<view class='list remark' @click='groupGet' v-if="getExplain">
 				<text>{{getExplain.title}}</text>
-				<image class='arrows-right' src='https://admin.sinlu.net/weixinpl/shopping-temp/images/arrows-right.png'></image>
+				<image class='arrows-right' :src="baseURL+'/weixinpl/shopping-temp/images/arrows-right.png'"></image>
 			</view>
 			<view :style="{display:groupState?'none':'',padding:10+'px'}">
 				<rich-text :nodes="nodes1"></rich-text>
@@ -139,6 +139,7 @@
 		Create
 	} from '@/common/api/index.js'
 	import GolbalMethod from '@/common/utils/index.js'
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		data() {
 			return {
@@ -173,7 +174,7 @@
 				sendstyle: '',
 				cart: [],
 				cart_show: false,
-				hostUrl: 'https://admin.sinlu.net',
+				baseURL: baseURL,
 				remark: '', //购物留言
 				getExplain: '', //拼团说明
 				groupState: false,

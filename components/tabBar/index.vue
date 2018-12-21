@@ -13,6 +13,7 @@
 </template>
 
 <script>
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		name: 'tabBar',
 		props: {
@@ -23,7 +24,15 @@
 		},
 		data() {
 			return {
-				pageKey:'home'
+				pageKey:'home',
+				nav_list:[
+					{
+						title:'首页',
+						url:baseURL+'/public/upload/img/1538128943892.png',
+						active_url:baseURL+'/public/upload/img/1538128956746.png',
+						page_key:'home'
+					}
+				]
 			};
 		},
 		methods: {

@@ -21,7 +21,7 @@
 			</view>
 		</view>
 		<view class="btn">
-			<button type="warn" :disabled="disabled" @click="BindPhone">确认绑定</button>
+			<button type="warn" @click="BindPhone">确认绑定</button>
 		</view>
 	</view>
 </template>
@@ -40,19 +40,6 @@
 					phone: '',
 					code: ''
 				}
-			}
-		},
-		watch: {
-			params: {
-				handler: function (val, oldVal) {
-					let rst = Object.values(val).filter(item => item === '')
-					if (!rst.length) {
-						this.disabled = false
-					} else {
-						this.disabled = true
-					}
-				},
-				deep: true
 			}
 		},
 		methods: {
@@ -81,7 +68,7 @@
 			},
 			BindPhone () {
 				this.isPhone({}, () => {
-					if (this.code === this.params.code) {
+					if (this.code && this.code === this.params.code) {
 						uni.redirectTo({
 							url: '/packageB/pages/dataEdition/index?phone='+this.params.phone
 						})

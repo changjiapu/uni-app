@@ -22,6 +22,7 @@
 </script>
 
 <style lang="less" scoped>
+@import '../../../common/css/variables.less'; 	
 .map{
 	margin: 0 15px;
 	.address {
@@ -36,7 +37,7 @@
 			background-repeat: no-repeat;
 			background-position: center center;
 			background-size: 100% 100%;
-			background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/address_b.png");
+			background-image: url("@{URL}/weixinpl/shopping-temp/images/address_b.png");
 		}
 		.text {
 			font-size: 26upx;

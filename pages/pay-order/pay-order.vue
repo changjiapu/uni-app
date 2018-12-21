@@ -10,12 +10,12 @@
 		<form :report-submit="true" @submit="PayWay" class="popup-memu">
 			<view class="line" style="background-color: rgb(255, 255, 255)"></view>
 			<button :disabled="isDisabled" class="payMode" form-type='submit' v-for="(item,index) in pay_type" :key="index" :id='item.id'>
-				<image v-if="item.id==1" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/vip.png"></image>
-				<image v-if="item.id==2" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/shop-gold.png"></image>
-				<image v-if="item.id==3" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/payPacket.png"></image>
-				<image v-if="item.id==4" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/wechat.png"></image>
-				<image v-if="item.id==15" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/property.png"></image>
-				<image v-if="item.id==16" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/money.png"></image>
+				<image v-if="item.id==1" :src="baseURL+'/weixinpl/shopping-temp/images/vip.png'"></image>
+				<image v-if="item.id==2" :src="baseURL+'/weixinpl/shopping-temp/images/shop-gold.png'"></image>
+				<image v-if="item.id==3" :src="baseURL+'/weixinpl/shopping-temp/images/payPacket.png'"></image>
+				<image v-if="item.id==4" :src="baseURL+'/weixinpl/shopping-temp/images/wechat.png'"></image>
+				<image v-if="item.id==15" :src="baseURL+'/weixinpl/shopping-temp/images/property.png'"></image>
+				<image v-if="item.id==16" :src="baseURL+'/weixinpl/shopping-temp/images/money.png'"></image>
 				<text style="width:70%; color:#777">{{item.name}}</text>
 				<text>></text>
 			</button>
@@ -26,12 +26,12 @@
 			<view class="line" style="background-color: rgb(255, 255, 255)"></view>
 			<button :disabled="isDisabled" class="payMode" form-type='submit' v-for="(item,index) in pay_type" :key="index"
 			 @click=PayWay(item)>
-				<image v-if="item.id==1" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/vip.png"></image>
-				<image v-if="item.id==2" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/shop-gold.png"></image>
-				<image v-if="item.id==3" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/payPacket.png"></image>
-				<image v-if="item.id==4" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/wechat.png"></image>
-				<image v-if="item.id==15" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/property.png"></image>
-				<image v-if="item.id==16" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/money.png"></image>
+				<image v-if="item.id==1" :src="baseURL+'/weixinpl/shopping-temp/images/vip.png'"></image>
+				<image v-if="item.id==2" :src="baseURL+'/weixinpl/shopping-temp/images/shop-gold.png'"></image>
+				<image v-if="item.id==3" :src="baseURL+'/weixinpl/shopping-temp/images/payPacket.png'"></image>
+				<image v-if="item.id==4" :src="baseURL+'/weixinpl/shopping-temp/images/wechat.png'"></image>
+				<image v-if="item.id==15" :src="baseURL+'/weixinpl/shopping-temp/images/property.png'"></image>
+				<image v-if="item.id==16" :src="baseURL+'/weixinpl/shopping-temp/images/money.png'"></image>
 				<text style="width:70%; color:#777">{{item.name}}</text>
 				<text>></text>
 			</button>
@@ -99,9 +99,11 @@
 	import {
 		mapState
 	} from 'vuex'
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		data() {
 			return {
+				baseURL: baseURL,
 				inputPassword: '', //输入密码
 				passwordInputHidden: false,
 				batchcode: '',
@@ -367,19 +369,11 @@
 				var _this = this;
 				var sendData = this.sendData;
 				packagePay(sendData).then(res => {
-					console.log(Json.stringify(res))
+					console.log(JSON.stringify(res))
 					uni.hideLoading();
 					if (res.data.code == 0) {
 						if (sendData.pay_id == 4) { //微信支付
-							var state = res.data.msg;
-							if (!res.data.data.status) {
-								uni.showModal({
-									title: '提示',
-									content: state,
-									showCancel: false
-								})
-								return
-							}
+				
 							// #ifdef APP-PLUS
 							uni.requestPayment({
 								provider: 'wxpay',
@@ -444,7 +438,8 @@
 	}
 </script>
 
-<style>
+<style lang="less">
+	@import '../../common/css/variables.less';
 	.tiele {
 		font-size: 16px;
 		text-align: center;
@@ -610,7 +605,7 @@
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: 50upx 50upx;
-		background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/backspace.svg");
+		background-image: url("@{URL}/weixinpl/shopping-temp/images/backspace.svg");
 	}
 
 	.keyboard .ctr-btn view:nth-child(2) {

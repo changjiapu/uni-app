@@ -17,6 +17,7 @@
 </script>
 
 <style lang="less">
+@import '../common/css/variables.less'; 	
 .alertRich, .alertRich > view.statusbar {
 	position: absolute;
 	top: 0;
@@ -46,7 +47,7 @@
 				bottom: -80upx;
 				width: 60upx;
 				height: 60upx;
-				background:url("https://admin.sinlu.net/weixinpl/shopping-temp/images/close_w.png") no-repeat center center/contain
+				background:url("@{URL}/weixinpl/shopping-temp/images/close_w.png") no-repeat center center/contain
 			}
 		}
 	}

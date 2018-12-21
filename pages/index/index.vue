@@ -56,7 +56,6 @@
 					for (let idx of res.data) {
 						if (idx.differ === '0') {
 							this.home_data = JSON.parse(idx.content)
-							console.log(this.home_data )
 						}
 						if (idx.differ === '2') {
 							this.app_nav = JSON.parse(idx.content)[0]

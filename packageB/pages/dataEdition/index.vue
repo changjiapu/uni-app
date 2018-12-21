@@ -54,6 +54,10 @@
 							<view>{{ UserInfo.phone }}</view>
 						</navigator>
 					</view>
+					<view>
+						<text>密码</text>
+						<input type="text" v-model="UserInfo.password" :disabled="UserInfo.password">
+					</view>
 				</view>
 			</view>
 		</view>
@@ -69,6 +73,8 @@
 	import { getUserInfo, EditUserInfo } from '@/common/api/packageB'
 	import mpvueCityPicker from '@/components/mpvue-citypicker/mpvueCityPicker'
 	import { mapState } from 'vuex'
+	import { baseURL } from '@/common/utils/config'
+	
 	export default {
 		name: 'dataEdition',
 		components: { mpvueCityPicker },
@@ -78,7 +84,15 @@
 				citys: '请选择地址',
 				themeColor: '#007AFF',
 				cityPickerValueDefault: [0, 0, 1],
-				UserInfo: {},
+				UserInfo: {
+					name: '',
+					sex: '',
+					qq: '',
+					wechat_id: '',
+					birthday: '',
+					phone: '',
+					password: ''
+				},
 				data: {
 					uname: '',
 					ticket: ''
@@ -105,7 +119,7 @@
 				'userInfo'
 			]),
 			avatarURL () {
-				const IMG = 'https://admin.sinlu.net/weixinpl/shopping-temp/images/default.png'
+				const IMG = baseURL+'/weixinpl/shopping-temp/images/default.png'
 				if(this.userInfo.avatarUrl) {
 					return this.userInfo.avatarUrl === null ? IMG : this.userInfo.avatarUrl
 				} else {
@@ -123,7 +137,6 @@
 				getUserInfo(this.data).then(res => {
 					if (res.data.code !== 4001) {
 						if (phone) res.data.data.phone = phone
-						console.log(res.data.data.birthday)
 						if (res.data.data.birthday === null) {
 							res.data.data.birthday = currentDate
 						}

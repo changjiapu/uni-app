@@ -47,7 +47,8 @@ export default {
 		}
 	},
 	onLoad() {
-		this.user_id = this.userInfo.id
+		this.params.user_id = this.userInfo.id
+		console.log(this.userInfo.id)
 		this.getList()
 	},
 	computed: {

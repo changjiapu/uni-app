@@ -113,6 +113,7 @@
 </script>
 
 <style lang="less">
+	@import '../../common/css/variables.less'; 
 uni-page-body, page, .login { min-height: 100%;overflow: hidden;height: 100%;}	
 .login {
 	//background:url("https://admin.sinlu.net/weixinpl/shopping-temp/images/login_bg.jpg") no-repeat center center/cover;
@@ -144,10 +145,10 @@ uni-page-body, page, .login { min-height: 100%;overflow: hidden;height: 100%;}
 						width: 100%;
 					}
 					&:first-of-type {
-						background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/login_user.png");
+						background-image: url("@{URL}/weixinpl/shopping-temp/images/login_user.png");
 					}
 					&:nth-of-type(2) {
-						background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/login_pwd.png");
+						background-image: url("@{URL}/weixinpl/shopping-temp/images/login_pwd.png");
 					}
 				}
 				& > .btn {
@@ -212,7 +213,7 @@ uni-page-body, page, .login { min-height: 100%;overflow: hidden;height: 100%;}
 							background-repeat: no-repeat;
 							background-position: center center;
 							&.weixin {
-								background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/login_weixin.png");
+								background-image: url("@{URL}/weixinpl/shopping-temp/images/login_weixin.png");
 								background-size: 120upx 120upx;
 							}
 						}

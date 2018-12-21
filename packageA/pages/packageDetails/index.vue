@@ -3,7 +3,7 @@
 		 <view v-if="list.length">
 			<swiper class="imgList" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 				<swiper-item v-for="(item, index) in list" :key="index" class="list">
-					<image :src="'https://admin.sinlu.net'+ item" mode="scaleToFill"></image>
+					<image :src="item" mode="scaleToFill"></image>
 				</swiper-item>
 			</swiper>
 			<view class="desc">
@@ -81,6 +81,7 @@
 </script>
 
 <style lang="less">
+@import '../../../common/css/variables.less'; 
 .pckageDetail {
 	.imgList {
 		height: 500upx;
@@ -100,7 +101,7 @@
 			height: 80upx;
 			line-height: 80upx;
 			font-size: 30upx;
-			background:url("https://admin.sinlu.net/weixinpl/shopping-temp/images/package.png") no-repeat left center/40upx 40upx;
+			background:url("@{URL}/weixinpl/shopping-temp/images/package.png") no-repeat left center/40upx 40upx;
 			box-sizing: border-box;
 			border-bottom: 1px solid #f6f6f6;
 			padding-left: 50upx;

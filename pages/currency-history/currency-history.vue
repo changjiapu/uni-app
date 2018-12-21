@@ -2,11 +2,11 @@
 	<view class="currency_history">
 		<view class='head'>
 			<view class='head_head' @click='isShowChange'>
-				<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/zhuanzeng2.png'></image>
+				<image :src="baseURL+'/weixinpl/shopping-temp/images/zhuanzeng2.png'"></image>
 				<text>转增规则</text>
 			</view>
 			<view class='head_middle'>
-				<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/shopping.png'></image>
+				<image :src="baseURL+'/weixinpl/shopping-temp/images/shopping.png'"></image>
 				<text>￥{{data.currency}}</text>
 			</view>
 			<view class='head_footer'>
@@ -41,9 +41,11 @@
 	import {
 		mapState
 	} from 'vuex'
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		data() {
 			return {
+				baseURL: baseURL,
 				tabs: [{
 					name: '全部',
 					type: 2

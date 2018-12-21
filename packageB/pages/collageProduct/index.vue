@@ -13,7 +13,7 @@
 	<view class="xiangqing" v-for="(item, idx) in product" :key="idx">
 	  <view class="imgbox02">
 		<view class="imgbo">
-		  <image :src="'https://admin.sinlu.net' + item.default_imgurl"></image>
+		  <image :src="baseURL + item.default_imgurl"></image>
 		</view>
 		<view class="ztai">
 		  <image v-if="item.type === 1" src="/images/icon17.png"></image>
@@ -54,10 +54,12 @@
 </template>
 
 <script>
+	import { baseURL } from '@/common/utils/config'
+
 	export default {
 		data() {
 			return {
-				
+				baseURL: baseURL
 			};
 		}
 	}

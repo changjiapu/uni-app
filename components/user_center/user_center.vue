@@ -2,10 +2,10 @@
 	<view class="userCenter">
    <view class='head style'>
         <view class='personal-head-img'>
-            <image :src="userInfo.avatarUrl || 'https://admin.sinlu.net/weixinpl/shopping-temp/images/default.png'" class="img"></image>
+            <image :src="userInfo.avatarUrl || baseURL+'/weixinpl/shopping-temp/images/default.png'" class="img"></image>
         </view>
         <view class='personal-name'>
-            <view class='name'>{{userInfo.nickName || '未登录'}}(ID:{{userInfo.id || '000000'}})</view>
+            <view class='name'>{{userInfo.nickName || ''}}(ID:{{userInfo.id || '未登录'}})</view>
         </view>
         <view class='personal_card'>
             <view class='name' v-for="(item, index) in card" :key="index">
@@ -20,7 +20,7 @@
 						<image :src='item.url' class="img"></image>
 						<view :style="{color: item.color}">{{item.name}}</view>
 					</view>
-            <image class='right' src='https://admin.sinlu.net/weixinpl/shopping-temp/images/arrows-right.png'></image>
+            <image class='right' :src="baseURL+'/weixinpl/shopping-temp/images/arrows-right.png'"></image>
         </view>
     </block>
     <block v-if="data.style.active === 'style-2'">
@@ -48,6 +48,8 @@
 <script>
 	import {getUserIdentity } from '@/common/api'
 	import { mapState } from 'vuex'
+	import { baseURL } from '@/common/utils/config'
+	
 	export default {
 		name: 'user_center',
 		props: {
@@ -58,6 +60,7 @@
 		},
 		data(){
 			return{
+				baseURL: baseURL,
 				card:{}
 			}
 		},

@@ -5,7 +5,7 @@
 				<view v-if="Info.status === 0 && Info.paystatus === 0">待付款</view>
 				<view v-if="Info.status === 0 && Info.paystatus === 1 && Info.sendstatus === 0">待发货</view>
 				<view v-if="Info.status === 0 && Info.paystatus === 1 && Info.sendstatus === 1">配送中</view>
-				<view v-if="Info.status === 0 && Info.sendstatus === 2&& Info.is_discuss ===0 || Info.status === 1 && Info.sendstatus === 2 && Info.is_discuss === 0">待评价</view>
+				<view v-if="Info.status === 0 && Info.sendstatus === 2 && Info.is_discuss ===0 || Info.status === 1 && Info.sendstatus === 2 && Info.is_discuss === 0">待评价</view>
 				<view v-if="Info.return_status === 0 && Info.sendstatus > 2">申请售后中</view>
 				<view v-if="Info.return_status === -1 && Info.sendstatus > 2">退货失败</view>
 				<view v-if="Info.return_status === 1 && Info.sendstatus > 2">退货成功</view>
@@ -29,7 +29,7 @@
 		</view>
 		<view class="list">
 			<view class="item" v-for="(item, index) in Info.shop_orders" :key="index">
-				<view :style="{backgroundImage: 'url(https://admin.sinlu.net'+item.default_imgurl+')'}"></view>
+				<view :style="{backgroundImage: 'url('+item.default_imgurl+')'}"></view>
 				<view>
 					<view>
 						<view>
@@ -91,19 +91,21 @@
 				<button size="mini" v-if="Info.status >= 0 && Info.sendstatus < 3 "></button>
 				<button size="mini" v-if="Info.status === 0 && Info.paystatus === 0" @tap='cOrder(Info.batchcode)'>取消订单</button>
 				<button size="mini" type="warn" v-if="Info.status === 0 && Info.paystatus===0" @tap="showPay = true">立即支付</button>
-				<button size="mini" :url="'/packageB/pages/refund/index?batchcode='+Info.batchcode" v-if="Info.status === 0 && Info.sendstatus === 2 || Info.status === 1 && Info.sendstatus === 2">申请售后</button>
+				<button size="mini" v-if="Info.status === 0 && Info.sendstatus === 2 || Info.status === 1 && Info.sendstatus === 2" @click="Refund">申请售后</button>
 				<button size="mini" type="warn" v-if="Info.status === 0 && Info.paystatus === 1 && Info.sendstatus === 0" @tap='shopRemind(Info.batchcode)'>提醒发货</button>
-				<button size="mini" @tap="conOrder" type="warn" v-if="Info.status === 0 && Info.paystatus === 1 && Info.sendstatus === 1">确认收货</button>
+				<button size="mini" @tap="conOrder(Info.batchcode)" type="warn" v-if="Info.status === 0 && Info.paystatus === 1 && Info.sendstatus === 1">确认收货</button>
 				<button size="mini" type="primary" @click='waybillDetail'>查看物流</button>
-				<button size="mini" type="warn" url='/pages/comment?batchcode=Info.batchcode' v-if="Info.status === 0 && Info.sendstatus === 2 && Info.is_discuss === 0 || Info.status === 1 && Info.sendstatus === 2 && Info.is_discuss === 0">评价晒单</button>
+				<button size="mini" @tap="goEvalate" type="warn" v-if="Info.status === 0 && Info.sendstatus === 2 && Info.is_discuss === 0 || Info.status === 1 && Info.sendstatus === 2 && Info.is_discuss === 0">
+					评价晒单
+				</button>
 		</view>
-		<pay-list :detail="Info" v-if="showPay" @on-close="showPay = false"></pay-list>
+		<pay-list :tag="tag" :detail="Info" v-if="showPay" @on-close="showPay = false"></pay-list>
 </view>
 	
 </template>
 
 <script>
-	import { orderDetail, CancelOrder, orderRemind, confirmOrder } from '@/common/api'
+	import { orderDetail, CancelOrder, orderRemind, confirmOrder, BagOrderDetail, BagConfirm, BagConcel } from '@/common/api'
 	import PayList from '@/components/payList'
  	import { mapState } from 'vuex'
 	export default {
@@ -112,6 +114,7 @@
 		data () {
 			return {
 				Info: {},
+				tag: 1,
 				totleMoney: 0,
 				params: {
 					batchcode: '',
@@ -127,7 +130,12 @@
 			this.same.ticket = this.userInfo.ticket
 			this.same.uname = this.userInfo.uname
 			this.same.user_id = this.userInfo.id
-			this.getInfo()
+			this.tag = +opt.tag
+			if (+opt.tag === 2) {
+				this.getBagInfo()
+			} else {
+				this.getInfo()
+			}
 		},
 		methods: {
 			getInfo () {
@@ -156,6 +164,51 @@
 					}
 				})
 			},
+			goEvalate () {
+				uni.navigateTo({
+					url: `/pages/comment/index?batchcode=${this.Info.batchcode}&tag=${this.tag}`
+				})
+			},
+			getBagInfo () {
+				uni.showLoading()
+				BagOrderDetail(this.params).then(res => {
+					uni.hideLoading()
+					if (!res.data.code) {
+						const data = res.data.data[0]
+						let info = {}
+						info.CouponPrice = data.totalprice
+						info.send_express_name = data.expressname
+						info.address = data.location_p + data.location_c + data.location_a + data.address
+						info.aftersale_type = 0
+						info.batchcode = data.batchcode
+						info.createtime = data.createtime
+						info.confirm_sendtime = data.confirm_sendtime
+						info.decrease_money = 0
+						info.deductible_money = 0
+						info.expressnum = data.expressnum
+						info.id = data.p_id
+						info.is_discuss = 0
+						info.pay_currency = 0
+						info.pay_money = data.package_price
+						info.paystatus = data.paystatus
+						info.phone = data.phone
+						info.pid = data.p_id
+						info.pname = data.package_name
+						info.rcount = data.rcount
+						info.return_status = data.return_status
+						info.sendMoney = 0
+						info.sendstatus = data.sendstatus
+						info.shop_orders = [
+							{ default_imgurl: data.default_head_imgurl.replace('https://', ''), pname: data.package_name, rcount: data.rcount, now_price: data.package_price }
+						]
+						info.status = 0
+						info.totalprice = data.totalprice
+						info.user_name = ''
+						this.Info = info
+						
+					}
+				})
+			},
 			shopRemind (batchcode) { //提醒发货
 				uni.showLoading()
 				const params = Object.assign({}, this.same, { batchcode })
@@ -171,7 +224,6 @@
 				})
 			},
 			cOrder(batchcode) { // 取消订单
-			console.log(batchcode)
 			    const params = Object.assign({}, this.same, { batchcode })
 				uni.showModal({
 					title: '',
@@ -179,7 +231,9 @@
 					success: res => {
 						if (res.confirm) {
 							uni.showLoading()
-							CancelOrder(params).then(res => {
+							let canBtn
+							this.tag === 2 ? canBtn = BagConcel : canBtn = CancelOrder
+							canBtn(params).then(res => {
 								uni.hideLoading()
 								this.Info.status = -1
 								if (res.data.code === 400000) {
@@ -192,7 +246,7 @@
 					}
 				})
 			},
-			conOrder () {
+			conOrder (batchcode) {
 				uni.showModal({
 					title: '',
 					content: '你确认收货吗？',
@@ -204,9 +258,10 @@
 								batchcode
 							}
 							uni.showLoading()
+							let conBtn
+							this.tag === 2 ? conBtn = BagConfirm : canBtn = confirmOrder
 							confirmOrder(Object.assign({}, this.params, this.same)).then(res => {
 								uni.hideLoading()
-								//console.log(res)
 								if (res.code === 400000) {
 									uni.showModal({
 										title: '',
@@ -236,6 +291,11 @@
 					url: '/packageB/pages/waybill/waybill?send_express_name=' + this.Info.send_express_name  + '&expressnum=' + this.Info.expressnum,
 				})
 			},
+			Refund(){
+				uni.navigateTo({
+					url:"/packageB/pages/refund/index?batchcode="+this.Info.batchcode
+				})
+			}
 		},
 		computed: {
 			...mapState([
@@ -246,6 +306,7 @@
 </script>
 
 <style lang="less">
+	
 .orderDetail {
 	padding-bottom: 110upx;
 	.status {

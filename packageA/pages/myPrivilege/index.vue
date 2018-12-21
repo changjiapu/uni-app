@@ -67,6 +67,7 @@
 </script>
 
 <style lang="less">
+@import '../../../common/css/variables.less';	
 uni-page-body, page { height: 100%;}	
 .priviliege {
 	display: flex;

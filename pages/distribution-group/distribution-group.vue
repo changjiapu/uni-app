@@ -10,7 +10,7 @@
 			</view>
 			<view class='search'>
 				<view class='kaiguan' @click='openCloaking'>
-					<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/shipping.png' style='height:40upx;width:50upx;'></image>
+					<image :src="baseURL+'/weixinpl/shopping-temp/images/shipping.png'" style='height:40upx;width:50upx;'></image>
 					<text>全部</text>
 				</view>
 				<text>团队总人数：{{rcount}}</text>
@@ -79,17 +79,11 @@
 </template>
 
 <script>
-	import {
-		mapState
-	} from 'vuex'
-	import {
-		myTeam,
-		cardIdentity
-	}
-	from '@/common/api/index.js'
-	import uniDrawer from '@/components/uni-drawer.vue'
-	import uniIcon from "@/components/uni-icon.vue"
-
+	import { mapState } from 'vuex'
+	import { myTeam, cardIdentity } from '@/common/api'
+	import uniDrawer from '@/components/uni-drawer'
+	import uniIcon from "@/components/uni-icon"
+    import { baseURL } from '@/common/utils/config'
 	export default {
 		components: {
 			uniIcon,
@@ -97,6 +91,7 @@
 		},
 		data() {
 			return {
+				baseURL: baseURL,
 				currentid: '0',
 				currentName: '全部',
 				commisionsid: '0',
@@ -258,6 +253,7 @@
 </script>
 
 <style lang="less" scoped>
+	@import '../../common/css/variables.less'; 
 	.container {
 		margin-top: 30upx;
 
@@ -345,7 +341,7 @@
 			.icon {
 				height: 40upx;
 				width: 40upx;
-				background-image: url('https://admin.sinlu.net/weixinpl/shopping-temp/images/arrows-right.png');
+				background-image: url('@{URL}/weixinpl/shopping-temp/images/arrows-right.png');
 				background-size: contain;
 				position: absolute;
 				right: 20upx;

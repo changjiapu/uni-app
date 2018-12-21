@@ -1,10 +1,9 @@
 import store from '../store'
-const baseURL = 'https://admin.sinlu.net'
+import { requestURL } from './config'
 let user = {
 	user_type: 3,
 	customer_id: ''
 }
-
 function getType(user, data, method) { // 获取请求方式
 	let type = {}
 	if (!method) {
@@ -39,7 +38,7 @@ function Request(data, url, method) {
 	return new Promise((resolve, reject) => {
 		//uni.showLoading()
 		uni.request({
-			url: baseURL + url,
+			url: requestURL + url,
 			...getType(user, data, method),
 			success: res => {
 				uni.hideLoading()

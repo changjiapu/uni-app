@@ -22,6 +22,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '../../../common/css/variables.less'; 	
 .brands {
     background-color: #fff;
 	.title {
@@ -32,7 +33,7 @@ export default {
 		background-repeat: no-repeat;
 		background-size: contain;
 		background-position: center center;
-		background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/cut.png");
+		background-image: url("@{URL}/weixinpl/shopping-temp/images/cut.png");
 		text-align: center;
 	}
 	.scroll-view {

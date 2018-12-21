@@ -106,6 +106,7 @@
 </script>
 
 <style lang="less">
+@import '../common/css/variables.less';	
 	.model {
 		height: 100%;
 		position: fixed;
@@ -216,7 +217,7 @@
 							background-repeat: no-repeat;
 							background-position: center center;
 							background-size: 50upx 50upx;
-							background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/backspace.svg");
+							background-image: url("@{URL}/weixinpl/shopping-temp/images/backspace.svg");
 						}
 						&:nth-child(2) {
 							font-size: 30upx;

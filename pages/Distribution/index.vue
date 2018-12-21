@@ -2,7 +2,7 @@
 	<view class="distribution">
 		<view class="head">
 			<view>
-				<view :style="{ backgroundImage: 'url('+(userInfo.avatarUrl || 'https://admin.sinlu.net/weixinpl/shopping-temp/images/default.png')+')' }"></view>
+				<view :style="{ backgroundImage: 'url('+(userInfo.avatarUrl || baseURL + '/weixinpl/shopping-temp/images/default.png')+')' }"></view>
 			</view>
 			<view>
 				<text class="name">{{ userInfo.nickName }}</text>
@@ -25,12 +25,10 @@
 					<view class="myTeam"></view>
 					<text>我的团队({{Info.count}})人</text>
 				</navigator>
-				<!-- #ifdef MP-WEIXIN -->
-				<navigator hover-class="none">
+				<navigator hover-class="none" v-if="Info.isAgent" >
 					<view class="myCode"></view>
 					<text>推广二维码</text>
 				</navigator>
-				<!-- #endif -->
 				<navigator hover-class="none" url="/pages/distributionView/index">
 					<view class="myYield"></view>
 					<text>累积收益</text>
@@ -46,10 +44,12 @@
 	import {
 		mapState
 	} from 'vuex'
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		name: 'distribution',
 		data() {
 			return {
+				baseURL: baseURL,
 				Info: {
 				usermoney:{}	
 				}
@@ -82,6 +82,7 @@
 </script>
 
 <style lang="less">
+	@import '../../common/css/variables.less'; 
 	.distribution {
 		.head {
 			background: #0099ff;
@@ -165,15 +166,15 @@
 						background-position: center center;
 
 						&.myTeam {
-							background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/myTeam.png");
+							background-image: url("@{URL}/weixinpl/shopping-temp/images/myTeam.png");
 						}
 
 						&.myCode {
-							background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/myCode.png");
+							background-image: url("@{URL}/weixinpl/shopping-temp/images/myCode.png");
 						}
 
 						&.myYield {
-							background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/myYield.png");
+							background-image: url("@{URL}/weixinpl/shopping-temp/images/myYield.png");
 						}
 					}
 

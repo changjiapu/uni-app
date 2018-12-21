@@ -16,14 +16,14 @@
 		<view class="grid">
 			<view class="line" >
 				<navigator hover-class="none" url="/pages/currency-history/currency-history">
-					<view :style="{backgroundImage: 'url(https://admin.sinlu.net/weixinpl/shopping-temp/images/myshop.png)'}"></view>
+					<view :style="{backgroundImage: 'url('+baseURL+'/weixinpl/shopping-temp/images/myshop.png)'}"></view>
 					<view>
 						<text>购物币</text>
 						<text>{{ Info.currency }}</text>
 					</view>
 				</navigator>
 				<navigator hover-class="none" url='/pages/my-member/my-member'>
-					<view :style="{backgroundImage: 'url(https://admin.sinlu.net/weixinpl/shopping-temp/images/vip_card.png)'}"></view>
+					<view :style="{backgroundImage: 'url('+baseURL+'/weixinpl/shopping-temp/images/vip_card.png)'}"></view>
 					<view>
 						<text>会员卡</text>
 						<text>{{ Info.card }}张</text>
@@ -32,14 +32,14 @@
 			</view>
 			<view class="line">
 				<navigator hover-class="none">
-					<view :style="{backgroundImage: 'url(https://admin.sinlu.net/weixinpl/shopping-temp/images/couppon.png)'}"></view>
+					<view :style="{backgroundImage: 'url('+baseURL+'/weixinpl/shopping-temp/images/couppon.png)'}"></view>
 					<view>
 						<text>优惠券</text>
 						<text>{{ Info.coupon }}</text>
 					</view>
 				</navigator>
 				<navigator hover-class="none" url='/pages/setPassword/setPassword'>
-					<view :style="{backgroundImage: 'url(https://admin.sinlu.net/weixinpl/shopping-temp/images/paypwd.png)'}"></view>
+					<view :style="{backgroundImage: 'url('+baseURL+'/weixinpl/shopping-temp/images/paypwd.png)'}"></view>
 					<view>
 						<text>支付密码</text>
 						<text>设置/修改</text>
@@ -54,10 +54,13 @@
 <script>
 	import { TotalAssets, SwitchWork, UserCoupon, VipCard } from '@/common/api'
 	import { mapState } from 'vuex'
+	import { baseURL } from '@/common/utils/config'
+
 	export default {
 		name: 'myAssets',
 		data() {
 			return {
+				baseURL: baseURL,
 				Info: {},
 				params: {
 					uname: '',
@@ -98,6 +101,7 @@
 </script>
 
 <style lang="less">
+	@import '../../common/css/variables.less'; 
 .myAssets {
 	.head {
 		background-color:rgb(0, 153, 255);
@@ -121,7 +125,7 @@
 				.image {
 					width: 110upx;
 					height: 110upx;
-					background:url("https://admin.sinlu.net/weixinpl/shopping-temp/images/assets.png") no-repeat center center/contain;
+					background:url("@{URL}/weixinpl/shopping-temp/images/assets.png") no-repeat center center/contain;
 					margin: 0 auto;
 				}
 				.cash {

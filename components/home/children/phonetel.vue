@@ -19,6 +19,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '../../../common/css/variables.less'; 	
  .phone_tel{
      display: flex;
      border-top: 1px solid #eee;
@@ -30,7 +31,7 @@ export default {
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: 100% 100%;
-		background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/phone_.png");
+		background-image: url("@{URL}/weixinpl/shopping-temp/images/phone_.png");
 	 }
 	 .text {
 		 font-size: 26upx;

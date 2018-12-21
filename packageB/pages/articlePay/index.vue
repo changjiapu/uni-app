@@ -132,6 +132,7 @@
 </script>
 
 <style lang="less">
+@import '../../../common/css/variables.less';	
 uni-page-body, page { height: 100%;}
 .payList {
 	height: 100%;
@@ -148,7 +149,7 @@ uni-page-body, page { height: 100%;}
 			background-repeat: no-repeat;
 			background-size: contain;
 			background-position: left center;
-			background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/price.png");
+			background-image: url("@{URL}/weixinpl/shopping-temp/images/price.png");
 			padding-left: 45upx;
 			color:#ef6153
 		}
@@ -175,13 +176,13 @@ uni-page-body, page { height: 100%;}
 					background-size: contain;
 					background-position: left center;
 					&.vip {
-						background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/pay_vip.png");
+						background-image: url("@{URL}/weixinpl/shopping-temp/images/pay_vip.png");
 					}
 					&.balance {
-						background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/price.png");
+						background-image: url("@{URL}/weixinpl/shopping-temp/images/price.png");
 					}
 					&.weixin {
-						background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/weixin_pay.png");
+						background-image: url("@{URL}/weixinpl/shopping-temp/images/weixin_pay.png");
 					}
 				}
 				&::after {
@@ -308,7 +309,7 @@ uni-page-body, page { height: 100%;}
 							background-repeat: no-repeat;
 							background-position: center center;
 							background-size: 50upx 50upx;
-							background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/backspace.svg");
+							background-image: url("@{URL}/weixinpl/shopping-temp/images/backspace.svg");
 						}
 						&:nth-child(2) {
 							font-size: 30upx;

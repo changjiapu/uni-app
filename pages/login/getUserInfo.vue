@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="login-icon">
-			<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/xiaochengxu.png'></image>
+			<image :src="baseURL+'/weixinpl/shopping-temp/images/xiaochengxu.png'"></image>
 		</view>
 		<view class="loginBtnView">
 			<text>申请获取以下权限</text>
@@ -13,9 +13,11 @@
 </template>
 
 <script>
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		data() {
 			return {
+				baseURL: baseURL,
 				code: '',
 				parent_id: '',
 				weixin_name: '',
@@ -49,7 +51,7 @@
 				//用户的订单状态
 				var that = this;
 				uni.request({
-					url: that.$baseURL + '/api/Login/getsessionkey',
+					url: that.baseURL + '/api/Login/getsessionkey',
 					method: 'post',
 					data: userinfo,
 					dataType: 'json',
@@ -83,7 +85,7 @@
 				var that = this;
 				var user = this.userInfo;
 				wx.request({
-					url: that.$baseURL + '/api/Login/authlogin',
+					url: that.baseURL + '/api/Login/authlogin',
 					method: 'post',
 					data: user,
 					header: {

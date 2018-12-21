@@ -26,7 +26,7 @@
 				<block v-if="isloaded">
 					<navigator class='product-item' v-for="(item,index) in goods" :key="index" :url="'/pages/product_detail/product_detail?pid='+item.id">
 						<image v-if="dianpuleibie==5" class='default-img' :src='item.default_imgurl'></image>
-						<image v-if="dianpuleibie==1||dianpuleibie==2" class='default-img' :src='hostUrl+item.default_imgurl'></image>
+						<image v-if="dianpuleibie==1||dianpuleibie==2" class='default-img' :src='item.default_imgurl'></image>
 						<view class='product-item-msg'>
 							<view class='product-item-name'>{{item.name}}</view>
 							<view class='product-item-price'>

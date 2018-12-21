@@ -9,12 +9,12 @@
 				<swiper indicator-dots="true" indicator-color="#eee" indicator-active-color="#0099FF" style='height:750upx;' v-if="dianpuleibie==5">
 					<block v-if="product.product_img.length>0">
 						<swiper-item v-for="(item,index) in product.product_img" :key="index">
-							<image :src='hostUrl+item.imgurl' style='width:100%;height:100%'></image>
+							<image :src='item.imgurl' style='width:100%;height:100%'></image>
 						</swiper-item>
 					</block>
 					<block v-else>
 						<swiper-item>
-							<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/default.jpg' style='width:100%;height:100%'></image>
+							<image :src="baseURL+'/weixinpl/shopping-temp/images/default.jpg'" style='width:100%;height:100%'></image>
 						</swiper-item>
 					</block>
 				</swiper>
@@ -22,12 +22,12 @@
 				 v-if="dianpuleibie==1">
 					<block v-if="product_img.length>0">
 						<swiper-item v-for="(item,index) in product_img" :key='index'>
-							<image :src="hostUrl+item.banner_imgurl" style='width:100%;height:100%'></image>
+							<image :src="item.banner_imgurl" style='width:100%;height:100%'></image>
 						</swiper-item>
 					</block>
 					<block v-else>
 						<swiper-item>
-							<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/default.jpg' style='width:100%;height:100%'></image>
+							<image :src="baseURL+'/weixinpl/shopping-temp/images/default.jpg'" style='width:100%;height:100%'></image>
 						</swiper-item>
 					</block>
 				</swiper>
@@ -57,13 +57,13 @@
 					<view v-else class='right'>库存{{current_product.storenum}}件</view>
 					<view class='right'>已售{{current_product.sell_count+current_product.show_sell_count}}</view>
 					<view class='fenxiang' @click="bottomtankuang">
-						<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/share.png'></image>
+						<image :src="baseURL+'/weixinpl/shopping-temp/images/share.png'"></image>
 						<text>分享</text>
 					</view>
 				</view>
 				<!-- 店铺名称 -->
 				<view class='shop-title' v-if="dianpuleibie==1">
-					<image class='img' :src='hostUrl+shop_detail.logo' style='height:100upx;width:200upx;'></image>
+					<image class='img' :src='shop_detail.logo' style='height:100upx;width:200upx;'></image>
 					<text>{{shop_detail.shop_name}}</text>
 					<image @click='phone(shop_detail.username)' class='icon' src='/images/phone.png' style='height:50upx;width:50upx;margin-right:20upx'></image>
 				</view>
@@ -84,7 +84,7 @@
 						<text>优惠劵</text>
 					</view>
 					<view class="arrows-right">
-						<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/arrows-right.png' style='width:100%;height:100%'></image>
+						<image :src="baseURL+'/shopping-temp/images/arrows-right.png'" style='width:100%;height:100%'></image>
 					</view>
 				</view>
 				<view class='select-product' @click='showProductProperty'>
@@ -94,7 +94,7 @@
 
 					</view>
 					<view :class="['arrows-right', {active:hidden_property}]">
-						<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/arrows-right.png' style='width:100%;height:100%'></image>
+						<image :src="baseURL+'/weixinpl/shopping-temp/images/arrows-right.png'" style='width:100%;height:100%'></image>
 					</view>
 				</view>
 				<view class='product-property' :style="{display:hidden_property ? 'none' : ''}">
@@ -109,12 +109,19 @@
 					<view class='cont'>
 						<!--属性循环-->
 						<view class='neirong' v-if="dianpuleibie==5">
-							<view v-for="(item,index) in pros_data" :key="index" class='container' v-if="product.product_prices.length">
+							<!-- 			<view v-for="(item,index) in pros_data" :key="index" class='container' v-if="product.product_prices.length">
 								<text class="mingcheng">{{item.name}}</text>
 								<text :class="['kuanshi', {act: pros_data.act}]" v-for="(pros_data,idx) in item.parent_pros" :key="idx" @click='ProsChange(item, idx,index)'>
 									{{pros_data.name}}
 								</text>
-							</view>
+							</view> -->
+							<radio-group  v-for="(item,index) in pros_data" :key="index" class='container' v-if="product.product_prices.length"
+							 @change="radioChange($event, index)">
+								<text class="mingcheng">{{item.name}}</text>
+								<label class="radio" v-for="(pros_data,idx) in item.parent_pros" :key="idx">
+									<radio color='#CC3333' :value="pros_data.name" />{{pros_data.name}}
+								</label>
+							</radio-group>
 						</view>
 					</view>
 				</view>
@@ -161,7 +168,7 @@
 					</swiper>
 				</view> -->
 
-				<view class='product-evaluate'>
+				<view class='product-evaluate' v-if="is_open_evaluation">
 					<view class='evaluate-title'>
 						<text>评价</text>
 						<view>
@@ -172,10 +179,9 @@
 						<view class='evaluate-name'>
 							<view class='name'>{{evaluate.weixin_name}}</view>
 							<view class='img evaluate' style='width:150rpx;'>
-								<image mode='widthFix' src='/images/grade1.png' style='width:100%'></image>
-								<!-- 	<view :style='{width:evaluate.level/5*100+'%'}'>
-									<image mode='widthFix' src='/images/grade.png' style='width:150rpx;'></image>
-								</view> -->
+								<view :style="{width:evaluate.level/3*100+'%'}">
+									<image mode='widthFix' :src="baseURL+'/weixinpl/shopping-temp/images/grade.png'" style='width:150rpx'></image>
+								</view>
 							</view>
 						</view>
 						<view class='evaluate-detail'>
@@ -194,8 +200,7 @@
 						<view>共{{product.data.tol_level}}条评论</view>
 						<view class='right'>
 							<text>查看更多</text>
-							<view class='arrows-right'>
-							</view>
+							<text>></text>
 						</view>
 					</view>
 				</view>
@@ -214,14 +219,14 @@
 			<view class='bottom-btn2'>
 				<view class='shopping-cart' @click='linktoCart'>
 					<view class='img'>
-						<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/cart2.png' style='width:100%;height:100%;'></image>
+						<image :src="baseURL+'/weixinpl/shopping-temp/images/cart2.png'" style='width:100%;height:100%;'></image>
 					</view>
 					<text>购物车</text>
 				</view>
 				<view class='shopping-cart' @click='collect'>
 					<view class='img'>
-						<image v-if="product.data.collect" src='https://admin.sinlu.net/weixinpl/shopping-temp/images/collect.png' style='width:100%;height:100%;'></image>
-						<image v-else src='https://admin.sinlu.net/weixinpl/shopping-temp/images/collect1.png' style='width:100%;height:100%;'></image>
+						<image v-if="product.data.collect" :src="baseURL+'/weixinpl/shopping-temp/images/collect.png'" style='width:100%;height:100%;'></image>
+						<image v-else :src="baseURL+'/weixinpl/shopping-temp/images/collect1.png'" style='width:100%;height:100%;'></image>
 					</view>
 					<text>收藏</text>
 				</view>
@@ -247,13 +252,13 @@
 					<view class='share'>
 						<button class='btn' open-type="share">
 							<view>
-								<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/wechat.png'></image>
+								<image :src="baseURL+'/weixinpl/shopping-temp/images/wechat.png'"></image>
 							</view>
 							<text>分享给朋友</text>
 						</button>
 						<view class='btn' @click='ontophaibao'>
 							<view>
-								<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/erweima.png'></image>
+								<image :src="baseURL+'/weixinpl/shopping-temp/images/erweima.png'"></image>
 							</view>
 							<text>生成商品海报</text>
 						</view>
@@ -304,9 +309,8 @@
 </template>
 
 <script>
-	import {
-		mapState
-	} from 'vuex'
+	import { mapState } from 'vuex'
+	import { baseURL } from '@/common/utils/config'
 	import {
 		getProductInfo,
 		getProductOpenLabel,
@@ -322,6 +326,7 @@
 	export default {
 		data() {
 			return {
+				baseURL: baseURL,
 				detail: {
 					nodes1: '', //详情
 					nodes2: '', //规格
@@ -330,7 +335,6 @@
 				flag: false,
 				address: '',
 				str: '',
-				hostUrl: 'https://admin.sinlu.net',
 				product: {
 					data: {},
 					product_prices: [],
@@ -388,6 +392,7 @@
 				maskHidden: true,
 				showTabBar: '',
 				renew_id: '', //默认值为空,有值代表重续费专区进入详情页
+				parent_id: '' //推举人id
 			};
 		},
 		onLoad(options) {
@@ -405,10 +410,10 @@
 				this.current_product.sell_count = res.data.data.sell_count; //当前页面产品的售量
 				this.current_product.show_sell_count = res.data.data.show_sell_count
 				this.product = res.data;
+				
 				res.data.pros_data.forEach(item => {
-					item.parent_pros.forEach((el, idx) => {
-						this.$set(el, 'act', false)
-					})
+					this.$set(item, 'act', false)
+					this.$set(item, 'list_u', '')
 				})
 				this.pros_data = res.data.pros_data //属性结构
 				this.remain_score = res.data.remain_score,
@@ -446,6 +451,8 @@
 						this.pay_type = res.data.data.pay_type, //产品专属支付方式
 						this.extend_money = res.data.data.extend_money, // 首次推广奖励
 						this.is_integral_product = res.data.data.is_integral_product //积分产品
+					this.parent_id = res.data.data.parent_id
+					this.is_open_evaluation=res.data.data.is_open_evaluation
 				}
 			})
 			//满送活动
@@ -504,15 +511,7 @@
 				if (res.data.length == 0) {
 					return
 				}
-				for (var i = 0; i < res.data.length; i++) {
-					if (res.data[i].discussimg) {
-						for (var k = 0; k < res.data[i].discussimg.length; k++) {
-							if (res.data[i].discussimg[k]) {
-								res.data[i].discussimg[k] = this.hostUrl + '/weixinpl' + res.data[i].discussimg[k].replace(/\.\./, '');
-							}
-						}
-					}
-				}
+
 				this.evaluate = res.data[0] ? res.data[0] : ''
 			})
 		},
@@ -606,17 +605,18 @@
 				this.buy_count = e.detail.value
 			},
 			//选择商品属性
-			ProsChange(item, idx, index) {
-				item.parent_pros[idx].act = !item.parent_pros[idx].act
-				console.log(item.parent_pros[idx].act)
-				if (this.dianpuleibie == 5) {
-					for (let a of item.parent_pros) {
-						if (a.act == true&!this.pros_arry.includes(a.name)) {
-							this.pros_arry.push(a.name)
-						}
-					}
+			radioChange(e, index) {
+				console.log(e, index)
+				this.pros_data[index].act = true
+				let array_list = this.pros_data
+				array_list[index].list_u = e.detail.value
+				console.log(array_list)
+				let pros_arry = []
+				for (const item of array_list) {
+					pros_arry.push(item.list_u)
 				}
-				var str = this.pros_arry.join('-')
+				this.pros_arry = pros_arry
+				var str = pros_arry.join('-')
 				console.log(str)
 				this.str = str
 				var _current_product = {}
@@ -680,25 +680,15 @@
 				var pros_data_length = this.pros_data.length; //分类的长度
 				var pros_arry_length = this.pros_arry.length; //选择的长度  被选中的属性
 				var need_score = '0'
-				if (pros_data_length != pros_arry_length) {
-					for (var i = 0; i < this.pros_data.length; i++) {
-						var y = '';
-						for (var a = 0; a < this.pros_data[i].parent_pros.length; a++) {
-							for (var k = 0; k < this.pros_arry.length; k++) {
-								if (this.pros_data[i].parent_pros[a].name == this.pros_arry[k]) {
-									y = 1;
-								}
-							}
-						}
-						if (y != 1) {
-							uni.showModal({
-								title: '提示',
-								content: "请选择" + this.pros_data[i].name,
-								showCancel: false
-							})
-							return;
-							break;
-						}
+				console.log(this.pros_data)
+				for (const item of this.pros_data) {
+					if (!item.act) {
+						uni.showModal({
+							title: '请选择',
+							content: '请选择' + item.name,
+							showCancel: false
+						})
+						return;
 					}
 				}
 				//没有属性的产品
@@ -786,6 +776,12 @@
 					url: '/pages/index/index?current_page=' + 'cart'
 				})
 			},
+			// 跳转到更多评论的页面
+			gotoEvaluate() {
+				uni.navigateTo({
+					url: '/pages/evaluate/evaluate?id=' + this.product.data.id,
+				})
+			},
 			//打开关闭底部弹框
 			bottomtankuang() {
 				this.showtankuang = true
@@ -794,7 +790,8 @@
 			bottomClose() {
 				this.showtankuang = false
 			},
-			//领取优惠券
+			//领取优惠券视图容器
+
 			onCoupon(e) {
 				getCoupon({
 					coupon_id: e
@@ -819,29 +816,16 @@
 					var productid = e //拼团
 					var need_score_p = 0; //总需要积分
 					var need_score = 0; //总需要积分
-					var pros_data_length = this.pros_data.length; //分类的长度
-					var pros_arry_length = this.pros_arry.length; //选择的长度
-					if (pros_data_length != pros_arry_length) { //有属性
-						for (var i = 0; i < this.pros_data.length; i++) {
-							var y = '';
-							for (var a = 0; a < this.pros_data[i].parent_pros.length; a++) {
-								for (var k = 0; k < this.pros_arry.length; k++) {
-									if (this.pros_data[i].parent_pros[a].name == this.pros_arry[k]) {
-										y = 1;
-									}
-								}
-							}
-							if (y != 1) {
-								uni.showModal({
-									title: '请选择',
-									content: '请选择' + this.pros_data[i].name,
-									showCancel: false
-								})
-								return;
-							}
+					for (const item of this.pros_data) {
+						if (!item.act) {
+							uni.showModal({
+								title: '请选择',
+								content: '请选择' + item.name,
+								showCancel: false
+							})
+							return;
 						}
 					}
-
 					//没有属性的产品
 					if (this.current_product.need_score && this.pros_data.length == 0) { //是否需要积分
 						need_score_p = this.current_product.need_score * this.buy_count //需要的积分
@@ -855,7 +839,14 @@
 							return;
 						}
 					}
-
+					if (!this.parent_id) {
+						uni.showModal({
+							title: '提示',
+							content: "您没有推举人不能购买",
+							showCancel: false
+						})
+						return;
+					}
 
 					if ((this.group == 1 || this.group == 2) && productid) { //拼团
 						if (this.buy_count > this.groupInfo.stock) {
@@ -1168,23 +1159,14 @@
 		font-size: 28upx;
 	}
 
-	.container .kuanshi {
+	.container .radio {
 		display: block;
 		text-align: center;
 		line-height: 28upx;
 		margin-bottom: 5upx;
-		color: #555;
-		background-color: #e8e8e8;
 		margin-left: 20upx;
 		margin-top: 20upx;
 		padding: 0px 10px 10px 10px;
-		border-radius: 20upx;
-		float: left;
-	}
-
-	.container .act {
-		color: white;
-		background: red;
 	}
 
 	.product-property .product-count {

@@ -11,7 +11,7 @@
 				<text class='dsc'>{{data.placeholder||'搜索'}}</text>
 			</navigator>
 			<view class='classify'>
-				<image class="img" src='https://admin.sinlu.net/weixinpl/shopping-temp/images/classify.png'></image>
+				<image class="img" :src="baseURL+'/weixinpl/shopping-temp/images/classify.png'"></image>
 			</view>
 		</view>
 	</view>
@@ -19,6 +19,8 @@
 
 <script>
 	import uniIcon from "@/components/uni-icon.vue"
+	import { baseURL } from '@/common/utils/config'
+
 	export default {
 		name: "searchwithlocation",
 		components: {
@@ -32,7 +34,8 @@
 		},
 		data() {
 			return {
-				city: '东莞市'
+				city: '东莞市',
+				baseURL: baseURL
 			};
 		},
 		onLoad() {

@@ -145,6 +145,7 @@
 </script>
 
 <style lang="less">
+	@import '../../common/css/variables.less'; 
 	uni-page-body,
 	page {
 		height: 100%;
@@ -257,11 +258,11 @@
 										margin-left: 20upx;
 
 										&:first-of-type {
-											background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/edit.png");
+											background-image: url("@{URL}/weixinpl/shopping-temp/images/edit.png");
 										}
 
 										&:last-of-type {
-											background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/clear1.png");
+											background-image: url("@{URL}/weixinpl/shopping-temp/images/clear1.png");
 										}
 									}
 								}
@@ -284,7 +285,7 @@
 			&>navigator {
 				font-size: 22upx;
 				padding: 8upx 0 8upx 55upx;
-				background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/add.png") no-repeat left center/contain;
+				background: url("@{URL}/weixinpl/shopping-temp/images/add.png") no-repeat left center/contain;
 			}
 		}
 	}

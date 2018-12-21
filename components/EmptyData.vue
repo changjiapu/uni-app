@@ -13,6 +13,7 @@
 </script>
 
 <style lang="less">
+	@import '../common/css/variables.less';
 	.empty {
 		position: absolute;
 		top: 0;
@@ -33,7 +34,7 @@
 					background-repeat: no-repeat;
 					background-size: contain;
 					background-position: center center;
-					background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/noOrder.png");
+					background-image: url("@{URL}/weixinpl/shopping-temp/images/noOrder.png");
 				}
 			}
 			& > text {

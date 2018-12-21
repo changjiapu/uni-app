@@ -9,7 +9,7 @@
 			<view class="item" v-for="(item, index) in list" :key="index">
 				<view>
 					<view :class="['delete', {act: isEdit}]" @click="$emit('on-del',item)"><view></view></view>
-					<navigator :url="'/pages/product_detail/product_detail?pid='+item.id" hover-class="none" class="image" :style="{backgroundImage: item.default_imgurl ? 'url(https://adnim.sinlu.net'+item.default_imgurl+')' : 'url(https://admin.sinlu.net/weixinpl/shopping-temp/images/none.png)'}">
+					<navigator :url="'/pages/product_detail/product_detail?pid='+item.id" hover-class="none" class="image" :style="{backgroundImage: item.default_imgurl ? 'url('+item.default_imgurl+')' : 'url(' + baseURL + '/weixinpl/shopping-temp/images/none.png)'}">
 						<view></view>
 					</navigator>
 					<view class="dsc">
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		name: 'comtemp',
 		props: {
@@ -49,9 +50,10 @@
 				type: Boolean,
 				required: true
 			}
-		},		
+		},
 		data() {
 			return {
+				baseURL: baseURL,
 				isEdit: false
 			};
 		}
@@ -59,6 +61,7 @@
 </script>
 
 <style lang="less" scoped>
+@import '../../common/css/variables.less'; 
 .collect {
 	height: 100%;
 	display: flex;
@@ -73,12 +76,12 @@
 		padding: 0 15px;
 		font-size: 24upx;
 		.edit {
-			background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/edit.png") no-repeat center center/contain;
+			background: url("@{URL}/weixinpl/shopping-temp/images/edit.png") no-repeat center center/contain;
 			width: 36upx;
 			height: 36upx;
 			transition: background .2s ease-in;
 			&.act {
-				background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/edit_complete.png") no-repeat center center/contain;
+				background: url("@{URL}/weixinpl/shopping-temp/images/edit_complete.png") no-repeat center center/contain;
 			}
 		}
 	}
@@ -114,7 +117,7 @@
 						& > view {
 							width: 100%;
 							padding-top: 100%;
-							background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/delete_white.png") no-repeat center center/contain;
+							background: url("@{URL}/weixinpl/shopping-temp/images/delete_white.png") no-repeat center center/contain;
 						}
 					}
 					.image {

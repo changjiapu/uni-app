@@ -188,6 +188,7 @@
 </script>
 
 <style lang="less" scoped>
+	@import '../../common/css/variables.less';
 	page {
 		background-color: #f6f6f6;
 	}
@@ -290,7 +291,7 @@
 						background-repeat: no-repeat;
 						background-position: center;
 						background-size: 50upx 50upx;
-						background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/backspace.svg");
+						background-image: url("@{URL}/weixinpl/shopping-temp/images/backspace.svg");
 					}
 
 					&:nth-child(2) {

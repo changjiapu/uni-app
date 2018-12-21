@@ -11,11 +11,11 @@
 				<view>收货人： 某xx xxxxxx</view>
 				<view>收货地址： xx省xx市xxxxx</view>
 			</view>
-			<image class='arrows-right' src='https://admin.sinlu.net/weixinpl/shopping-temp/images/arrows-right.png'></image>
+			<image class='arrows-right' :src="baseURL+'/weixinpl/shopping-temp/images/arrows-right.png'"></image>
 		</navigator>
 		<view class='TJpeople '>{{data.exp_user_name}}</view>
 		<view class='product'>
-			<image :src='hostUrl+data.default_imgurl'></image>
+			<image :src='data.default_imgurl'></image>
 			<view class='product-info'>
 				<text>{{data.package_name}}</text>
 				<text>￥{{data.price}}</text>
@@ -28,7 +28,7 @@
 			</view>
 			<view class='list-msg2' @clikc='bindShowMsg'>
 				<text>{{tihuoWay}}</text>
-				<image style='height:20rpx;width:20rpx;' src='https://admin.sinlu.net/weixinpl/shopping-temp/images/down.png'></image>
+				<image style='height:20rpx;width:20rpx;' :src="baseURL+'/weixinpl/shopping-temp/images/down.png'"></image>
 			</view>
 			<view class='list-msg1'>
 				<text>运费</text>
@@ -44,7 +44,7 @@
 				</block>
 			</view>
 		</view>
-		<button @click='buy'>立即付款</button>
+		<button @click='buy' style="border-radius:0;">立即付款</button>
 	</view>
 </template>
 
@@ -60,13 +60,15 @@
 		savePackages
 	} from '@/common/api/packageA.js'
 	import uniIcon from "@/components/uni-icon.vue"
+	import { baseURL } from '@/common/utils/config'
+
 	export default {
 		components: {
 			uniIcon
 		},
 		data() {
 			return {
-				hostUrl: "https://admin.sinlu.net",
+				baseURL: baseURL,
 				select: false,
 				address: '',
 				tihuoWay: '选择门店自提',

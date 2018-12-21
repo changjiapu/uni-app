@@ -2,18 +2,24 @@
 <view class='tabBar'>
     <view class='bt1'>
         <button class='bt3' open-type="contact">
-            <image class="img" src='https://admin.sinlu.net/weixinpl/shopping-temp/images/zxKF.png'></image>
+            <image class="img" :src="baseURL+'/weixinpl/shopping-temp/images/zxKF.png'"></image>
         </button>
     </view>
     <view class='bt2'  bindtap='call_phone'>
-        <image class="img" src='https://admin.sinlu.net/weixinpl/shopping-temp/images/phone_2.png'></image>
+        <image class="img" :src="baseURL+'/weixinpl/shopping-temp/images/phone_2.png'"></image>
     </view>
 </view>
 </template>
 
 <script>
+	import { baseURL } from '@/common/utils/config'
+
 	export default {
-		
+		data () {
+			return {
+				baseURL: baseURL
+			}
+		}
 	}
 </script>
 

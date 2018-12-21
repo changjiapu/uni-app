@@ -5,6 +5,8 @@
 			<banner v-if="item.name === 'banner'" :data="item"></banner>
 			<!-- 搜索框 -->
 			<searchwithlocation v-if="item.name ==='search_with_location'||item.name==='search'" :data="item"></searchwithlocation>
+			<!-- 图片广告 -->
+			<image-ad v-if="item.name === 'image_ad'" :data="item"></image-ad>
 			<!-- category -->
 			<category-nav v-if="item.name === 'category'" :data="item"></category-nav>
 			<!-- 通知 -->
@@ -70,6 +72,7 @@
 	import RightTabBar from '@/components/home/children/right_tabBar.vue'
 	import VideoSection from '@/components/home/children/videosection.vue'
 	import TextSection from '@/components/home/children/textsection.vue'
+	import ImageAd from '@/components/home/children/image_ad.vue'
 	export default {
 		name: "home",
 		props: {
@@ -99,7 +102,8 @@
 			UndermallHome,
 			RightTabBar,
 			VideoSection,
-			TextSection
+			TextSection,
+			ImageAd
 			
 		}
 	}

@@ -34,12 +34,17 @@
 
 <script>
 	import { paySet, payType, personalPay, productVirtual } from '@/common/api'
+	import { packagePay } from '@/common/api/packageA'
 	import { mapState } from 'vuex'
 	export default {
 		name: 'paylist',
 		props: {
 			detail: {
 				type: Object,
+				required: true
+			},
+			tag: {
+				type: Number,
 				required: true
 			}
 		},
@@ -132,15 +137,17 @@
 					mask: true,
 					title: '支付中'
 				})
-					personalPay({...this.params, ...this.payParams, ...o}).then(res => {
-						console.log(res)
+				let toPayWay
+				this.tag === 1 ? toPayWay = personalPay : toPayWay = packagePay,
+					toPayWay({...this.params, ...this.payParams, ...o}).then(res => {
+						console.log(JSON.stringify(res))
 						if (this.payParams.pay_id === 3) {
 							uni.hideLoading()
-							if (res.data.status) {
+							if (res.data.code === 400000 || !res.data.code) {
 								productVirtual({ batchcode: this.detail.batchcode, ...this.params })
 								uni.showModal({
 									title: '',
-									content: res.data.data.data,
+									content: this.tag === 1 ? res.data.data.data : res.data.data,
 									showCancel: false,
 									success: res => {
 										if (res.confirm) {
@@ -153,12 +160,11 @@
 							} else {
 								uni.showModal({
 									title: '',
-									content: res.data.msg,
+									content: this.tag === 1 ? res.data.msg : res.data.data,
 									showCancel: false
 								})
 							}
 						} else if (this.payParams.pay_id === 4) {
-							//console.log(JSON.stringify(res))
 							 if (res.data.data.state !== 0) {
 								 uni.requestPayment({
 									 provider: 'wxpay',
@@ -170,11 +176,6 @@
 								 	},
 								 	fail: err => {
 										console.log(JSON.stringify(err))
-// 								 		uni.showModal({
-// 								 			title: '提示',
-// 								 			content: JSON.stringify(err),
-// 								 			showCancel: false
-// 								 		})
 								 	}
 								 })
 							 } else {
@@ -219,6 +220,7 @@
 </script>
 
 <style lang="less" scoped>
+@import '../common/css/variables.less'; 	
 .alertPay, .statusbar, .list {
 	position: fixed;	
 	left: 0;
@@ -264,10 +266,10 @@
 				line-height: 1.4;
 				border: none;
 				&.default {
-					background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/price.png")
+					background-image: url("@{URL}/weixinpl/shopping-temp/images/price.png")
 				}
 				&.weixin {
-					background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/weixin_pay.png");
+					background-image: url("@{URL}/weixinpl/shopping-temp/images/weixin_pay.png");
 				}
 				&:last-of-type {
 					&::after {
@@ -401,7 +403,7 @@
 							background-repeat: no-repeat;
 							background-position: center center;
 							background-size: 50upx 50upx;
-							background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/backspace.svg");
+							background-image: url("@{URL}/weixinpl/shopping-temp/images/backspace.svg");
 						}
 						&:nth-child(2) {
 							font-size: 30upx;

@@ -16,7 +16,7 @@
 		</view>
 		<view class='money'>
 			<view class='left'>
-				<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/money.png'></image>
+				<image :src="baseURL+'/weixinpl/shopping-temp/images/money.png'"></image>
 				<text>消费总额</text>
 			</view>
 			<view class="right">￥{{detail.member.total_money}}</view>
@@ -60,12 +60,12 @@
 </template>
 
 <script>
-	import {
-		TeamPerson
-	} from '@/common/api/packageB.js'
+	import { TeamPerson } from '@/common/api/packageB.js'
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		data() {
 			return {
+				baseURL: baseURL,
 				loaded: false,
 				detail: {}
 			};

@@ -2,7 +2,7 @@
 	<view class="artlist" v-if="imgList.length || artlist.length">
 		<swiper class="swiper" indicator-color="#eee" indicator-active-color="#0099FF" :indicator-dots="true" :autoplay="true" :interval="4000" :duration="500" :circular="true">
 		  <swiper-item class="swiper-item" v-for="(item, index) in imgList" :key="index">
-			<image class="img" :src="'https://admin.sinlu.net/public/static/plat/public/uploads/'+item.img"></image>
+			<image class="img" :src="baseURL+'/public/static/plat/public/uploads/'+item.img"></image>
 		  </swiper-item>
 		</swiper>
 		<view class='middle'>文章列表</view>
@@ -21,10 +21,12 @@
 
 <script>
 	import { articleSlide, articleList, articleOrder } from '@/common/api'
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		name: 'artcleList',
 		data () {
 			return {
+				baseURL: baseURL,
 				imgList: [],
 				artlist: []
 			}
@@ -79,6 +81,7 @@
 </script>
 
 <style lang="less">
+@import '../../../common/css/variables.less'; 	
 .artlist {
 	.swiper{
 		width: 750upx;
@@ -96,7 +99,7 @@
 	  background-size: 50upx 50upx;
 	  padding-left: 90upx;
 	  background-position: 30upx center;
-	  background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/artlist.png");
+	  background-image: url("@{URL}/weixinpl/shopping-temp/images/artlist.png");
 	}
 	.container1 {
 	  display: flex;

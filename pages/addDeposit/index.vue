@@ -12,18 +12,20 @@
 							<text>手机号码</text>
 							<input type="text" name="phone" v-model="params.phone" placeholder="请填写您的手机号码"/>
 						</view>
-						<view>
-							<text>开户行</text>
-							<input type="text" name="account_bankname" placeholder="请填写您的开户行" v-model="params.account_bankname"/>
-						</view>
-						<view>
-							<text>所属支行</text>
-							<input type="text" name="account_address" placeholder="开户行所属支行" v-model="params.account_address"/>
-						</view>
-						<view>
-							<text>银行卡号</text>
-							<input type="text" name="account" v-model="params.account" placeholder="请输入用户名"/>
-						</view>
+						<block v-if= "params.type === 4">
+							<view>
+								<text>开户行</text>
+								<input type="text" name="account_bankname" placeholder="请填写您的开户行" v-model="params.account_bankname"/>
+							</view>
+							<view>
+								<text>所属支行</text>
+								<input type="text" name="account_address" placeholder="开户行所属支行" v-model="params.account_address"/>
+							</view>
+							<view>
+								<text>银行卡号</text>
+								<input type="text" name="account" v-model="params.account" placeholder="请输入用户名"/>
+							</view>
+						</block>
 					</view>
 				</view>
 				<view class="btn">
@@ -37,7 +39,7 @@
 
 <script>
 	import graceChecker from '@/common/utils/graceChecker'
-	import { SavePayAccount } from '@/common/api'
+	import { SavePayAccount, MyAlipay } from '@/common/api'
 	import { mapState } from 'vuex'
 	import KeyBoard from '@/components/keyboard'
 	
@@ -61,6 +63,11 @@
 				}
 			}
 		},
+		onLoad (opt) {
+			this.params.type = +opt.type
+			this.params.user_id = this.userInfo.id
+			if (opt.action === 'update') this.cardDetail()
+		},
 		computed: {
 			...mapState([
 				'userInfo'
@@ -68,15 +75,18 @@
 		},
 		methods: {
 			ReGister (e) {
-				const rule = [
+				let rule = []
+				const normal = [
 					{ name: "name", checkType : "notnull", errorMsg: "请输入真实姓名" },
-					{ name: "phone", checkType : "phoneno", errorMsg: "请输入正确的手机号" },
+					{ name: "phone", checkType : "phoneno", errorMsg: "请输入正确的手机号" }
+				]
+				const oL =[
 					{ name: "account_bankname", checkType: "notnull", errorMsg: "请填写开户行" },
 					{ name: "account_address", checkType: "notnull", errorMsg: "请填写开户行支行" },
 					{ name: "account", checkType: "string", checkRule: "16,19" , errorMsg: "请填写正确的银行卡号" }
 				]
+				this.params.type === 1 ? rule = normal : rule = normal.concat(oL)
 				const formData = e.detail.value
-				console.log(formData)
 				const checkRes = graceChecker.check(formData, rule)
 				 if (checkRes) {
 					 this.keyShow = true
@@ -86,10 +96,32 @@
 			},
 			addAccount (password) {
 				this.params.pw = password
-				this.params.user_id = this.userInfo.id
 				SavePayAccount(this.params).then(res => {
 					if (!res.data.code) {
-						uni.navigateBack()
+						uni.showModal({
+							title: '',
+							content: res.data.data,
+							showCancel: false,
+							complete: res => {
+								uni.navigateBack()
+							}
+						})
+					}
+				})
+			},
+			cardDetail () {
+				uni.showLoading()
+				MyAlipay({ user_id: this.params.user_id, type: this.params.type}).then(res => {
+					uni.hideLoading()
+					let i = 0
+					const list = res.data.data.data
+					if (!res.data.code) {
+						for (let item in this.params) {
+							if (i < list.length) {
+								this.params[item] = res.data.data.data[i].real_data
+								i++
+							}
+						}
 					}
 				})
 			}

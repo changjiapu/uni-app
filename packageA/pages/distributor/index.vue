@@ -44,11 +44,14 @@
 	import { Upgrade } from '@/common/api/packageA'
 	import AlertRich from '@/components/richtext'
 	import { mapState } from 'vuex'
+	import { baseURL } from '@/common/utils/config'
+
 	export default {
 		name: 'Distributor',
 		components: { AlertRich },
 		data() {
 			return {
+				baseURL: baseURL,
 				list: [],
 				agre: '',
 				showAgre: false,
@@ -83,7 +86,7 @@
 				'userInfo'
 			]),
 			avatarURL () {
-				const IMG = 'https://admin.sinlu.net/weixinpl/shopping-temp/images/default.png'
+				const IMG = this.baseURL+'/weixinpl/shopping-temp/images/default.png'
 				if(this.userInfo.avatarUrl) {
 					return this.userInfo.avatarUrl === null ? IMG : this.userInfo.avatarUrl
 				} else {
@@ -95,6 +98,7 @@
 </script>
 
 <style lang="less">
+@import '../../../common/css/variables.less'; 
 uni-page-body, page { height: 100%;}	
 .distributor {
 	display: flex;
@@ -164,7 +168,7 @@ uni-page-body, page { height: 100%;}
 				background-repeat: no-repeat;
 				background-position: left center;
 				background-size: 35upx 35upx;
-				background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/agre.png");
+				background-image: url("@{URL}/weixinpl/shopping-temp/images/agre.png");
 				padding-left: 40upx;
 				color:#0099FF
 			}

@@ -1,7 +1,7 @@
 <template>
 	<view class="integral">
 		<view class="head">
-			<image src="https://admin.sinlu.net/weixinpl/images/jifen.jpg" mode="widthFix"></image>
+			<image :src="baseURL+"/weixinpl/images/jifen.jpg"" mode="widthFix"></image>
 		</view>
 		<button class="receive" @click='singOnclik'>{{todayStatus||'点击签到'}}</button>
 		<view class='middle'>
@@ -64,9 +64,11 @@
 		scoreSign,
 		singOnclik
 	} from "@/common/api"
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		data() {
 			return {
+				baseURL: baseURL,
 				card_id: '',
 				result: '',
 				score: '',

@@ -2,7 +2,7 @@
 	<view class="refund">
 		<view class="list">
 			<view class="item" v-for="(item, index) in Info.shop_orders" :key="index">
-				<view :style="{backgroundImage: 'url(https://admin.sinlu.net'+item.default_imgurl+')'}"></view>
+				<view :style="{backgroundImage: 'url('+item.default_imgurl+')'}"></view>
 				<view>
 					<view>
 						<view>
@@ -23,7 +23,7 @@
 			<text v-if="userInfo.sendstatus === 2">申请退款</text>
 		</view>
 		<view class="reason">
-			<textarea class="text" v-model="params.reason" placeholder="请填写申请售后的原因，不超过200字" auto-focus/>
+			<textarea class="text" v-model="reason.reason" placeholder="请填写申请售后的原因，不超过200字" auto-focus/>
 		</view>
 		<view class="btn">
 			<button type="warn" @tap="refund">提交</button>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-	import { orderDetail, Refund } from '@/common/api'
+	import { orderDetail, Refund, BagOrderDetail } from '@/common/api'
 	import { mapState } from 'vuex'
 	export default {
 		name: 'refund',
@@ -52,7 +52,11 @@
 		onLoad(opt) {
 			this.params.batchcode = opt.batchcode
 			this.params.user_id = this.userInfo.id
-			this.getInfo()
+			if (+opt.tag === 2) {
+				this.getBagInfo()
+			} else {
+				this.getInfo()
+			}
 		},
 		methods: {
 			getInfo() {
@@ -64,6 +68,45 @@
                     this.Info = data
 				})
 			},
+			getBagInfo () {
+				uni.showLoading()
+				BagOrderDetail(this.params).then(res => {
+					uni.hideLoading()
+					if (!res.data.code) {
+						const data = res.data.data[0]
+						let info = {}
+						info.CouponPrice = data.totalprice
+						info.address = data.location_p + data.location_c + data.location_a + data.address
+						info.aftersale_type = 0
+						info.batchcode = data.batchcode
+						info.createtime = data.createtime
+						info.confirm_sendtime = data.confirm_sendtime
+						info.decrease_money = 0
+						info.deductible_money = 0
+						info.expressnum = data.expressnum
+						info.id = data.p_id
+						info.is_discuss = 0
+						info.pay_currency = 0
+						info.pay_money = data.package_price
+						info.paystatus = data.paystatus
+						info.phone = data.phone
+						info.pid = data.p_id
+						info.pname = data.package_name
+						info.rcount = data.rcount
+						info.return_status = data.return_status
+						info.sendMoney = 0
+						info.sendstatus = data.sendstatus
+						info.shop_orders = [
+							{ default_imgurl: data.default_head_imgurl.replace('https://', ''), pname: data.package_name, rcount: data.rcount, now_price: data.package_price }
+						]
+						info.status = 0
+						info.totalprice = data.totalprice
+						info.user_name = ''
+						this.Info = info
+						
+					}
+				})
+			},			
 			refund () {
 				Refund(Object.assign({}, this.params, this.reason)).then(res => {
 					if (res.data.code === 400068) {
@@ -76,6 +119,12 @@
 									uni.navigateBack()
 								}
 							}
+						})
+					} else {
+						uni.showModal({
+							title: '',
+							content:res.data.message,
+							showCancel: false
 						})
 					}
 				})

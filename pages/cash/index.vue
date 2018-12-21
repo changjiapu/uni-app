@@ -10,8 +10,8 @@
 							<text>{{ item.phone }}</text>
 						</view>
 					</view>
-					<view>
-							<radio :value="item.name" />
+					<view class="radio">
+						<radio :value="item.type" :checked="item.checked" />
 					</view>
 				</label>
 			</radio-group>
@@ -19,16 +19,16 @@
 		<view class="list" v-if="payList.length">
 			<view class="title">其他提现方式</view>
 			<view class="pay">
-				<view @tap="toBind(item.type)" :class="['item', {vip: item.type === 4, weixin: item.id === 1}]" v-for="(item, index) in payList" :key="index">
+				<view @tap="toBind(item.type)" :style="{backgroundImage: 'url('+item.images+')'}" class="item" v-for="(item, index) in payList" :key="index">
 					<view>{{ item.name }}</view>
 					<view>{{ item.bind }}</view>
 				</view>
 			</view>
 		</view>
 		<view class="control">
-			<button type="default" size="mini">提现记录</button>
-			<button type="primary" size="mini">提现账号管理</button>
-			<button type="warn" size="mini">确认提现账号</button>
+			<button type="default" size="mini" @tap="cashLog">提现记录</button>
+			<button type="primary" size="mini" @tap="mAccount">提现账号管理</button>
+			<button type="warn" size="mini" @tap="cash">确认提现账号</button>
 		</view>
 	</view>
 </template>
@@ -42,12 +42,23 @@
 			return {
 				payList: [],
 				card: [],
-				user_id: ''
+				user_id: '',
+				params: {
+					name: '',
+					type: ''
+				}
 			}
 		},
 		onLoad() {
 			this.user_id = this.userInfo.id
+		},
+		onShow() {
 			this.getList()
+
+		},
+		deactivated() {
+			this.params.name = ''
+			this.params.type = ''
 		},
 		methods: {
 			getList () {
@@ -57,8 +68,11 @@
 					uni.hideLoading()
 					if (!res.data.code) {
 						this.payList = res.data.data.bind
-						const card = res.data.data.data
-						console.log(card)
+						res.data.data.data.forEach(item => { 
+							item.checked = false
+							item.type = item.type.toString()
+						})
+						this.card = res.data.data.data
 						if (!res.data.data.data.length) {
 							uni.showModal({
 								title: '',
@@ -70,16 +84,52 @@
 				})
 			},
 			toBind (type) {
-				switch (type) {
-					case 4:
+				if ([1,4].includes(type)) {
 					uni.navigateTo({
-						url: "/pages/addDeposit/index"
+						url: `/pages/addDeposit/index?type=${type}&action=add`
 					})
-					break;
-				} 
+				}
+			},
+			cashLog () {
+				uni.navigateTo({
+					url: '/packageA/pages/cashLog/index'
+				})
+			},
+			mAccount () {
+				if (this.card.length) {
+					uni.navigateTo({
+						url: `/packageA/pages/bindAccount/index?card=${JSON.stringify(this.card)}`
+					})
+				} else {
+					uni.showModal({
+						title: '',
+						content: '您还没有绑定账号',
+						showCancel: false
+					})
+				}
 			},
 			radioChange(e) {
-				console.log(e)
+				const card = this.card
+				card.forEach(item => {
+					item.checked = item.type === e.detail.value
+					if (item.type === e.detail.value) {
+						this.params.type = item.type
+						this.params.name = item.name
+					}
+				})
+				this.card = card
+			},
+			cash () {
+				if (this.params.type) {
+					uni.navigateTo({
+						url: `/packageA/pages/cashWay/index?name=${this.params.name}&type=${this.params.type}`
+					})
+				} else {
+					uni.showToast({
+						title: '请选择提现方式',
+						icon: 'none'
+					})
+				}
 			}
 		},
 		computed:{
@@ -95,6 +145,7 @@
 	.card {
 		padding: 0 15px;
 		background-color:white;
+		margin-bottom: 10px;
 		.item {
 			padding: 15upx 0;
 			display: flex;
@@ -132,6 +183,10 @@
 					}
 				}
 			}
+			.radio {
+				display: flex;
+				align-items: center;
+			}
 		}
 	}
 	.list {
@@ -140,6 +195,8 @@
 		background-color:white;
 		font-size: 30upx;
 		padding: 0;
+		box-sizing: border-box;
+		overflow: hidden;
 		.title {
 			text-align: center;
 			height: 80upx;
@@ -170,15 +227,6 @@
 						color:#666;
 						padding-right: 25upx;
 					}
-				}
-				&.default {
-					background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/price.png")
-				}
-				&.weixin {
-					background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/weixin_pay.png");
-				}
-				&.vip {
-					background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/pay_vip.png");
 				}
 				&:last-of-type {
 					&::after {

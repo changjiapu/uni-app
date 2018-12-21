@@ -4,7 +4,7 @@
 			<view class="uni-padding-wrap uni-common-mt" v-for="(item, index) in list" :key="index">
 				<view class="uni-card">
 					<view class="uni-card-header uni-card-media">
-						<image class="uni-card-media-logo" src="https://admin.sinlu.net/weixinpl/shopping-temp/images/package.png"></image>
+						<image class="uni-card-media-logo" :src="+baseURL+'/weixinpl/shopping-temp/images/package.png'"></image>
 						<view class="uni-card-media-body">
 							<text class="uni-card-media-text-top">{{ item.package_name }}</text>
 							<text class="uni-card-media-text-bottom">暂无描述信息</text>
@@ -22,11 +22,14 @@
 <script>
 	import { packageList } from '@/common/api/packageA'
 	import { mapState } from 'vuex'
+	import { baseURL } from '@/common/utils/config'
+	
     export default {
 		name: 'pckageList',
         data() {
             return {
-				list: []
+							baseURL: baseURL,
+				      list: []
             }
         },
 		onLoad (opt) {

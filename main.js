@@ -10,7 +10,6 @@ Vue.config.productionTip = false
 App.mpType = 'app'
 Vue.prototype.$gotoLogin=GolbalMethod.gotoLogin
 Vue.prototype.$store = store
-Vue.prototype.$baseURL = 'https://admin.sinlu.net'
 Vue.prototype.$LinkTo = GolbalMethod.LinkTo
 Vue.prototype.appid = appid
 
