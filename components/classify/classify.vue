@@ -81,6 +81,7 @@
 				getClassifyProduct({
 					type_all: 1,
 					pages: _this.pages,
+					user_id:this.userInfo.id||'',
 					uname: this.userInfo.uname || '',
 					ticket: this.userInfo.ticket || '',
 					type_id: res.data.data[0].id
@@ -101,6 +102,7 @@
 					getClassifyProduct({
 						type_all: 1,
 						pages: 1,
+						user_id:this.userInfo.id||'',
 						uname: this.userInfo.uname || '',
 						ticket: this.userInfo.ticket || '',
 						type_id: this.groups[this.currentIndex].id,
@@ -126,6 +128,7 @@
 
 				getClassifyProduct({
 					type_all: 1,
+					user_id:this.userInfo.id||'',
 					uname: this.userInfo.uname || '',
 					ticket: this.userInfo.ticket || '',
 					type_id: index === '' ? this.groups[this.currentIndex].id : this.groups[this.currentIndex].son[index].id,
@@ -142,6 +145,7 @@
 				this.isloaded = false
 				getClassifyProduct({
 					type_all: 1,
+					user_id:this.userInfo.id||'',
 					uname: this.userInfo.uname || '',
 					ticket: this.userInfo.ticket || '',
 					type_id: this.groups[this.currentIndex].id,

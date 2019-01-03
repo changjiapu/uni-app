@@ -153,10 +153,10 @@
 							}
 							confirmBtn(params).then(res => {
 								uni.hideLoading()
-								if (res.code === 400000) {
+								if (res.code === 400000 || !res.data.status) {
 									uni.showModal({
 										title: '',
-										content: res.data.message,
+										content: '收货成功',
 										showCancel: false,
 										complete() {
 											data.sendstatus = 2
@@ -165,7 +165,7 @@
 								} else {
 									uni.showModal({
 										title: '',
-										content: res.data.message,
+										content: '收货失败',
 										showCancel: false
 									})
 								}

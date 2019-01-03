@@ -8,7 +8,7 @@
             <view class='name'>{{userInfo.nickName || ''}}(ID:{{userInfo.id || '未登录'}})</view>
         </view>
         <view class='personal_card'>
-            <view class='name' v-for="(item, index) in card" :key="index">
+            <view class='name' v-for="(item, index) in userInfo.rank" :key="index">
                 <image :src="item.images" class="img"></image>
                 <text class="text">{{item.name}}</text>
             </view>
@@ -71,7 +71,6 @@
 		},
 		methods: {
 			GoTo(item) {
-				console.log(this.dianpuleibie)
 				this.$gotoLogin().then(res => {
 					if (res) {
 						switch (item.id) {

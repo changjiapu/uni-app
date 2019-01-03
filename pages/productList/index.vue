@@ -87,6 +87,7 @@
 		onLoad(opt) {
 			if (opt.keyword) this.params.search = opt.keyword
 			if (opt.typeid) this.params.type_id = opt.typeid
+			this.params.user_id = this.userInfo.id
 			this.loadData()
 			this.getGroup()
 			setTimeout(()=> {
@@ -135,7 +136,8 @@
 					search: '',
 					type_id: '',
 					min: '',
-					max:''
+					max:'',
+					user_id: ''
 				}
 			}
 		},

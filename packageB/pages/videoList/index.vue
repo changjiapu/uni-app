@@ -1,7 +1,7 @@
 <template>
 	<view class="videoList">
 		<view v-for="(item, index) in video_list" :key='index'>
-		  <video class="video" :poster="'https://admin.sinlu.net' + item.back_picture" :vid="item.vid" :autoplay="isfalse" :playerid="'myVideo_' + item.id"></video>
+		  <video class="video" :poster="item.back_picture" :vid="item.vid" :autoplay="isfalse" :playerid="'myVideo_' + item.id"></video>
 		  <view class='middle'>
 			<view class='left' @click="videoDetail(item)">{{item.title}}</view>
 			<view class='right'>
@@ -80,6 +80,7 @@ export default {
 </script>
 
 <style lang="less">
+@import '../../../common/css/variables.less';	
 .videoList {
 	.video { width: 100% }
 	.middle {
@@ -92,7 +93,7 @@ export default {
 			font-size: 36upx;
 			font-weight: bold;
 			color: #607D8B;
-			background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/share_t.png") no-repeat left center/35upx 35upx;
+			background: url("@{URL}/weixinpl/shopping-temp/images/share_t.png") no-repeat left center/35upx 35upx;
 			padding-left: 58upx;
 		}
 		.img {
@@ -117,14 +118,14 @@ export default {
 				.share {
 					width: 50upx;
 					height: 50upx;
-					background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/share_.png") no-repeat center center/contain;					
+					background: url("@{URL}/weixinpl/shopping-temp/images/share_.png") no-repeat center center/contain;					
 				}
 				.collect {
 					width: 45upx;
 					height: 45upx;
 					border-radius: 50%;
 					border: 1px solid #EA6F5A;
-					background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/step.png") no-repeat;
+					background: url("@{URL}/weixinpl/shopping-temp/images/step.png") no-repeat;
 					background-position: left;
 					background-size: auto 100%;
 					margin-right: 10upx;
@@ -137,7 +138,7 @@ export default {
 				.comment {
 					width: 55upx;
 					height: 55upx;
-					background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/review.png") no-repeat center center/contain;
+					background: url("@{URL}/weixinpl/shopping-temp/images/review.png") no-repeat center center/contain;
 				}
 			}
 			.btn {

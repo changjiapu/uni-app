@@ -18,9 +18,8 @@
 			</view>
 		</view>
 		<view class="service">
-			<text>服务类型</text>
-			<text>申请退款</text>
-			<text v-if="userInfo.sendstatus === 2">申请退款</text>
+			<text @>服务类型</text>
+			<text @tap="select(index)" :class="{ act: index === currentTab }" v-for="(item, index) in services" :key="index" v-if="Info.sendstatus === 2 || !index">{{ item }}</text>
 		</view>
 		<view class="reason">
 			<textarea class="text" v-model="reason.reason" placeholder="请填写申请售后的原因，不超过200字" auto-focus/>
@@ -42,10 +41,12 @@
 					batchcode: '',
 					user_id: ''
 				},
+				services: ['申请退款', '申请退货'],
 				reason: {
 					reason: '',
 					sendstatus: 5
 				},
+				currentTab: 0,
 				Info: {}
 			}
 		},
@@ -59,6 +60,18 @@
 			}
 		},
 		methods: {
+			select (idx) {
+				switch(idx) {
+					case 0:
+					this.currentTab = idx
+					this.reason.sendstatus = 5
+					break;
+					case 1: 
+					this.currentTab = idx
+					this.reason.sendstatus = 3
+					break;
+				}
+			},
 			getInfo() {
 				orderDetail(this.params).then(res => {
 					let data = res.data[0]
@@ -97,7 +110,7 @@
 						info.sendMoney = 0
 						info.sendstatus = data.sendstatus
 						info.shop_orders = [
-							{ default_imgurl: data.default_head_imgurl.replace('https://', ''), pname: data.package_name, rcount: data.rcount, now_price: data.package_price }
+							{ default_imgurl: data.default_head_imgurl, pname: data.package_name, rcount: data.rcount, now_price: data.package_price }
 						]
 						info.status = 0
 						info.totalprice = data.totalprice
@@ -139,6 +152,7 @@
 </script>
 
 <style lang="less">
+@import '../../../common/css/variables.less';	
 .refund {
 	.list {
 		background:white;
@@ -171,7 +185,7 @@
 					background-size: cover;
 					background-position: top center;
 					margin-right: 15px;
-					background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/none.png");
+					background-image: url("@{URL}/weixinpl/shopping-temp/images/none.png");
 				}
 				&:nth-of-type(2) {
 					flex:1;
@@ -207,12 +221,16 @@
 				margin-right: 15px;
 			}
 			&:not(:first-of-type) {
-				background:#e64340;
-				color:white;
+				border: 1px solid #e64340;
+				color:#e64340;
 				font-size: 22upx;
 				padding: 10upx 30upx;
 				border-radius: 20upx;
 				margin-right: 15px;
+				&.act {
+					background-color: #e64340;
+					color:white;
+				}
 			}
 		}
 	}

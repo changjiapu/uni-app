@@ -56,7 +56,7 @@
 					</view>
 					<view>
 						<text>密码</text>
-						<input type="text" v-model="UserInfo.password" :disabled="UserInfo.password">
+						<input type="text" v-model="UserInfo.password" :disabled="enable">
 					</view>
 				</view>
 			</view>
@@ -84,6 +84,7 @@
 				citys: '请选择地址',
 				themeColor: '#007AFF',
 				cityPickerValueDefault: [0, 0, 1],
+				enable: true,
 				UserInfo: {
 					name: '',
 					sex: '',
@@ -141,6 +142,10 @@
 							res.data.data.birthday = currentDate
 						}
 						this.UserInfo = res.data.data
+					    if (this.UserInfo.password === '未设置密码' || !this.UserInfo.password) {
+							this.UserInfo.password = ''
+							this.enable = false
+						}
 						if (res.data.data.address !== null) {
 							const city = res.data.data.address.split('-')
 							this.params.location_p = city[0]

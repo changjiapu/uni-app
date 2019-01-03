@@ -55,6 +55,7 @@
 					pid: [],
 					img: ''
 				},
+				tag: 1,
 				upLoadIMG: [],
 				loading: false,
 				list:[],
@@ -65,7 +66,12 @@
 		onLoad(opt) {
 			this.params.batchcode = opt.batchcode
 			this.params.user_id = this.userInfo.id
-			this.getInfo()
+			this.tag = +opt.tag
+			if (+opt.tag === 2) {
+				this.getBagInfo()
+			} else {
+				this.getInfo()
+			}
 		},
 		methods: {
 			getInfo() {
@@ -78,10 +84,49 @@
 					this.Info.shop_orders.forEach(item => {
 						this.params.pid.push(item.product_id)
 					})
-					console.log(JSON.stringify(this.params.pid))
 					this.params.pid = JSON.stringify(this.params.pid)
 				})
 			},
+			getBagInfo () {
+				uni.showLoading()
+				BagOrderDetail(this.params).then(res => {
+					uni.hideLoading()
+					if (!res.data.code) {
+						const data = res.data.data[0]
+						let info = {}
+						info.CouponPrice = data.totalprice
+						info.send_express_name = data.expressname
+						info.address = data.location_p + data.location_c + data.location_a + data.address
+						info.aftersale_type = 0
+						info.batchcode = data.batchcode
+						info.createtime = data.createtime
+						info.confirm_sendtime = data.confirm_sendtime
+						info.decrease_money = 0
+						info.deductible_money = 0
+						info.expressnum = data.expressnum
+						info.id = data.p_id
+						info.is_discuss = 0
+						info.pay_currency = 0
+						info.pay_money = data.package_price
+						info.paystatus = data.paystatus
+						info.phone = data.phone
+						info.pid = data.p_id
+						info.pname = data.package_name
+						info.rcount = data.rcount
+						info.return_status = data.return_status
+						info.sendMoney = 0
+						info.sendstatus = data.sendstatus
+						info.shop_orders = [
+							{ default_imgurl: data.default_head_imgurl, pname: data.package_name, rcount: data.rcount, now_price: data.package_price }
+						]
+						info.status = 0
+						info.totalprice = data.totalprice
+						info.user_name = ''
+						this.Info = info
+						
+					}
+				})
+			},			
 			chooseImg () {
 				uni.chooseImage({
 					sizeType: ['original', 'compressed'],

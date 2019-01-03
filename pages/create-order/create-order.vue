@@ -139,7 +139,9 @@
 		Create
 	} from '@/common/api/index.js'
 	import GolbalMethod from '@/common/utils/index.js'
-	import { baseURL } from '@/common/utils/config'
+	import {
+		baseURL
+	} from '@/common/utils/config'
 	export default {
 		data() {
 			return {
@@ -215,7 +217,7 @@
 				this.pay_type = options.pay_type ? options.pay_type : ''
 
 			scoreSelect({
-				user_id:this.userInfo.id
+				user_id: this.userInfo.id
 			}).then(res => {
 				this.remain_score = res.data.data //用户的可以用的积分
 			})
@@ -242,7 +244,7 @@
 			address({
 				uname: this.userInfo.uname || '',
 				ticket: this.userInfo.ticket || '',
-				user_id:this.userInfo.id || ''
+				user_id: this.userInfo.id || ''
 			}).then(res => {
 				this.isloading = false
 				if (res.data.code == 400017) {
@@ -265,7 +267,7 @@
 			//优惠券开关
 			var sendCart = JSON.parse(this.conponData);
 			coupon({
-				user_id:this.userInfo.id,
+				user_id: this.userInfo.id,
 				product_id: sendCart[0].pid
 			}).then(res => {
 				if (res.data.code == 0) {
@@ -276,7 +278,7 @@
 
 			})
 			sendMoneya({
-				user_id:this.userInfo.id,
+				user_id: this.userInfo.id,
 				product_info: JSON.stringify(sendCart),
 				address_id: ''
 			}).then(res => {
@@ -292,7 +294,7 @@
 					var totalscore = 0; //一共需要多少积分
 					cart.forEach((item, index) => {
 						totalprice = totalprice + item.totalprice
-						totalscore=totalscore+item.need_score
+						totalscore = totalscore + item.need_score
 						rcount = rcount + item.rcount
 						if (index == 0) { //把每个产品的id组合成一个字符串
 							this.pidArr = item.pid
@@ -323,13 +325,13 @@
 					totalprice = totalprice + res.data.message.sendMoney
 				}
 				Jurisdi({
-					user_id:this.userInfo.id,
+					user_id: this.userInfo.id,
 					product_info: this.Ddata.cart
 				}).then(rew => {
 					console.log(rew)
 					this.pickup = rew.data.data.pickup,
 						this.offsetprice = rew.data.offsetprice, //购物币抵扣
-					this.requiredata = rew.data.require,
+						this.requiredata = rew.data.require,
 						this.deductible_integral = rew.data.offsetprice.integral //需要扣除的积分
 
 					if (this.offsetprice.is_default == 1) {
@@ -361,7 +363,22 @@
 
 				})
 			})
-
+			uni.getStorage({
+				key: 'select_store',
+				success: (res) => {
+					if (res.data) {
+						this.storeId = res.data.storeId,
+							this.storeName = res.data.storeName,
+							this.sendstyle = '自提'
+					}
+					if (this.storeName) {
+						wx.removeStorage({
+							key: 'select_store',
+							success: function(res) {}
+						})
+					}
+				}
+			})
 		},
 		methods: {
 			onCoupon(event) {
@@ -384,9 +401,9 @@
 
 				}
 			},
-			gotoAddress(){
+			gotoAddress() {
 				uni.navigateTo({
-					url:'/pages/address/index?create=true'
+					url: '/pages/address/index?create=true'
 				})
 			},
 			//购物留言
@@ -400,7 +417,7 @@
 			},
 			selectStore() {
 				uni.navigateTo({
-					url: '/pages/creat_store?options=' + this.options,
+					url: '/pages/creat_store/creat_store?options=' + this.options,
 				})
 			},
 			//提交订单
@@ -414,9 +431,9 @@
 							confirmText: '去添加',
 							success: function(res) {
 								if (res.confirm) {
-								uni.navigateTo({
-									url:'/pages/address/index'
-								})
+									uni.navigateTo({
+										url: '/pages/address/index'
+									})
 								}
 							}
 						})
@@ -461,6 +478,7 @@
 					}
 
 					TodayBuy({
+						user_id: this.userInfo.id,
 						product: JSON.stringify(product),
 					}).then(res => {
 
@@ -561,7 +579,7 @@
 					//必填信息end     
 					var sendData = {
 						address_id: this.address.id,
-						user_id:this.userInfo.id  || '',
+						user_id: this.userInfo.id || '',
 						uname: this.userInfo.uname || '',
 						ticket: this.userInfo.ticket || '',
 						total_price: parseFloat(this.totalpriceNow),
@@ -602,7 +620,7 @@
 							this.clearCart();
 							setTimeout(rst => {
 								uni.redirectTo({
-									url:'/pages/pay-order/pay-order?post_data=' + JSON.stringify(this.cart) + '&pay_type=' + this.pay_type +
+									url: '/pages/pay-order/pay-order?post_data=' + JSON.stringify(this.cart) + '&pay_type=' + this.pay_type +
 										'&total_price=' + this.totalprice + '&batchcode=' + res.data.batchcode + '&offsetprice=' + JSON.stringify(
 											this.offsetprice),
 								})
@@ -625,7 +643,7 @@
 				if (data.length > 0) {
 					var cart = uni.getStorageSync(this.dianpuleibie + 'shopping-cart');
 
-					for (var i = 0; i < cart.length;i++) {
+					for (var i = 0; i < cart.length; i++) {
 						if (cart[i].status) {
 							cart.splice(i, 1);
 							continue
@@ -633,7 +651,7 @@
 					}
 
 
-					uni.setStorageSync( this.dianpuleibie+ 'shopping-cart', cart);
+					uni.setStorageSync(this.dianpuleibie + 'shopping-cart', cart);
 				}
 			},
 		},

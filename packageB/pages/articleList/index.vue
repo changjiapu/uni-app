@@ -5,7 +5,7 @@
 			<image class="img" :src="baseURL+'/public/static/plat/public/uploads/'+item.img"></image>
 		  </swiper-item>
 		</swiper>
-		<view class='middle'>文章列表</view>
+<!-- 		<view class='middle'>阅读区</view> -->
 		<view class='container1'>
 		  <view class='item' v-for="(item, index) in artlist" :key="index" @click="viewAirtcle(item)">
 			<view class='img'>
@@ -13,7 +13,7 @@
 			</view>
 			<text class='title'>{{item.title}}</text>
 			<text v-if="item.is_pay" class='pirce'>售价￥{{item.pay_price}}</text>
-			<text v-else class='sign'>已付费</text>
+			<text v-else class='sign'>欢迎阅读</text>
 		  </view>
 		</view>
 	</view>
@@ -72,7 +72,7 @@
 					})
 				} else {
 					uni.navigateTo({
-						url: '/packageB/pages/articleDetail/index?item=' + encodeURIComponent(JSON.stringify(item))
+						url: '/packageB/pages/articleDetail/index?type=' + item.type + '&pid=' + item.id
 					})
 				}
 			}

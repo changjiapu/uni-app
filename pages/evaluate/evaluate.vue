@@ -14,6 +14,12 @@
 									<view :style="{width:item.level/5*100+'%'}">
 										<image mode='widthFix' :src="baseURL+'/weixinpl/shopping-temp/images/grade.png'" style='width:150upx;'></image>
 									</view>
+					<!-- 				<view v-for="i in item.level" :key="i">
+										<image mode='widthFix' :src="baseURL+'/weixinpl/shopping-temp/images/xing.png'" style='width:150upx;'></image>
+									</view>
+									<view v-for="i in 5" :key="i">
+										<image mode='widthFix' :src="baseURL+'/weixinpl/shopping-temp/images/xing2.png'" style='width:150upx;'></image>
+									</view> -->
 								</view>
 							</view>
 							<view class='evaluate-detail'>

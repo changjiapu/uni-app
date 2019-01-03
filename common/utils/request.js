@@ -16,7 +16,7 @@ function getType(user, data, method) { // 获取请求方式
 			},
 			header: {
 				'content-type': 'application/x-www-form-urlencoded'
-			},
+			}
 		}
 	} else {
 		method = 'get'
@@ -41,7 +41,6 @@ function Request(data, url, method) {
 			url: requestURL + url,
 			...getType(user, data, method),
 			success: res => {
-				uni.hideLoading()
 				resolve(res)
 			},
 			fail: err => {

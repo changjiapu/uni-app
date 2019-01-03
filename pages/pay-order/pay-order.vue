@@ -14,6 +14,7 @@
 				<image v-if="item.id==2" :src="baseURL+'/weixinpl/shopping-temp/images/shop-gold.png'"></image>
 				<image v-if="item.id==3" :src="baseURL+'/weixinpl/shopping-temp/images/payPacket.png'"></image>
 				<image v-if="item.id==4" :src="baseURL+'/weixinpl/shopping-temp/images/wechat.png'"></image>
+				<image v-if="item.id==5" :src="baseURL+'/weixinpl/shopping-temp/images/apply.png'"></image>
 				<image v-if="item.id==15" :src="baseURL+'/weixinpl/shopping-temp/images/property.png'"></image>
 				<image v-if="item.id==16" :src="baseURL+'/weixinpl/shopping-temp/images/money.png'"></image>
 				<text style="width:70%; color:#777">{{item.name}}</text>
@@ -30,6 +31,7 @@
 				<image v-if="item.id==2" :src="baseURL+'/weixinpl/shopping-temp/images/shop-gold.png'"></image>
 				<image v-if="item.id==3" :src="baseURL+'/weixinpl/shopping-temp/images/payPacket.png'"></image>
 				<image v-if="item.id==4" :src="baseURL+'/weixinpl/shopping-temp/images/wechat.png'"></image>
+				<image v-if="item.id==5" :src="baseURL+'/weixinpl/shopping-temp/images/apply.png'"></image>
 				<image v-if="item.id==15" :src="baseURL+'/weixinpl/shopping-temp/images/property.png'"></image>
 				<image v-if="item.id==16" :src="baseURL+'/weixinpl/shopping-temp/images/money.png'"></image>
 				<text style="width:70%; color:#777">{{item.name}}</text>

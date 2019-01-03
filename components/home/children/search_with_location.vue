@@ -2,9 +2,6 @@
 	<view>
 		<view class='search-with-location' :style="{marginTop:data.margin+'px',marginBottom:data.margin2+'px'}">
 			<navigator class='location'>
-<!-- 				<image class="img" src='https://admin.sinlu.net/weixinpl/shopping-temp/images/location.png'></image>
-				<text v-if="city" class="text">{{city}}</text>
-				<text v-else  class="text">未授权</text> -->
 			</navigator>
 			<navigator class='search' url='/pages/productList/index'>
 			<uni-icon  type="search" size="20" ></uni-icon>

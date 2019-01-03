@@ -37,8 +37,8 @@ export default {
 		getList () {
 			myCollect(this.params).then(res => {
  				let obj = res.data.value
-				if (Object.keys(obj).length) {
-					this.list = Object.values(obj)
+				if (obj.length) {
+					this.list = obj
 				} else {
 					this.empty = true
 				}

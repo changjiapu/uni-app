@@ -30,7 +30,6 @@ export default {
 		})
 	},
 	LinkTo: (item) => {
-		console.log(item)
 		switch (item.link) {
 			case '拼团页面':
 				uni.navigateTo({

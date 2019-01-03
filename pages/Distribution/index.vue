@@ -25,7 +25,7 @@
 					<view class="myTeam"></view>
 					<text>我的团队({{Info.count}})人</text>
 				</navigator>
-				<navigator hover-class="none" v-if="Info.isAgent" >
+				<navigator hover-class="none" v-if="Info.isAgent" url='/pages/distribution-erweima/distribution-erweima?'>
 					<view class="myCode"></view>
 					<text>推广二维码</text>
 				</navigator>
@@ -39,19 +39,22 @@
 </template>
 <script>
 	import {
-		Distribution
+		Distribution,
+		codePicture
 	} from '@/common/api'
 	import {
 		mapState
 	} from 'vuex'
-	import { baseURL } from '@/common/utils/config'
+	import {
+		baseURL
+	} from '@/common/utils/config'
 	export default {
 		name: 'distribution',
 		data() {
 			return {
 				baseURL: baseURL,
 				Info: {
-				usermoney:{}	
+					usermoney: {}
 				}
 			}
 		},
@@ -60,13 +63,14 @@
 		},
 		methods: {
 			getInfo() {
+				uni.showLoading()
 				const myDate = new Date()
 				const time = myDate.getFullYear() + '-' + (myDate.getMonth() + 1); //获取完整的年份和月份
 				Distribution({
 					time,
-					user_id:this.userInfo.id
+					user_id: this.userInfo.id
 				}).then(res => {
-					console.log(res)
+					uni.hideLoading()
 					if (!res.data.code) {
 						this.Info = res.data.data
 					}
@@ -82,7 +86,8 @@
 </script>
 
 <style lang="less">
-	@import '../../common/css/variables.less'; 
+	@import '../../common/css/variables.less';
+
 	.distribution {
 		.head {
 			background: #0099ff;

@@ -199,7 +199,7 @@
 						info.sendMoney = 0
 						info.sendstatus = data.sendstatus
 						info.shop_orders = [
-							{ default_imgurl: data.default_head_imgurl.replace('https://', ''), pname: data.package_name, rcount: data.rcount, now_price: data.package_price }
+							{ default_imgurl: data.default_head_imgurl, pname: data.package_name, rcount: data.rcount, now_price: data.package_price }
 						]
 						info.status = 0
 						info.totalprice = data.totalprice
@@ -259,13 +259,13 @@
 							}
 							uni.showLoading()
 							let conBtn
-							this.tag === 2 ? conBtn = BagConfirm : canBtn = confirmOrder
-							confirmOrder(Object.assign({}, this.params, this.same)).then(res => {
+							this.tag === 2 ? conBtn = BagConfirm : conBtn = confirmOrder
+							conBtn(Object.assign({}, this.params, this.same)).then(res => {
 								uni.hideLoading()
-								if (res.code === 400000) {
+								if (res.code === 400000 || !res.data.status) {
 									uni.showModal({
 										title: '',
-										content: res.data.message,
+										content: '收货成功',
 										showCancel: false,
 										success: res => {
 											if (res.confirm) {
@@ -276,7 +276,7 @@
 								} else {
 									uni.showModal({
 										title: '',
-										content: res.data.message,
+										content: '收货失败',
 										showCancel: false
 									})
 								}
@@ -293,7 +293,7 @@
 			},
 			Refund(){
 				uni.navigateTo({
-					url:"/packageB/pages/refund/index?batchcode="+this.Info.batchcode
+					url:"/packageB/pages/refund/index?batchcode="+this.Info.batchcode+'&tag='+this.tag
 				})
 			}
 		},
@@ -306,7 +306,7 @@
 </script>
 
 <style lang="less">
-	
+	@import '../../common/css/variables.less'; 	
 .orderDetail {
 	padding-bottom: 110upx;
 	.status {
@@ -329,7 +329,7 @@
 		margin: 10px 0;
 		font-size: 26upx;
 		line-height: 40upx;
-		background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/address_b.png") no-repeat 15px center/40upx 40upx white;
+		background: url("@{URL}/weixinpl/shopping-temp/images/address_b.png") no-repeat 15px center/40upx 40upx white;
 	}
 	.list {
 		background:white;
@@ -362,7 +362,7 @@
 					background-size: cover;
 					background-position: top center;
 					margin-right: 15px;
-					background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/none.png");
+					background-image: url("@{URL}/weixinpl/shopping-temp/images/none.png");
 				}
 				&:nth-of-type(2) {
 				    flex:1;

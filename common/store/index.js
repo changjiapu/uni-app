@@ -65,6 +65,7 @@ const store = new Vuex.Store({
 						userInfo.id = data.information.user_id
 						userInfo.ticket = data.ticket
 						userInfo.uname = data.uname
+						userInfo.rank = data.cardEnti
 						commit('SET_USERINFO', userInfo)
 						uni.setStorageSync('userInfo', userInfo)
 						resolve(res.data.status)
@@ -75,6 +76,7 @@ const store = new Vuex.Store({
 			})
 		},
 		WeiXinLogin ({ commit, state }, db) {
+			uni.showLoading()
 			const customer_id = state.userInfo.customer_id
 			uni.getProvider({
 				service: 'oauth',
@@ -92,7 +94,7 @@ const store = new Vuex.Store({
 											referrer: db.referrer
 										}
 										WeixinLogin(params).then(result => {
-											console.log(JSON.stringify(result))
+											uni.hideLoading()
 											if (result.data.status) {
 												const data = result.data.data
 												let userInfo = {
@@ -143,6 +145,7 @@ const store = new Vuex.Store({
 						state.userInfo.nickName = ''
 						state.userInfo.ticket = ''
 						state.userInfo.uname = ''
+						state.userInfo.rank = []
 						uni.reLaunch({
 							url: '/pages/index/index'
 						})

@@ -1440,3 +1440,37 @@ radio-group label, checkbox-group label{
 .uni-icon-scan:before {
     content: "\e612";
 }
+
+/* --- */
+
+.clist .head {
+  height: 100upx;
+  display: flex;
+  background-color: #FFF;
+  align-items: center;
+  justify-content: space-around;
+}
+.clist .catrgory {
+  height: 120upx;
+  display: flex;
+  font-size: 28upx;
+  color: #999;
+  background-color: #f6f6f6;
+  align-items: center;
+  justify-content: space-around;
+  flex-flow: wrap;
+}
+.clist .catrgory view {
+  border: 1px solid #666;
+  padding: 8upx;
+  border-radius: 8upx;
+}
+.clist .catrgory view.active {
+  border: 1px solid #ff6600;
+}
+.clist button {
+  margin-top: 30upx;
+  width: 80%;
+  color: #FFF;
+  background-color: #333333;
+}

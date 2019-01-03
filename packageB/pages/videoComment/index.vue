@@ -2,7 +2,7 @@
 	<view :class="['comment',{ act: flag}]">
 		<view class="main">
 		<view class="top">
-			<video v-if="!flag" class="video" :poster="'https://admin.sinlu.net'+item.back_picture" :vid="item.vid" :autoplay="isfalse" :playerid="'myVideo_' + item.id">
+			<video v-if="!flag" class="video" :poster="item.back_picture" :vid="item.vid" :autoplay="isfalse" :playerid="'myVideo_' + item.id">
 			</video>
 			<view class='middle'>
 			<view class='left'>{{item.title}}</view>
@@ -57,7 +57,7 @@
 				<view class="content">
 					{{ item.comment }}
 					<view class="imgList" v-if="item.comment_img.length">
-						<view class="image" v-for="(n, i) in item.comment_img" :key="i" :style="{ backgroundImage: 'url(https://admin.sinlu.net' + n + ')' }"></view>
+						<view class="image" v-for="(n, i) in item.comment_img" :key="i" :style="{ backgroundImage: 'url(' + n + ')' }"></view>
 					</view>
 				</view>
 				<view class="box">
@@ -83,7 +83,7 @@
 						<view class="content">
 							{{ rst.comment }}
 							<view class="imgList" v-if="rst.comment_img.length">
-								<view class="image" v-for="(n, i) in rst.comment_img" :key="i" :style="{ backgroundImage: 'url(https://admin.sinlu.net' + n + ')' }"></view>
+								<view class="image" v-for="(n, i) in rst.comment_img" :key="i" :style="{ backgroundImage: 'url(' + n + ')' }"></view>
 							</view>
 						</view>
 					</view>
@@ -115,10 +115,12 @@
 
 <script>
 	import { addfavorite, videoComment, faBuLoues, AddComment } from '@/common/api/packageB'
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		name: 'videoComment',
 		data() {
 			return {
+				baseURL: baseURL,
 				item: {},
 				isfalse: false,
 				flag: false,
@@ -187,7 +189,7 @@
 				  return new Promise((resolve, reject) => {
 					  this.imgList.forEach((item, index) => {
 					  	uni.uploadFile({
-					  		url: 'https://admin.sinlu.net/smallroutine/Reward/upload_eval',
+					  		url: this.baseURL+'/smallroutine/Reward/upload_eval',
 					  		filePath: item,
 					  		name: 'img',
 					  		formData: { customer_id: 810 },
@@ -235,6 +237,7 @@
 </script>
 
 <style lang="less">
+	@import '../../../common/css/variables.less';	
 uni-page-body, page { height: 100%;}
 .comment {
 	height: 100%;
@@ -259,7 +262,7 @@ uni-page-body, page { height: 100%;}
 					font-size: 36upx;
 					font-weight: bold;
 					color: #607D8B;
-					background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/share_t.png") no-repeat left center/35upx 35upx;
+					background: url("@{URL}/weixinpl/shopping-temp/images/share_t.png") no-repeat left center/35upx 35upx;
 					padding-left: 58upx;
 				}
 				.img {
@@ -284,14 +287,14 @@ uni-page-body, page { height: 100%;}
 						.share {
 							width: 50upx;
 							height: 50upx;
-							background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/share_.png") no-repeat center center/contain;					
+							background: url("@{URL}/weixinpl/shopping-temp/images/share_.png") no-repeat center center/contain;					
 						}
 						.collect {
 							width: 45upx;
 							height: 45upx;
 							border-radius: 50%;
 							border: 1px solid #EA6F5A;
-							background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/step.png") no-repeat;
+							background: url("@{URL}/weixinpl/shopping-temp/images/step.png") no-repeat;
 							background-position: left;
 							background-size: auto 100%;
 							margin-right: 10upx;
@@ -304,7 +307,7 @@ uni-page-body, page { height: 100%;}
 						.comment {
 							width: 55upx;
 							height: 55upx;
-							background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/review.png") no-repeat center center/contain;
+							background: url("@{URL}/weixinpl/shopping-temp/images/review.png") no-repeat center center/contain;
 						}
 					}
 					.btn {
@@ -411,10 +414,10 @@ uni-page-body, page { height: 100%;}
 									width: 40upx;
 									height: 40upx;
 									margin-right: 8upx;
-									background: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/review.png") no-repeat center center/contain;
+									background: url("@{URL}/weixinpl/shopping-temp/images/review.png") no-repeat center center/contain;
 								}
 								.good {
-									background: url(https://admin.sinlu.net/weixinpl/shopping-temp/images/fave.png);
+									background: url("@{URL}/weixinpl/shopping-temp/images/fave.png");
 									background-position: left;
 									background-repeat: no-repeat;
 									height: 80upx;
@@ -533,7 +536,7 @@ uni-page-body, page { height: 100%;}
 							background-repeat: no-repeat;
 							background-size:contain;
 							background-position: center center;
-							background-image: url("https://admin.sinlu.net/weixinpl/shopping-temp/images/uploadImg.png");
+							background-image: url("@{URL}/weixinpl/shopping-temp/images/uploadImg.png");
 						}
 						
 					}

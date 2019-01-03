@@ -5,7 +5,7 @@
 	   <view class="title">支付方式</view>
 		<!-- #ifndef MP-WEIXIN -->
 		<view class="pay">
-			<view @tap="toPay(item.id)" :class="['item', {default: item.id === 3, weixin: item.id === 4}]" v-for="(item, index) in payList" :key="index">
+			<view @tap="toPay(item.id)" :class="['item', {default: item.id === 3, weixin: item.id === 4, apply: item.id === 5}]" v-for="(item, index) in payList" :key="index">
 				{{ item.name }}
 			</view>
 		</view>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-	import { paySet, payType, personalPay, productVirtual } from '@/common/api'
+	import { paySet, payList, personalPay, productVirtual } from '@/common/api'
 	import { packagePay } from '@/common/api/packageA'
 	import { mapState } from 'vuex'
 	export default {
@@ -79,11 +79,16 @@
 					break;
 					case 4:
 					const o_o = {
-						appid: this.appid,
-						openid: this.userInfo.openid
+						appid: this.appid
 					}
 					this.PayWay(o_o)
 					break;
+					case 5:
+					const apply = {
+						appid: this.appid
+					}
+					this.PayWay(apply)
+					break;					
 				}
 			},
 			getPwd() {
@@ -107,9 +112,12 @@
 				})
 			},
 			getList() {
-				payType({ appid: this.appid }).then(res => {
-					if (res.data.length) {
-						this.payList = res.data
+				uni.showLoading()
+				payList({ appid: this.appid }).then(res => {
+					uni.hideLoading()
+					console.log(res.data.length)
+					if (!res.data.code) {
+						this.payList = res.data.data
 					}
 				})
 			},
@@ -141,8 +149,8 @@
 				this.tag === 1 ? toPayWay = personalPay : toPayWay = packagePay,
 					toPayWay({...this.params, ...this.payParams, ...o}).then(res => {
 						console.log(JSON.stringify(res))
+						uni.hideLoading()
 						if (this.payParams.pay_id === 3) {
-							uni.hideLoading()
 							if (res.data.code === 400000 || !res.data.code) {
 								productVirtual({ batchcode: this.detail.batchcode, ...this.params })
 								uni.showModal({
@@ -164,10 +172,12 @@
 									showCancel: false
 								})
 							}
-						} else if (this.payParams.pay_id === 4) {
-							 if (res.data.data.state !== 0) {
+						} else if (this.payParams.pay_id === 4 || this.payParams.pay_id === 5) {
+							 let provider
+							 this.payParams.pay_id === 4 ? provider = 'wxpay' : provider = 'alipay'
+							 if (res.data.status) {
 								 uni.requestPayment({
-									 provider: 'wxpay',
+									 provider: provider,
 									 orderInfo: res.data.data,
 								 	success: (res) => {
 								 		uni.redirectTo({
@@ -270,6 +280,9 @@
 				}
 				&.weixin {
 					background-image: url("@{URL}/weixinpl/shopping-temp/images/weixin_pay.png");
+				}
+				&.apply {
+					background-image: url("@{URL}/weixinpl/shopping-temp/images/apply.png");
 				}
 				&:last-of-type {
 					&::after {

@@ -27,9 +27,6 @@
 				required: true
 			}
 		},
-		created () {
-			console.log(this.data)
-		},
 		computed: {
 			count () {
 				return Math.ceil(this.data.img_list.length / (this.data.column * 2))

@@ -3,34 +3,60 @@
 		 <view class="title">
 			 <view class="txt">{{ detail.title }}</view>
 			 <view class="control">
-				 <view class="box">
+<!-- 				 <view class="box">
 					 <view class="collect"></view>
 					 <text></text>
 				 </view>
 				 <view class="box">
 					 <view class="comment"></view>
 					 <text></text>
-				 </view>
+				 </view> -->
 			 </view>
 		 </view>
 		 <view class="srx">
 			 <scroll-view scroll-y class="src">
-			 	<view class="content"><rich-text :nodes="detail.content"></rich-text></view>
+			 	<view class="content"><rich-text :nodes="detail.content_a"></rich-text></view>
 			 </scroll-view>
 		 </view>
 	</view>
 </template>
 
 <script>
+	import { articleDetail } from '@/common/api/packageB'
+	import { mapState } from 'vuex'
 	export default {
 		data() {
 			return {
-				detail: {}
+				detail: {},
+				params: {}
 			};
 		},
-		onLoad(option) {
-			const data = JSON.parse(decodeURIComponent(option.item))
-			this.detail = data
+		onLoad(opt) {
+			this.params.type = 1
+			this.params.pid = opt.pid
+			this.params.user_id = this.userInfo.id
+			this.getInfo()
+		},
+		methods: {
+			getInfo () {
+				uni.showLoading()
+				articleDetail(this.params).then(res => {
+					uni.hideLoading()
+					if (res && !res.data.code) {
+						this.detail = res.data.data
+					} else {
+						uni.showToast({
+							title: '获取数据失败!',
+							icon: 'none'
+						})
+					}
+				})
+			}
+		},
+		computed: {
+			...mapState([
+				'userInfo'
+			])
 		}
 	}
 </script>

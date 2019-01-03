@@ -8,6 +8,18 @@
 			}
 		},
 		{
+			"path": "pages/creat_store/creat_store",
+			"style": {
+				"navigationBarTitleText": "门店"
+			}
+		},
+			{
+			"path": "pages/coupon/coupon",
+			"style": {
+				"navigationBarTitleText": "优惠券"
+			}
+		},
+		{
 			"path": "pages/login/getUserInfo",
 			"style": {
 				"navigationBarTitleText": "授权登录"
@@ -26,6 +38,7 @@
 				}
 			}
 		},
+		
 		{
 			"path": "pages/resetPwd/index",
 			"style": {
@@ -160,6 +173,12 @@
 
 			}
 		},
+			{
+			"path": "pages/distribution-erweima/distribution-erweima",
+			"style": {
+				"navigationBarTitleText": "二维码"
+			}
+		},
 		{
 			"path": "pages/productList/index",
 			"style": {
@@ -188,6 +207,12 @@
 			"path": "pages/comment/index",
 			"style": {
 				"navigationBarTitleText": "发表评论"
+			}
+		},
+		{
+			"path":"pages/profitDetail/index",
+			"style": {
+				"navigationBarTitleText": "收益详情"
 			}
 		}						
 	],

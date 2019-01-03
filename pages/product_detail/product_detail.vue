@@ -115,7 +115,7 @@
 									{{pros_data.name}}
 								</text>
 							</view> -->
-							<radio-group  v-for="(item,index) in pros_data" :key="index" class='container' v-if="product.product_prices.length"
+							<radio-group v-for="(item,index) in pros_data" :key="index" class='container' v-if="product.product_prices.length"
 							 @change="radioChange($event, index)">
 								<text class="mingcheng">{{item.name}}</text>
 								<label class="radio" v-for="(pros_data,idx) in item.parent_pros" :key="idx">
@@ -309,8 +309,12 @@
 </template>
 
 <script>
-	import { mapState } from 'vuex'
-	import { baseURL } from '@/common/utils/config'
+	import {
+		mapState
+	} from 'vuex'
+	import {
+		baseURL
+	} from '@/common/utils/config'
 	import {
 		getProductInfo,
 		getProductOpenLabel,
@@ -410,17 +414,23 @@
 				this.current_product.sell_count = res.data.data.sell_count; //当前页面产品的售量
 				this.current_product.show_sell_count = res.data.data.show_sell_count
 				this.product = res.data;
-				
+
 				res.data.pros_data.forEach(item => {
 					this.$set(item, 'act', false)
 					this.$set(item, 'list_u', '')
 				})
+				res.data.product_img.forEach(item => {
+					this.$set(item, 'imgurl', item.imgurl.substr(0, 1) == '/' ? baseURL + item.imgurl : item.imgurl)
+				})
 				this.pros_data = res.data.pros_data //属性结构
 				this.remain_score = res.data.remain_score,
 					this.isloading = false
-				this.detail.nodes1 = res.data.data.description.replace(/\<img/gi, '<img style="max-width:100%;height:auto"') //富文本详情
-				this.detail.nodes2 = res.data.data.specifications.replace(/\<img/gi, '<img style="max-width:100%;height:auto"') //富文本规格
-				this.detail.nodes3 = res.data.data.customer_service.replace(/\<img/gi, '<img style="max-width:100%;height:auto"') //富文本参数
+				this.detail.nodes1 = res.data.data.description.replace(/\<img/gi,
+					'<img style="max-width:100%;height:auto;display:block;"') //富文本详情
+				this.detail.nodes2 = res.data.data.specifications.replace(/\<img/gi,
+					'<img style="max-width:100%;height:auto;display:block;"') //富文本规格
+				this.detail.nodes3 = res.data.data.customer_service.replace(/\<img/gi,
+					'<img style="max-width:100%;height:auto;display:block;"') //富文本参数
 			})
 			//活动
 			getProductOpenLabel({
@@ -445,14 +455,14 @@
 						this.limitData.limit_num = res.data.data.limit_num
 					}
 					this.is_virtual.is_virtual_shop = res.data.data.is_virtual
-					this.is_privilege = res.data.data
+					this.is_privilege = res.data.data.is_privilege
 					this.issnapup = res.data.data.issnapup
 					this.islimit = res.data.data.islimit,
 						this.pay_type = res.data.data.pay_type, //产品专属支付方式
 						this.extend_money = res.data.data.extend_money, // 首次推广奖励
 						this.is_integral_product = res.data.data.is_integral_product //积分产品
 					this.parent_id = res.data.data.parent_id
-					this.is_open_evaluation=res.data.data.is_open_evaluation
+					this.is_open_evaluation = res.data.data.is_open_evaluation
 				}
 			})
 			//满送活动
@@ -676,6 +686,15 @@
 
 					}
 				}
+				if (this.buy_count > this.current_product.storenum) {
+					uni.showModal({
+						title: "提示",
+						content: '库存不足',
+						showCancel: false
+					})
+
+					return;
+				}
 				//判断是否有属性
 				var pros_data_length = this.pros_data.length; //分类的长度
 				var pros_arry_length = this.pros_arry.length; //选择的长度  被选中的属性
@@ -839,10 +858,10 @@
 							return;
 						}
 					}
-					if (!this.parent_id) {
+					if (this.parent_id<0) {
 						uni.showModal({
 							title: '提示',
-							content: "您没有推举人不能购买",
+							content: "您没有推荐人不能购买",
 							showCancel: false
 						})
 						return;

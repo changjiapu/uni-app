@@ -46,7 +46,8 @@
 				params: {
 					name: '',
 					type: ''
-				}
+				},
+				is_allow:1
 			}
 		},
 		onLoad() {
@@ -68,6 +69,7 @@
 					uni.hideLoading()
 					if (!res.data.code) {
 						this.payList = res.data.data.bind
+						this.is_allow=res.data.data.is_allow
 						res.data.data.data.forEach(item => { 
 							item.checked = false
 							item.type = item.type.toString()
@@ -121,9 +123,17 @@
 			},
 			cash () {
 				if (this.params.type) {
-					uni.navigateTo({
-						url: `/packageA/pages/cashWay/index?name=${this.params.name}&type=${this.params.type}`
-					})
+					if(!this.is_allow){
+						uni.showModal({
+							title: '',
+							content: '尚未满足提现条件或不在提现时间段',
+							showCancel: false
+						})
+					} else {
+						uni.navigateTo({
+							url: `/packageA/pages/cashWay/index?name=${this.params.name}&type=${this.params.type}`
+						})
+					}
 				} else {
 					uni.showToast({
 						title: '请选择提现方式',

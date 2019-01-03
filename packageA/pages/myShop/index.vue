@@ -77,7 +77,19 @@
 				uni.showLoading()
 				sHugrade({ ...this.params, ...params }).then(res => {
 					uni.hideLoading()
-					console.log(res)
+					if (res.data.status === 401) {
+						uni.showModal({
+							title: '',
+							content: res.data.errormsg,
+							showCancel: false
+						})
+					} else {
+						uni.showModal({
+							title: '',
+							content: '升级成功',
+							showCancel: false
+						})
+					}
 				})
 			}
 		},

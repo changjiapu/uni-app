@@ -107,7 +107,12 @@
 						uni.showModal({
 							title: '提示',
 							content: res.data.message,
-							showCancel: false
+							showCancel: false,
+							success: res => {
+								if (res.confirm) {
+									uni.navigateBack()
+								}
+							}
 						})
 					}
 				})

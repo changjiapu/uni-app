@@ -31,7 +31,7 @@
 				</navigator>
 			</view>
 			<view class="line">
-				<navigator hover-class="none">
+				<navigator hover-class="none" url='/pages/coupon/coupon'>
 					<view :style="{backgroundImage: 'url('+baseURL+'/weixinpl/shopping-temp/images/couppon.png)'}"></view>
 					<view>
 						<text>优惠券</text>

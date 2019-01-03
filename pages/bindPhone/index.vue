@@ -99,6 +99,7 @@
 <style lang="less">
 .bindPhone {
 	.list {
+		
 		.line {
 			.title {
 				height: 80upx;
@@ -127,7 +128,7 @@
 							bottom: 0;
 							width: 100%;
 						}
-						& > text { font-size: 26upx;width: 120upx;text-align: justify;text-align-last:justify;padding-right: 30upx; }
+						& > text { font-size: 26upx;width: 120upx;text-align: justify;text-align-last:justify;padding-right: 30upx; 			white-space: normal;}
 						& > view { 
 							flex: 1;
 							font-size: 26upx;
@@ -135,7 +136,7 @@
 							display: flex;
 							justify-content: space-between;
 							align-items: center;
-							& > button { margin-right: 0; }
+							& > button { margin-right: 0;}
 						}
 						& > input { font-size: 26upx;flex: 1;}
 						& > picker { font-size: 26upx }

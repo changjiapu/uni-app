@@ -15,7 +15,7 @@
 			 <scroll-view scroll-y class="srx">
 				 <view class="contain">
 					 <view class="money">
-					 	<view><input type="text" placeholder="请输入提现金额" v-model.number="params.to_cash"></view>
+					 	<view><input type="text" placeholder="请输入提现金额" v-model.number="to_cash"></view>
 						<button type="primary" size="mini" @tap="params.to_cash = list.balance">全部提现</button>
 					 </view>
 					 <view class="rule">
@@ -26,7 +26,7 @@
 							<text @tap="showAgre = true">《提现协议》</text>
 						 </checkbox-group>
 					 </view>
-					 <view class="msg">总余额{{ list.allow_cash }}元，可以提现金额<text>{{ list.balance }}元</text>，到账金额<text>{{ params.to_cash || 0 }}元</text></view>
+					 <view class="msg">总余额{{ list.allow_cash }}元，可以提现金额<text>{{ list.balance }}元</text>，到账金额<text>{{ toCash }}元</text></view>
 					 <view class="btn">
 						 <button @tap="Iagree" type="primary">提现</button>
 					 </view>
@@ -55,10 +55,11 @@
 				agree: false,
 				showAgre: false,
 				keyShow: false,
+				to_cash: 0,
 				params: {
 					user_id: '',
 					type: '',
-					to_cash: '',
+					to_cash: 0,
 					type: 0,
 					pw: '',
 					formId: '',
@@ -84,6 +85,7 @@
 			},
 			Iagree () {
 				if (this.agree) {
+					this.params.to_cash = this.toCash
 					if (!this.params.to_cash) {
 						uni.showModal({
 							title: '',
@@ -128,6 +130,9 @@
 			...mapState([
 				'userInfo'
 			]),
+			toCash () {
+				return (this.to_cash * ((100 - this.list.callback_fee) / 100)).toFixed(2)
+			},
 			avatarURL () {
 				const IMG = this.baseURL+'/weixinpl/shopping-temp/images/default.png'
 				if(this.userInfo.avatarUrl) {
@@ -145,7 +150,7 @@
 						content: '您的提现金额不能大于可提现金额',
 						showCancel:false,
 						complete: () => {
-							this.cash = ''
+							this.to_cash = 0
 						}
 					})
 				}

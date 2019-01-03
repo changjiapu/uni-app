@@ -1,7 +1,7 @@
 <template>
 	<view class="integral">
 		<view class="head">
-			<image :src="baseURL+"/weixinpl/images/jifen.jpg"" mode="widthFix"></image>
+			<image :src="baseURL+'/weixinpl/images/jifen.jpg'" mode="widthFix"></image>
 		</view>
 		<button class="receive" @click='singOnclik'>{{todayStatus||'点击签到'}}</button>
 		<view class='middle'>

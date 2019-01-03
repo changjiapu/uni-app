@@ -8,7 +8,7 @@
 					<view @tap="rightDrawerVisible = true">全部</view> 
 					 <!-- <view>查看报表</view> -->
 					 <view>
-					<picker mode="date" :value="params.time" :start="startDate" :end="endDate" @change="bindDateChange" fields="month">
+					<picker mode="date" :value="params.time" :start="startDate" :end="endDate" @change="bindDateChange">
 						<view>{{ params.time }}</view>
 					</picker>
 					</view>
@@ -27,14 +27,14 @@
 			</view>
 			<view class="main">
 				<scroll-view scroll-y class="srx" @scrolltolower="loadMove">
-				<view class="item" v-for="(item, index) in record" :key="index">
+				<navigator :url="'/pages/profitDetail/index?batchcode='+item.batchcode+'&id='+item.id" hover-class="none" class="item" v-for="(item, index) in record" :key="index">
 					<view class="name">{{ item.own_user_name }}</view>
 					<view class="info">
 						<view>{{ item.createtime }}</view>
 						<view><uni-badge :text="item.paytype" :type="style[item.type]"></uni-badge> </view>
 						<view class="price">&yen;{{ item.reward }}</view>
 					</view>
-				</view>
+				</navigator>
 				</scroll-view>
 				<empty-data v-if="noData && !record.length">没有发现相关记录</empty-data>
 			</view>
@@ -87,7 +87,7 @@
 					page: 1,
 					user_id: '',
 				},
-				noData: false,
+				noData: true,
 				currentCate: 0,
 				Info: {},
 				record: [],
@@ -125,23 +125,36 @@
 				this.params.time = e.target.value
 				this.params.page = 1
 				this.record = []
+				this.noData = true
 				this.getInfo()
 			},
 			bindTimeChange: function(e) {
 				this.time = e.target.value
 			},
 			getInfo () {
+				uni.showLoading()
 				MyProfit(this.params).then(res => {
+					uni.hideLoading()
 					this.Info = res.data
 					this.record = [ ...this.record, ...res.data.record ]
 					this.lists[0].list = res.data.btnArray
 					this.rightDrawerVisible = false
-					if (!this.record.length) this.noData = true
+					if (!res.data.record.length) {
+						this.noData = false
+						if (this.params.page !== 1) {
+							uni.showToast({
+								title: '没有更多记录啦>_<',
+								icon: 'none'
+							})
+						}
+					}
 				})
 			},
 			loadMove() {
-				this.params.page++
-				this.getInfo()
+				if (this.noData) {
+					this.params.page++
+					this.getInfo()
+				}
 			},
 			getDate(type) {
 				const date = new Date();
@@ -156,9 +169,9 @@
 					year = year + 2;
 				}
 				month = month > 9 ? month : '0' + month;;
-				day = day > 9 ? day : '0' + day;
+				day = 1;
 
-				return `${year}-${month}`;
+				return `${year}-${month}-${day}`;
 			},
 			trigerCollapse(e) {
 				for (let i = 0, len = this.lists.length; i < len; ++i) {
@@ -262,6 +275,19 @@ page, uni-page-body, .myprofit {
 				border-radius: 10px;
 				margin: 0 11px 8px;
 				padding: 8px;
+				position: relative;
+				&::after {
+					content: '';
+					position: absolute;
+					width: 15upx;
+					height: 15upx;
+					right: 20upx;
+					top:50%;
+					border-right:1px solid transparent;
+					border-top: 1px solid transparent;
+					border-color:#c7c7c7;
+					transform: translateY(-50%) rotate(45deg);
+				}
 				&:last-of-type {
 					margin-bottom: 0;
 				}
@@ -273,6 +299,7 @@ page, uni-page-body, .myprofit {
 					font-size: 22upx;
 					.price {
 						color:#F44336;
+						margin-right: 40upx;
 					}
 				}
 			}

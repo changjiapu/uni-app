@@ -26,7 +26,7 @@
 				<text>商品金额</text>
 				<text>￥{{data.price}}</text>
 			</view>
-			<view class='list-msg2' @clikc='bindShowMsg'>
+			<view class='list-msg2' @click='bindShowMsg'>
 				<text>{{tihuoWay}}</text>
 				<image style='height:20rpx;width:20rpx;' :src="baseURL+'/weixinpl/shopping-temp/images/down.png'"></image>
 			</view>
@@ -60,7 +60,9 @@
 		savePackages
 	} from '@/common/api/packageA.js'
 	import uniIcon from "@/components/uni-icon.vue"
-	import { baseURL } from '@/common/utils/config'
+	import {
+		baseURL
+	} from '@/common/utils/config'
 
 	export default {
 		components: {
@@ -74,7 +76,9 @@
 				tihuoWay: '选择门店自提',
 				store_id: '',
 				isloaded: false,
-				data: ''
+				data: {
+					res_store: []
+				}
 			};
 		},
 		onLoad(options) {
@@ -117,6 +121,7 @@
 		},
 		methods: {
 			bindShowMsg() {
+				console.log(222)
 				this.select = !this.select
 			},
 			mySelect(e) {
@@ -129,12 +134,12 @@
 			buy(e) {
 				if (this.address == '') {
 					uni.showModal({
-						title:'',
-						content:'请填写收货地址',
-						success:res=>{
-							if(res.confirm){
+						title: '',
+						content: '请填写收货地址',
+						success: res => {
+							if (res.confirm) {
 								uni.navigateTo({
-									url:'/pages/address/index'
+									url: '/pages/address/index'
 								})
 							}
 						}
@@ -157,22 +162,23 @@
 						pid: '',
 						store_id: this.store_id,
 					}
-					savePackages(data).then(res=>{
-						if(!res.code){
+					savePackages(data).then(res => {
+						if (!res.code) {
 							let batchcode = res.data.data.batchcode
 							wx.navigateTo({
-								url: '/pages/pay-order/pay-order?post_data=' + JSON.stringify(data) + '&batchcode=' + batchcode+'&isPackage=true',
+								url: '/pages/pay-order/pay-order?post_data=' + JSON.stringify(data) + '&batchcode=' + batchcode +
+									'&isPackage=true',
 							})
-						}else{
+						} else {
 							uni.showModal({
-								title:'',
-								content:res.data.msg,
-								showCancel:false
+								title: '',
+								content: res.data.msg,
+								showCancel: false
 							})
 							return false
 						}
 					})
-					
+
 				}
 			},
 
@@ -283,11 +289,11 @@
 
 	@keyframes myfirst {
 		from {
-			height: 0rpx;
+			height: 0%;
 		}
 
 		to {
-			height: 210rpx;
+			height: 100%;
 		}
 	}
 

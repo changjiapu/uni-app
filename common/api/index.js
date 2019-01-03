@@ -251,3 +251,13 @@ export function BagConfirm (data) {
 export function BagConcel (data) {
 	return request(data, "/weixinpl/mshop/save_package_order_cancel.php").then(res => res)
 }
+
+export function profitDetail (data) {
+	return request(data, "/smallroutine/Reward/profit_detail").then(res => res)
+} 
+export function Private_store (data){
+	return request(data,"/smallroutine/program/Private_store").then(res=>res)
+}
+export function codePicture (data){
+	return request(data,'/smallroutine/Appregister/codePicture').then(res=>res)
+}

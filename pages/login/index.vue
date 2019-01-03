@@ -116,7 +116,6 @@
 	@import '../../common/css/variables.less'; 
 uni-page-body, page, .login { min-height: 100%;overflow: hidden;height: 100%;}	
 .login {
-	//background:url("https://admin.sinlu.net/weixinpl/shopping-temp/images/login_bg.jpg") no-repeat center center/cover;
 	background-color:white;
 	.main {
 		height: 100%;

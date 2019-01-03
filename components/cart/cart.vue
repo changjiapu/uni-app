@@ -2,7 +2,7 @@
 	<view>
 		<view v-if="dianpuleibie==5">
 			<view class='no-data' style='background-color:#f4f4f4' v-if='no_data'>
-				<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/no-data.png'></image>
+				<image :src="baseURL+'/weixinpl/shopping-temp/images/no-data.png'"></image>
 				<text>购物车为空，赶紧去逛逛吧~~</text>
 			</view>
 			<block v-else>
@@ -13,7 +13,7 @@
 				<view class="list">
 					<view class='list-item' v-for="(item,index) in cart" :key="index">
 						<view class='clear'>
-							<image src='https://admin.sinlu.net/weixinpl/shopping-temp/images/clear.png' :style="{display:editor?'':'none'}"
+							<image :src="baseURL+'/weixinpl/shopping-temp/images/clear.png'" :style="{display:editor?'':'none'}"
 							 @click="clear(index)"></image>
 							<view :style="{display:editor?'none':''}" @click='statusChange(index)'>
 								<uni-icon v-if="item.status" type="checkbox-filled" size="20" color='#409EFF'></uni-icon>
@@ -63,6 +63,7 @@
 		mapState
 	} from 'vuex'
 	import uniIcon from "@/components/uni-icon.vue"
+	import { baseURL } from '@/common/utils/config'
 	export default {
 		name: 'cart',
 		components: {
@@ -70,6 +71,7 @@
 		},
 		data() {
 			return {
+				baseURL: baseURL,
 				empty: '',
 				editor: false,
 				no_data: true,
