@@ -4,6 +4,7 @@
 ### 项目效果展示
 #### H5
 ![login](https://github.com/changjiapu/uni-app/blob/master/screenshots/h5.jpg)
-#### H5
-![login](https://github.com/changjiapu/uni-app/blob/master/screenshots/h5.jpg)
+#### 微信小程序
+![login](https://github.com/changjiapu/uni-app/blob/master/screenshots/weixin.jpg)
+#### Android
 ![login](https://github.com/changjiapu/uni-app/blob/master/screenshots/Android.jpg)
